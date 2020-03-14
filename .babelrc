@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "safari": "13.0"
+        },
+        "useBuiltIns": "usage"
+      }
+    ]
+  ],
+  "plugins": [["@babel/plugin-proposal-class-properties"]]
+}
