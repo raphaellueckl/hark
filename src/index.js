@@ -10,7 +10,6 @@ const router = new Router();
 // });
 
 router.add("/", () => {
-  console.log(manageAssetsPage);
   document.querySelector("#root").innerHTML = manageAssetsPage;
 });
 //   .add("/login", () => {

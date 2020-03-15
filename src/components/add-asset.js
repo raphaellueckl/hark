@@ -26,13 +26,6 @@ class AddAsset extends HTMLElement {
     const amountInput = this.shadowRoot.querySelector("#amount");
 
     button.addEventListener("click", () => {
-      console.log("hey!");
-      console.log(assetInput.value);
-      console.log(symbolInput.value);
-      console.log(categoryInput.value);
-      console.log(amountInput.value);
-      console.log("####");
-
       databaseConnector.updateAsset({
         symbol: symbolInput.value,
         asset: assetInput.value,
