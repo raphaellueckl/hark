@@ -1,5 +1,6 @@
 import Router from "./router.js";
 import { manageAssetsPage } from "./pages/manage.js";
+import { dashboardPage } from "./pages/dashboard.js";
 
 // import "./components/navbar.js";
 
@@ -9,12 +10,13 @@ const router = new Router();
 //   document.querySelector("#root").innerHTML = "404 - This page does not exist!";
 // });
 
-router.add("/", () => {
-  document.querySelector("#root").innerHTML = manageAssetsPage;
-});
-//   .add("/login", () => {
-//     document.querySelector("#root").innerHTML = loginPage;
-//   })
+router
+  .add("/", () => {
+    document.querySelector("#root").innerHTML = dashboardPage;
+  })
+  .add("/manage", () => {
+    document.querySelector("#root").innerHTML = manageAssetsPage;
+  });
 //   .add("/random", () => {
 //     document.querySelector("#root").innerHTML = randomPage;
 //   })

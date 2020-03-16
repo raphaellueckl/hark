@@ -4,13 +4,13 @@ class DatabaseConnector {
 
     const mockData = [
       {
-        symbol: "btc",
+        symbol: "bitcoin",
         asset: "bitcoin",
         category: "crypto",
         amount: 0.2
       },
       {
-        symbol: "eth",
+        symbol: "ethereum",
         asset: "ethereum",
         category: "crypto",
         amount: 3
@@ -45,7 +45,8 @@ class DatabaseConnector {
   }
 
   getAssets() {
-    return JSON.parse(this.storage.getItem("assets"));
+    const assets = this.storage.getItem("assets");
+    return assets.length ? JSON.parse(assets) : [];
   }
 
   _removeAssetVirtual(asset) {

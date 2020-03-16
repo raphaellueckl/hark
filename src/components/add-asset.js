@@ -16,8 +16,7 @@ class AddAsset extends HTMLElement {
         <label>Category: <input id="category"></label>
         <label>Amount: <input id="amount"></label>
         <button>Add</button>
-    </div>
-  `;
+    </div>`;
 
     const button = this.shadowRoot.querySelector("button");
     const assetInput = this.shadowRoot.querySelector("#asset");
