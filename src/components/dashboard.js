@@ -1,20 +1,24 @@
 import { databaseConnector } from "../data/database-connector.js";
 import { priceFetcher } from "../data/price-fetcher.js";
 
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>
+  </style>
+  <ul>
+      <!-- generated -->
+  </ul>
+`;
+
 class DashboardList extends HTMLElement {
   constructor() {
     super();
+
+    let shadow = this.attachShadow({ mode: "open" });
+    shadow.appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    let shadow = this.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-    <style>
-    </style>
-    <ul>
-        <!-- generated -->
-    </ul>
-  `;
     // const assets = databaseConnector.getAssets() || [];
     const ul = this.shadowRoot.querySelector("ul");
 
