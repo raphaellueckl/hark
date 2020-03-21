@@ -10,7 +10,7 @@ const _pipeline = {
     return true;
   },
 
-  get: function(target, prop, receiver) {
+  get: function(target, prop) {
     // To be able to register an eventlistener on the _store object,
     // 'this' has to be linked to the target.
     const property = Reflect.get(target, prop);
