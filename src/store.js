@@ -23,6 +23,10 @@ const store = new Proxy(_store, _pipeline);
 
 store.addEventListener("updateasset", ({ detail: asset }) => {
   databaseConnector.updateAsset(asset);
+  const updatedAssets = databaseConnector.getAssets();
+  store.dispatchEvent(
+    new CustomEvent("updated_assets", { detail: updatedAssets })
+  );
 });
 
 export { store };

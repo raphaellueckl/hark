@@ -1,4 +1,5 @@
 import { databaseConnector } from "../data/database-connector.js";
+import { store } from "../store.js";
 
 class AssetList extends HTMLElement {
   constructor() {
@@ -15,8 +16,17 @@ class AssetList extends HTMLElement {
     </ul>
   `;
     const assets = databaseConnector.getAssets() || [];
-    const ul = this.shadowRoot.querySelector("ul");
 
+    this._updateList(assets);
+
+    store.addEventListener("updated_assets", ({ detail: assetList }) => {
+      this._updateList(assetList);
+    });
+  }
+
+  _updateList(assets) {
+    const ul = this.shadowRoot.querySelector("ul");
+    ul.textContent = "";
     const listHtml = assets.map(asset => {
       const li = document.createElement("li");
       li.innerHTML = `
