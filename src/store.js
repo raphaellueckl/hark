@@ -1,8 +1,8 @@
-window.addEventListener("updateasset", ({ detail: asset }) => {
-  console.log(asset);
-});
+import { databaseConnector } from "./data/database-connector.js";
 
-const _store = {};
+// EventTarget, so that listeners can be registered on it
+// Element, as a workaround for safari
+const _store = new EventTarget() || Element.prototype;
 
 const _pipeline = {
   set: function(target, key, value) {
@@ -11,10 +11,18 @@ const _pipeline = {
   },
 
   get: function(target, prop, receiver) {
-    return target[prop];
+    // To be able to register an eventlistener on the _store object,
+    // 'this' has to be linked to the target.
+    const property = Reflect.get(target, prop);
+    if (typeof property === "function") return property.bind(target);
+    return property;
   }
 };
 
 const store = new Proxy(_store, _pipeline);
+
+store.addEventListener("updateasset", ({ detail: asset }) => {
+  databaseConnector.updateAsset(asset);
+});
 
 export { store };

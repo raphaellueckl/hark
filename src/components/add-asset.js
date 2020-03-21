@@ -1,4 +1,3 @@
-import { databaseConnector } from "../data/database-connector.js";
 import { store } from "../store.js";
 
 const template = document.createElement("template");
@@ -34,8 +33,8 @@ class AddAsset extends HTMLElement {
         category: this.categoryInput.value,
         amount: this.amountInput.value
       };
-      databaseConnector.updateAsset(updateAsset);
-      window.dispatchEvent(
+
+      store.dispatchEvent(
         new CustomEvent("updateasset", { detail: updateAsset })
       );
       this._clearInputs();
