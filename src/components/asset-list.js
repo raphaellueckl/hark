@@ -13,8 +13,7 @@ class AssetList extends HTMLElement {
     </style>
     <ul>
         <!-- generated -->
-    </ul>
-  `;
+    </ul>`;
     const assets = databaseConnector.getAssets() || [];
 
     this._updateList(assets);
@@ -27,16 +26,25 @@ class AssetList extends HTMLElement {
   _updateList(assets) {
     const ul = this.shadowRoot.querySelector("ul");
     ul.textContent = "";
-    const listHtml = assets.map(asset => {
+    const listHtml = assets.map((asset, index) => {
       const li = document.createElement("li");
       li.innerHTML = `
           <label>Asset: <input value="${asset.asset}"></label>
           <label>Symbol: <input value="${asset.symbol}"></label>
           <label>Category: <input value="${asset.category}"></label>
-          <label>Amount: <input value="${asset.amount}"></label>`;
+          <label>Amount: <input value="${asset.amount}"></label>
+          <button id="${index}">-</button>`;
       return li;
     });
     listHtml.forEach(asset => ul.appendChild(asset));
+    [...this.shadowRoot.querySelectorAll("button")].forEach(button =>
+      button.addEventListener("click", e => {
+        const indexOfAsset = +e.srcElement.id;
+        store.dispatchEvent(
+          new CustomEvent("removeassetbyindex", { detail: indexOfAsset })
+        );
+      })
+    );
   }
 }
 

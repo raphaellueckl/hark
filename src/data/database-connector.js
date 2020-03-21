@@ -38,6 +38,13 @@ class DatabaseConnector {
     this.storage.setItem("assets", JSON.stringify(assets));
   }
 
+  removeAssetByIndex(index) {
+    const assets = this.getAssets().filter((asset, _index) => {
+      return index !== _index;
+    });
+    this.storage.setItem("assets", JSON.stringify(assets));
+  }
+
   removeAsset(asset) {
     const assets = this._removeAssetVirtual(asset);
 

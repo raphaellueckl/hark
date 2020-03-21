@@ -29,4 +29,12 @@ store.addEventListener("updateasset", ({ detail: asset }) => {
   );
 });
 
+store.addEventListener("removeassetbyindex", ({ detail: index }) => {
+  databaseConnector.removeAssetByIndex(index);
+  const updatedAssets = databaseConnector.getAssets();
+  store.dispatchEvent(
+    new CustomEvent("updated_assets", { detail: updatedAssets })
+  );
+});
+
 export { store };
