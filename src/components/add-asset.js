@@ -1,37 +1,52 @@
 import { databaseConnector } from "../data/database-connector.js";
+import { store } from "../store.js";
+
+const template = document.createElement("template");
+template.innerHTML = `
+<style>
+</style>
+<div class="menu-container">
+    <label>Asset: <input id="asset"></label>
+    <label>Symbol: <input id="symbol"></label>
+    <label>Category: <input id="category"></label>
+    <label>Amount: <input id="amount"></label>
+    <button>Add</button>
+</div>`;
 
 class AddAsset extends HTMLElement {
   constructor() {
     super();
+    let shadow = this.attachShadow({ mode: "open" });
+    shadow.appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    let shadow = this.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-    <style>
-    </style>
-    <div class="menu-container">
-        <label>Asset: <input id="asset"></label>
-        <label>Symbol: <input id="symbol"></label>
-        <label>Category: <input id="category"></label>
-        <label>Amount: <input id="amount"></label>
-        <button>Add</button>
-    </div>`;
-
     const button = this.shadowRoot.querySelector("button");
-    const assetInput = this.shadowRoot.querySelector("#asset");
-    const symbolInput = this.shadowRoot.querySelector("#symbol");
-    const categoryInput = this.shadowRoot.querySelector("#category");
-    const amountInput = this.shadowRoot.querySelector("#amount");
+    this.assetInput = this.shadowRoot.querySelector("#asset");
+    this.symbolInput = this.shadowRoot.querySelector("#symbol");
+    this.categoryInput = this.shadowRoot.querySelector("#category");
+    this.amountInput = this.shadowRoot.querySelector("#amount");
 
     button.addEventListener("click", () => {
-      databaseConnector.updateAsset({
-        symbol: symbolInput.value,
-        asset: assetInput.value,
-        category: categoryInput.value,
-        amount: amountInput.value
-      });
+      const updateAsset = {
+        symbol: this.symbolInput.value,
+        asset: this.assetInput.value,
+        category: this.categoryInput.value,
+        amount: this.amountInput.value
+      };
+      databaseConnector.updateAsset(updateAsset);
+      window.dispatchEvent(
+        new CustomEvent("updateasset", { detail: updateAsset })
+      );
+      this._clearInputs();
     });
+  }
+
+  _clearInputs() {
+    this.assetInput.value = "";
+    this.symbolInput.value = "";
+    this.categoryInput.value = "";
+    this.amountInput.value = "";
   }
 }
 
