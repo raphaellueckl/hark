@@ -64,6 +64,14 @@ class Chart extends HTMLElement {
             "style",
             `transform: rotate(${accumulatedDegree}deg);`
           );
+          entry.setAttribute("title", values[i].label);
+
+          const title = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "title"
+          );
+          title.textContent = values[i].label;
+          entry.appendChild(title);
           svg.appendChild(entry);
 
           accumulatedDegree += (360 / fullyLoaded) * weight;
