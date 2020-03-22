@@ -25,11 +25,11 @@ class Chart extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["percentage"];
+    return ["content"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "percentage") {
+    if (name === "content") {
       try {
         const values = JSON.parse(newValue);
         const svg = this.shadowRoot.querySelector("svg");
