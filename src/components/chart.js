@@ -2,20 +2,19 @@ const template = document.createElement("template");
 const fullyLoaded = 503;
 template.innerHTML = `
     <style>
-        :host {
-            --percentage-value: ${fullyLoaded};
-        }
-        
-        #value {
+        .value {
             transform-origin: center;
-            transform: rotate(-90deg);
         }
     </style>
-    <svg height="250" width="250">
-        <circle id="background" cx="125" cy="125" r="80" stroke="lightgrey" stroke-width="50" fill="none" />
-        <circle id="value" cx="125" cy="125" r="80" stroke="blue" stroke-width="50" fill="none" stroke-dasharray="${fullyLoaded}" stroke-dashoffset="var(--percentage-value)" />
-    </svg>
-`;
+    <svg height="250" width="250"></svg>`;
+
+const ALL_HEX_VALUES = "0123456789ABCDEF";
+
+function getRandomizedHex() {
+  return `#${[...Array(6)]
+    .map(() => ALL_HEX_VALUES.charAt(Math.random() * 16))
+    .join("")}`;
+}
 
 class Chart extends HTMLElement {
   constructor() {
@@ -31,18 +30,51 @@ class Chart extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "percentage") {
-      this.setPercentage(+newValue);
+      try {
+        const values = JSON.parse(newValue);
+        const svg = this.shadowRoot.querySelector("svg");
+        svg.textContent = "";
+
+        const sumOfValues = values
+          .map(v => +v.value)
+          .reduce((a, b) => a + b, 0);
+        console.log("sum", sumOfValues);
+
+        let accumulatedDegree = 0;
+        values.sort((a, b) => b.value - a.value);
+        for (let i = 0; i < values.length; i++) {
+          const weight = (fullyLoaded / sumOfValues) * Number(values[i].value);
+
+          values[i].dashOffset = fullyLoaded - weight;
+
+          const entry = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+          );
+          entry.setAttribute("class", "value");
+          entry.setAttribute("cx", "125");
+          entry.setAttribute("cy", "125");
+          entry.setAttribute("r", "80");
+          entry.setAttribute("stroke", getRandomizedHex());
+          entry.setAttribute("stroke-width", "50");
+          entry.setAttribute("fill", "none");
+          entry.setAttribute("stroke-dasharray", fullyLoaded);
+          entry.setAttribute("stroke-dashoffset", values[i].dashOffset);
+          entry.setAttribute(
+            "style",
+            `transform: rotate(${accumulatedDegree}deg);`
+          );
+          svg.appendChild(entry);
+
+          accumulatedDegree += (360 / fullyLoaded) * weight;
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 
   connectedCallback() {}
-
-  setPercentage(percentage) {
-    this.style.setProperty(
-      "--percentage-value",
-      fullyLoaded - (fullyLoaded / 100) * percentage
-    );
-  }
 }
 
 customElements.define("hk-chart", Chart);

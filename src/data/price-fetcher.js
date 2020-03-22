@@ -8,7 +8,6 @@ class PriceFetcher {
     const assets = databaseConnector.getAssets() || [];
     const valuePromises = [];
     assets.forEach(_asset => {
-      console.log("here");
       switch (_asset.category) {
         case "crypto": {
           valuePromises.push(
