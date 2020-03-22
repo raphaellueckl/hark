@@ -2,33 +2,35 @@ class DatabaseConnector {
   constructor() {
     this.storage = localStorage;
 
-    const mockData = [
-      {
-        symbol: "bitcoin",
-        asset: "bitcoin",
-        category: "crypto",
-        amount: 0.2
-      },
-      {
-        symbol: "ethereum",
-        asset: "ethereum",
-        category: "crypto",
-        amount: 3
-      },
-      {
-        symbol: "bynd",
-        asset: "beyond meat",
-        category: "stock",
-        amount: 0.2
-      },
-      {
-        symbol: "gold",
-        asset: "gold",
-        category: "resource",
-        amount: 10
-      }
-    ];
-    this.storage.setItem("assets", JSON.stringify(mockData));
+    if (!this.getAssets().length) {
+      const mockData = [
+        {
+          symbol: "bitcoin",
+          asset: "bitcoin",
+          category: "crypto",
+          amount: 0.2
+        },
+        {
+          symbol: "ethereum",
+          asset: "ethereum",
+          category: "crypto",
+          amount: 3
+        },
+        {
+          symbol: "bynd",
+          asset: "beyond meat",
+          category: "stock",
+          amount: 0.2
+        },
+        {
+          symbol: "gold",
+          asset: "gold",
+          category: "resource",
+          amount: 10
+        }
+      ];
+      this.storage.setItem("assets", JSON.stringify(mockData));
+    }
   }
 
   updateAsset(asset) {
