@@ -5,8 +5,18 @@ template.innerHTML = `
         .value {
             transform-origin: center;
         }
+
+        div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 250px;
+        }
     </style>
-    <svg height="250" width="250"></svg>`;
+    <div>
+      <h2></h2>
+      <svg height="250" width="250"></svg>
+    </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
 
@@ -25,11 +35,13 @@ class Chart extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["content"];
+    return ["content", "title"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "content") {
+    if (name === "title") {
+      this.shadowRoot.querySelector("h2").textContent = newValue;
+    } else if (name === "content") {
       try {
         const values = JSON.parse(newValue);
         const svg = this.shadowRoot.querySelector("svg");
