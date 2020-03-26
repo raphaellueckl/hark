@@ -2,6 +2,8 @@ import Router from "./router.js";
 import { manageAssetsPage } from "./pages/manage.js";
 import { dashboardPage } from "./pages/dashboard.js";
 
+import "./components/navbar.js";
+
 // import "./components/navbar.js";
 
 const router = new Router();
