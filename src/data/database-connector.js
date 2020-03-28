@@ -54,7 +54,7 @@ class DatabaseConnector {
   }
 
   getAssets() {
-    const assets = this.storage.getItem("assets");
+    const assets = this.storage.getItem("assets") || [];
     return assets.length ? JSON.parse(assets) : [];
   }
 
