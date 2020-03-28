@@ -4,7 +4,7 @@
   "description": "Asset management app",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon --exec npm run build --watch src",
+    "serve": "concurrently \"nodemon --exec npm run build --watch src\" \"http-server ./dist\"",
     "build": "rollup --config ./rollup.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,8 +26,11 @@
   },
   "homepage": "https://github.com/raphaellueckl/hark#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/preset-env": "7.9.0",
+    "@babel/core": "7.9.0",
+    "concurrently": "^5.1.0",
+    "http-server": "0.12.1",
     "nodemon": "^2.0.2",
     "rollup": "^2.0.6",
     "rollup-plugin-babel": "^4.4.0",
