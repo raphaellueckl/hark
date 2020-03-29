@@ -2,6 +2,7 @@ import { databaseConnector } from "../data/database-connector.js";
 import { store } from "../store.js";
 
 import "./asset.js";
+import { resetUL } from "../css-globals.js";
 
 class AssetList extends HTMLElement {
   constructor() {
@@ -12,6 +13,7 @@ class AssetList extends HTMLElement {
     let shadow = this.attachShadow({ mode: "open" });
     shadow.innerHTML = `
     <style>
+      ${resetUL}
     </style>
     <ul>
         <!-- generated -->

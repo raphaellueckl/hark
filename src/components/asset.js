@@ -9,6 +9,10 @@ template.innerHTML = `
         justify-content: space-between;
     }
 
+    .remove-button-container{
+      justify-content: flex-end;
+    }
+
     ${resetUL}
 </style>
 <ul>
@@ -39,6 +43,8 @@ class Asset extends HTMLElement {
         li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}">`;
         ul.appendChild(li);
       });
+      const li = document.createElement("li");
+      li.classList.add("remove-button-container");
       const button = document.createElement("button");
       button.textContent = "remov";
       button.addEventListener("click", e => {
@@ -46,14 +52,8 @@ class Asset extends HTMLElement {
           new CustomEvent("removeassetbyindex", { detail: this.indexOfAsset })
         );
       });
-      ul.appendChild(button);
-
-      //   this.shadowRoot.querySelector("button").addEventListener("click", e => {
-      //     const indexOfAsset = +e.srcElement.id;
-      //     store.dispatchEvent(
-      //       new CustomEvent("removeassetbyindex", { detail: indexOfAsset })
-      //     );
-      //   });
+      li.appendChild(button);
+      ul.appendChild(li);
     }
   }
 }
