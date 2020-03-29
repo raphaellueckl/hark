@@ -1,20 +1,42 @@
 import { store } from "../store.js";
+import { resetUL } from "../css-globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
+  ${resetUL}
+
   .menu-container {
     display: flex;
     flex-direction: column;
   }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .add-button-container{
+    justify-content: flex-end;
+  }
 </style>
-<div class="menu-container">
-    <label>Asset: <input id="asset"></label>
-    <label>Symbol: <input id="symbol"></label>
-    <label>Category: <input id="category"></label>
-    <label>Amount: <input id="amount"></label>
+<ul class="menu-container">
+  <li>
+    <label for="asset">Asset:</label><input id="asset">
+  </li>
+  <li>
+    <label for="symbol">Symbol:</label><input id="symbol">
+  </li>
+  <li>
+    <label for="category">Category:</label><input id="category">
+  </li>
+  <li>
+    <label for="amount">Amount:</label><input id="amount">
+  </li>
+  <li class="add-button-container">
     <button>Add</button>
-</div>`;
+  </li>
+</ul>`;
 
 class AddAsset extends HTMLElement {
   constructor() {
