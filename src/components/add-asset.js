@@ -3,6 +3,10 @@ import { store } from "../store.js";
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
+  .menu-container {
+    display: flex;
+    flex-direction: column;
+  }
 </style>
 <div class="menu-container">
     <label>Asset: <input id="asset"></label>

@@ -41,9 +41,7 @@ class DatabaseConnector {
   }
 
   removeAssetByIndex(index) {
-    const assets = this.getAssets().filter((asset, _index) => {
-      return index !== _index;
-    });
+    const assets = this.getAssets().filter((asset, _index) => index !== _index);
     this.storage.setItem("assets", JSON.stringify(assets));
   }
 
