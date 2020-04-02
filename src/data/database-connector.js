@@ -17,10 +17,10 @@ class DatabaseConnector {
           amount: 3
         },
         {
-          symbol: "bynd",
-          asset: "beyond meat",
+          symbol: "MSFT",
+          asset: "microsoft",
           category: "stock",
-          amount: 0.2
+          amount: 1
         },
         {
           symbol: "gold",
