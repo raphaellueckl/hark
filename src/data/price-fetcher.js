@@ -6,6 +6,7 @@ class PriceFetcher {
   async enrichAssetsWithPrice() {
     const cryptoFetcher = new CryptoFetcher();
     const stockFetcher = new StockFetcher();
+    const resourceFetcher = new ResourceFetcher();
     const assets = databaseConnector.getAssets() || [];
     const valuePromises = [];
     assets.forEach(_asset => {
@@ -16,6 +17,10 @@ class PriceFetcher {
         }
         case "stock": {
           valuePromises.push(stockFetcher.bySymbol(_asset.symbol));
+          break;
+        }
+        case "resource": {
+          valuePromises.push(resourceFetcher.bySymbol(_asset.symbol));
           break;
         }
         default: {
@@ -64,5 +69,28 @@ class StockFetcher {
     return fetch(this.BASE_URL + symbol)
       .then(res => res.json())
       .then(data => Object.values(Object.values(data)[1])[0]["4. close"]);
+  }
+}
+
+class ResourceFetcher {
+  constructor() {
+    this.BASE_URL_FRAGMENTS = [
+      "https://query1.finance.yahoo.com/v8/finance/chart/",
+      "?region=US&lang=en-US&includePrePost=false&interval=1m&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance"
+    ];
+  }
+
+  bySymbol(symbol) {
+    debugger;
+    return fetch(this.BASE_URL_FRAGMENTS.join(symbol), { mode: "no-cors" })
+      .then(res => res.json())
+      .then(data => {
+        debugger;
+        Object.values(Object.values(data)[1])[0]["4. close"];
+      })
+      .catch(e => {
+        debugger;
+        console.log(e);
+      });
   }
 }
