@@ -1,7 +1,15 @@
 import { databaseConnector } from "./database-connector.js";
+import { store } from "../store.js";
 
 class PriceFetcher {
-  constructor() {}
+  constructor() {
+    fetch("https://api.exchangeratesapi.io/latest?base=CHF")
+      .then(res => res.json())
+      .then(dollarToChfConversionRate => {
+        store.USD_TO_CHF_MULTIPLICATOR =
+          2 - dollarToChfConversionRate.rates.USD;
+      });
+  }
 
   async enrichAssetsWithPrice() {
     const cryptoFetcher = new CryptoFetcher();
@@ -9,6 +17,7 @@ class PriceFetcher {
     const resourceFetcher = new ResourceFetcher();
     const assets = databaseConnector.getAssets() || [];
     const valuePromises = [];
+
     assets.forEach(_asset => {
       switch (_asset.category) {
         case "crypto": {
@@ -75,18 +84,26 @@ class StockFetcher {
 class ResourceFetcher {
   constructor() {
     this.BASE_URL_FRAGMENTS = [
-      "https://query1.finance.yahoo.com/v8/finance/chart/",
+      "https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/",
       "?region=US&lang=en-US&includePrePost=false&interval=1m&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance"
     ];
   }
 
   bySymbol(symbol) {
-    debugger;
-    return fetch(this.BASE_URL_FRAGMENTS.join(symbol), { mode: "no-cors" })
-      .then(res => res.json())
+    return fetch(this.BASE_URL_FRAGMENTS.join(symbol), {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
       .then(data => {
         debugger;
-        Object.values(Object.values(data)[1])[0]["4. close"];
+        return (
+          data.chart.result["0"].meta.regularMarketPrice *
+          store.USD_TO_CHF_MULTIPLICATOR
+        );
       })
       .catch(e => {
         debugger;
