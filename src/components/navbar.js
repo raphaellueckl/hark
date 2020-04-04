@@ -20,6 +20,7 @@ template.innerHTML = `
   <div class="navigation-links">
     <a href="/#/">Home</a>
     <a href="/#/manage">Manage</a>
+    <a href="/#/transactions">Fiat Transactions</a>
   </div>
 </nav>`;
 

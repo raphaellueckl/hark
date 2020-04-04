@@ -1,6 +1,7 @@
 import Router from "./router.js";
 import { manageAssetsPage } from "./pages/manage.js";
 import { dashboardPage } from "./pages/dashboard.js";
+import { fiatTransactionsPage } from "./pages/fiat-transactions.js";
 
 import "./components/navbar.js";
 
@@ -18,10 +19,10 @@ router
   })
   .add("/manage", () => {
     document.querySelector("#root").innerHTML = manageAssetsPage;
+  })
+  .add("/transactions", () => {
+    document.querySelector("#root").innerHTML = fiatTransactionsPage;
   });
-//   .add("/random", () => {
-//     document.querySelector("#root").innerHTML = randomPage;
-//   })
 //   .add("/about", () => {
 //     document.querySelector("#root").innerHTML = aboutPage;
 //   });
