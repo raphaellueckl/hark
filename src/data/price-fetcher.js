@@ -1,14 +1,24 @@
 import { databaseConnector } from "./database-connector.js";
 import { store } from "../store.js";
 
+const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
+
 class PriceFetcher {
   constructor() {
-    fetch("https://api.exchangeratesapi.io/latest?base=CHF")
-      .then(res => res.json())
-      .then(dollarToChfConversionRate => {
-        store.USD_TO_CHF_MULTIPLICATOR =
-          2 - dollarToChfConversionRate.rates.USD;
-      });
+    const TIMESTAMP = "USD_TO_CHF_MULTIPLICATOR_LAST_FETCH_IN_MILLIS";
+    if (
+      !store.USD_TO_CHF_MULTIPLICATOR ||
+      !store[TIMESTAMP] ||
+      new Date().getMilliseconds() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
+    ) {
+      fetch("https://api.exchangeratesapi.io/latest?base=CHF")
+        .then(res => res.json())
+        .then(dollarToChfConversionRate => {
+          store.USD_TO_CHF_MULTIPLICATOR =
+            2 - dollarToChfConversionRate.rates.USD;
+          store[TIMESTAMP] = new Date().getMilliseconds();
+        });
+    }
   }
 
   async enrichAssetsWithPrice() {
@@ -62,9 +72,24 @@ class CryptoFetcher {
   }
 
   bySymbol(symbol) {
+    const VALUE_KEY = "CRYPTO_" + symbol;
+    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+    if (
+      store[TIMESTAMP] &&
+      new Date().getMilliseconds() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
+    ) {
+      return Promise.resolve(store[VALUE_KEY]);
+    }
     return fetch(this.BASE_URL + symbol)
       .then(res => res.json())
-      .then(data => Object.values(data)[0].chf);
+      .then(data => {
+        store[TIMESTAMP] = new Date().getMilliseconds();
+        store[VALUE_KEY] = Object.values(data)[0].chf;
+        return store[VALUE_KEY];
+      })
+      .catch(e => {
+        console.error(e);
+      });
   }
 }
 
@@ -75,9 +100,24 @@ class StockFetcher {
   }
 
   bySymbol(symbol) {
+    const VALUE_KEY = "STOCK_" + symbol;
+    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+    if (
+      store[TIMESTAMP] &&
+      new Date().getMilliseconds() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
+    ) {
+      return Promise.resolve(store[VALUE_KEY]);
+    }
     return fetch(this.BASE_URL + symbol)
       .then(res => res.json())
-      .then(data => Object.values(Object.values(data)[1])[0]["4. close"]);
+      .then(data => {
+        store[TIMESTAMP] = new Date().getMilliseconds();
+        store[VALUE_KEY] = Object.values(Object.values(data)[1])[0]["4. close"];
+        return store[VALUE_KEY];
+      })
+      .catch(e => {
+        console.error(e);
+      });
   }
 }
 
@@ -90,6 +130,15 @@ class ResourceFetcher {
   }
 
   bySymbol(symbol) {
+    const VALUE_KEY = "RESOURCE_" + symbol;
+    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+
+    if (
+      store[TIMESTAMP] &&
+      new Date().getMilliseconds() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
+    ) {
+      return Promise.resolve(store[VALUE_KEY]);
+    }
     return fetch(this.BASE_URL_FRAGMENTS.join(symbol), {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -99,15 +148,14 @@ class ResourceFetcher {
         return res.json();
       })
       .then(data => {
-        debugger;
-        return (
+        store[TIMESTAMP] = new Date().getMilliseconds();
+        store[VALUE_KEY] =
           data.chart.result["0"].meta.regularMarketPrice *
-          store.USD_TO_CHF_MULTIPLICATOR
-        );
+          store.USD_TO_CHF_MULTIPLICATOR;
+        return store[VALUE_KEY];
       })
       .catch(e => {
-        debugger;
-        console.log(e);
+        console.error(e);
       });
   }
 }
