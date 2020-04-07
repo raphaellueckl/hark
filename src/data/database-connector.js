@@ -23,7 +23,7 @@ class DatabaseConnector {
           amount: 1
         },
         {
-          symbol: "XAUUSD=X",
+          symbol: "XAU",
           asset: "gold",
           category: "resource",
           amount: 10

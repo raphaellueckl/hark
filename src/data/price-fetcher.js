@@ -181,7 +181,6 @@ class ResourceFetcher {
       })
       .then(data => {
         store[TIMESTAMP] = new Date().getTime();
-        debugger;
         store[VALUE_KEY] = data[symbol.toUpperCase()].CHF;
         return store[VALUE_KEY];
       })
