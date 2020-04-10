@@ -113,14 +113,15 @@ class Chart extends HTMLElement {
       const svg = self.shadowRoot.querySelector("svg");
       svg.textContent = "";
       const sumOfValues = assetList
-        .map(v => +v.value)
+        .map(v => +v.value * +v.amount)
         .reduce((a, b) => a + b, 0);
-      console.log("sum", sumOfValues);
 
       let accumulatedDegree = 0;
       assetList.sort((a, b) => b.value - a.value);
       for (let i = 0; i < assetList.length; i++) {
-        const weight = (fullyLoaded / sumOfValues) * Number(assetList[i].value);
+        const weight =
+          (fullyLoaded / sumOfValues) *
+          Number(+assetList[i].value * +assetList[i].amount);
 
         assetList[i].dashOffset = fullyLoaded - weight;
 

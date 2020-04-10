@@ -28,7 +28,8 @@ class DashboardList extends HTMLElement {
           <label>Symbol: <input value="${asset.symbol}"></label>
           <label>Category: <input value="${asset.category}"></label>
           <label>Amount: <input value="${asset.amount}"></label>
-          <label>Value: <input value="${asset.value}"></label>`;
+          <label>Price: <input value="${asset.value}"></label>
+          <label>Value: <input value="${asset.value * asset.amount}"></label>`;
         return li;
       });
       listHtml.forEach(asset => ul.appendChild(asset));
