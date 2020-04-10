@@ -29,12 +29,15 @@ function getRandomizedHex() {
     .join("")}`;
 }
 
+let self;
+
 class Chart extends HTMLElement {
   constructor() {
     super();
 
     let shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
+    self = this;
   }
 
   static get observedAttributes() {
@@ -45,13 +48,11 @@ class Chart extends HTMLElement {
     if (name === "title") {
       this.shadowRoot.querySelector("h2").textContent = newValue;
     } else if (name === "chart-subscriber") {
-      // INIT
-
-      store.addEventListener(newValue, ({ detail: assetList }) => {
-        debugger;
-        this._drawChart(assetList);
-      });
-      // this._drawChart(databaseConnector.getAssets());
+      this.subscriberEventListenerKey = newValue;
+      this.subscriberListener = store.addEventListener(
+        this.subscriberEventListenerKey,
+        this._chartUpdater
+      );
     } else if (name === "content") {
       // try {
       //   const values = JSON.parse(newValue);
@@ -99,11 +100,18 @@ class Chart extends HTMLElement {
     }
   }
 
-  _drawChart(assetList) {
+  disconnectedCallback() {
+    if (this.subscriberEventListenerKey)
+      store.removeEventListener(
+        this.subscriberEventListenerKey,
+        this._chartUpdater
+      );
+  }
+
+  _chartUpdater({ detail: assetList }) {
     try {
-      const svg = this.shadowRoot.querySelector("svg");
+      const svg = self.shadowRoot.querySelector("svg");
       svg.textContent = "";
-      debugger;
       const sumOfValues = assetList
         .map(v => +v.value)
         .reduce((a, b) => a + b, 0);
@@ -133,13 +141,13 @@ class Chart extends HTMLElement {
           "style",
           `transform: rotate(${accumulatedDegree}deg);`
         );
-        entry.setAttribute("title", assetList[i].label);
+        entry.setAttribute("title", assetList[i].asset);
 
         const title = document.createElementNS(
           "http://www.w3.org/2000/svg",
           "title"
         );
-        title.textContent = assetList[i].label;
+        title.textContent = assetList[i].asset;
         entry.appendChild(title);
         svg.appendChild(entry);
 

@@ -59,6 +59,10 @@ class PriceFetcher {
       return _asset;
     });
 
+    store.dispatchEvent(
+      new CustomEvent("updated_assets-price", { detail: enrichedAssets })
+    );
+
     return enrichedAssets;
   }
 }
