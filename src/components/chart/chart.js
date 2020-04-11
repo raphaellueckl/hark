@@ -1,11 +1,29 @@
 import { store } from "../../store.js";
 import { databaseConnector } from "../../data/database-connector.js";
-import "./chart.js";
 
 const template = document.createElement("template");
 
 template.innerHTML = `
-  <hk-chart id="assets-spread" chart-subscriber="updated_assets-price" title="Asset Spread" ></hk-chart>`;
+    <style>
+        .value {
+            transform-origin: center;
+        }
+
+        div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 250px;
+        }
+
+        circle {
+          transition: stroke-width 0.2s;
+        }
+    </style>
+    <div>
+      <h2></h2>
+      <svg height="250" width="250"></svg>
+    </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
 const DEFAULT_STROKE_WIDTH = "50";
@@ -137,4 +155,4 @@ class Chart extends HTMLElement {
   }
 }
 
-customElements.define("hk-asset-spread-chart", Chart);
+customElements.define("hk-chart", Chart);
