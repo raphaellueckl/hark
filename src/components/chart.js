@@ -22,6 +22,7 @@ template.innerHTML = `
     </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
+const DEFAULT_STROKE_WIDTH = "50";
 
 function getRandomizedHex() {
   return `#${[...Array(6)]
@@ -90,7 +91,7 @@ class Chart extends HTMLElement {
         entry.setAttribute("cy", "125");
         entry.setAttribute("r", "80");
         entry.setAttribute("stroke", getRandomizedHex());
-        entry.setAttribute("stroke-width", "50");
+        entry.setAttribute("stroke-width", DEFAULT_STROKE_WIDTH);
         entry.setAttribute("fill", "none");
         entry.setAttribute("stroke-dasharray", fullyLoaded);
         entry.setAttribute("stroke-dashoffset", assetList[i].dashOffset);
@@ -99,6 +100,13 @@ class Chart extends HTMLElement {
           `transform: rotate(${accumulatedDegree}deg);`
         );
         entry.setAttribute("title", assetList[i].asset);
+
+        entry.addEventListener("mouseenter", () => {
+          entry.style.strokeWidth = "65";
+        });
+        entry.addEventListener("mouseleave", () => {
+          entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
+        });
 
         const title = document.createElementNS(
           "http://www.w3.org/2000/svg",
