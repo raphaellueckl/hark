@@ -2,7 +2,7 @@ import { store } from "../store.js";
 import { databaseConnector } from "../data/database-connector.js";
 
 const template = document.createElement("template");
-const fullyLoaded = 503;
+
 template.innerHTML = `
     <style>
         .value {
@@ -27,6 +27,7 @@ template.innerHTML = `
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
 const DEFAULT_STROKE_WIDTH = "50";
+const STEPS_UNTIL_FULL_CIRCLE = 503;
 
 function getRandomizedHex() {
   return `#${[...Array(6)]
@@ -46,7 +47,7 @@ class Chart extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["content", "title", "chart-subscriber"];
+    return ["title", "chart-subscriber"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -81,10 +82,10 @@ class Chart extends HTMLElement {
       assetList.sort((a, b) => b.value - a.value);
       for (let i = 0; i < assetList.length; i++) {
         const weight =
-          (fullyLoaded / sumOfValues) *
+          (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) *
           Number(+assetList[i].value * +assetList[i].amount);
 
-        assetList[i].dashOffset = fullyLoaded - weight;
+        assetList[i].dashOffset = STEPS_UNTIL_FULL_CIRCLE - weight;
 
         const entry = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -97,14 +98,14 @@ class Chart extends HTMLElement {
         entry.setAttribute("stroke", getRandomizedHex());
         entry.setAttribute("stroke-width", DEFAULT_STROKE_WIDTH);
         entry.setAttribute("fill", "none");
-        entry.setAttribute("stroke-dasharray", fullyLoaded);
+        entry.setAttribute("stroke-dasharray", STEPS_UNTIL_FULL_CIRCLE);
         entry.setAttribute("stroke-dashoffset", assetList[i].dashOffset);
         entry.setAttribute(
           "style",
           `transform: rotate(${accumulatedDegree}deg);`
         );
         entry.setAttribute("title", assetList[i].asset);
-        entry.percentage = (100 / fullyLoaded) * weight;
+        entry.percentage = (100 / STEPS_UNTIL_FULL_CIRCLE) * weight;
         entry.assetName = assetList[i].asset;
 
         entry.addEventListener("mouseenter", () => {
@@ -126,7 +127,7 @@ class Chart extends HTMLElement {
         entry.appendChild(title);
         svg.appendChild(entry);
 
-        accumulatedDegree += (360 / fullyLoaded) * weight;
+        accumulatedDegree += (360 / STEPS_UNTIL_FULL_CIRCLE) * weight;
       }
 
       this.assetName = document.createElementNS(
@@ -154,4 +155,4 @@ class Chart extends HTMLElement {
   }
 }
 
-customElements.define("hk-chart", Chart);
+customElements.define("hk-asset-spread-chart", Chart);
