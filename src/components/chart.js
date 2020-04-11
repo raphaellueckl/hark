@@ -15,6 +15,10 @@ template.innerHTML = `
           align-items: center;
           width: 250px;
         }
+
+        circle {
+          transition: stroke-width 0.2s;
+        }
     </style>
     <div>
       <h2></h2>
