@@ -1,5 +1,5 @@
-import { store } from "../store.js";
-import { databaseConnector } from "../data/database-connector.js";
+import { store } from "../../store.js";
+import { databaseConnector } from "../../data/database-connector.js";
 
 const template = document.createElement("template");
 
