@@ -1,6 +1,3 @@
-import { store } from "../../store.js";
-import { databaseConnector } from "../../data/database-connector.js";
-
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -35,15 +32,12 @@ function getRandomizedHex() {
     .join("")}`;
 }
 
-let self;
-
 class Chart extends HTMLElement {
   constructor() {
     super();
 
     let shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
-    self = this;
   }
 
   static get observedAttributes() {
@@ -54,31 +48,18 @@ class Chart extends HTMLElement {
     if (name === "title") {
       this.shadowRoot.querySelector("h2").textContent = newValue;
     } else if (name === "data") {
-      //   this.subscriberEventListenerKey = newValue;
-      //   this.subscriberListener = store.addEventListener(
-      //     this.subscriberEventListenerKey,
-      //     this._chartUpdater
-      //   );
       let chartData = undefined;
       try {
         chartData = JSON.parse(newValue);
-        this._chartUpdater(chartData.data);
+        this._chartUpdater(chartData.data, chartData.sumOfValues);
       } catch (e) {
         console.error("Failed to update chart data.", e);
       }
     }
   }
 
-  //   disconnectedCallback() {
-  //     if (this.subscriberEventListenerKey)
-  //       store.removeEventListener(
-  //         this.subscriberEventListenerKey,
-  //         this._chartUpdater
-  //       );
-  //   }
-
-  _chartUpdater(chartData) {
-    const svg = self.shadowRoot.querySelector("svg");
+  _chartUpdater(chartData, sumOfValues) {
+    const svg = this.shadowRoot.querySelector("svg");
     let accumulatedDegree = 0;
     for (let i = 0; i < chartData.length; i++) {
       const entry = document.createElementNS(
@@ -95,14 +76,15 @@ class Chart extends HTMLElement {
       entry.setAttribute("stroke-dasharray", STEPS_UNTIL_FULL_CIRCLE);
       entry.setAttribute(
         "stroke-dashoffset",
-        STEPS_UNTIL_FULL_CIRCLE - chartData[i].weight
+        STEPS_UNTIL_FULL_CIRCLE -
+          (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) * chartData[i].weight
       );
       entry.setAttribute(
         "style",
         `transform: rotate(${accumulatedDegree}deg);`
       );
       entry.setAttribute("title", chartData[i].name);
-      entry.percentage = (100 / STEPS_UNTIL_FULL_CIRCLE) * chartData[i].weight;
+      entry.percentage = (100 / sumOfValues) * chartData[i].weight;
       entry.assetName = chartData[i].name;
 
       entry.addEventListener("mouseenter", () => {
@@ -125,7 +107,9 @@ class Chart extends HTMLElement {
       svg.appendChild(entry);
 
       accumulatedDegree +=
-        (360 / STEPS_UNTIL_FULL_CIRCLE) * chartData[i].weight;
+        (360 / STEPS_UNTIL_FULL_CIRCLE) *
+        (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) *
+        chartData[i].weight;
     }
 
     this.assetName = document.createElementNS(
