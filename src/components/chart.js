@@ -101,13 +101,16 @@ class Chart extends HTMLElement {
         );
         entry.setAttribute("title", assetList[i].asset);
         entry.percentage = (100 / fullyLoaded) * weight;
+        entry.assetName = assetList[i].asset;
 
         entry.addEventListener("mouseenter", () => {
           entry.style.strokeWidth = "65";
+          this.assetName.textContent = entry.assetName;
           this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
         });
         entry.addEventListener("mouseleave", () => {
           entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
+          this.assetName.textContent = undefined;
           this.percentage.textContent = undefined;
         });
 
@@ -122,6 +125,16 @@ class Chart extends HTMLElement {
         accumulatedDegree += (360 / fullyLoaded) * weight;
       }
 
+      this.assetName = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text"
+      );
+      this.assetName.style.color = "#000000";
+      this.assetName.setAttributeNS(null, "x", "50%");
+      this.assetName.setAttributeNS(null, "y", "50%");
+      this.assetName.setAttributeNS(null, "text-anchor", "middle");
+      svg.appendChild(this.assetName);
+
       this.percentage = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "text"
@@ -130,7 +143,6 @@ class Chart extends HTMLElement {
       this.percentage.setAttributeNS(null, "x", "50%");
       this.percentage.setAttributeNS(null, "y", "60%");
       this.percentage.setAttributeNS(null, "text-anchor", "middle");
-      this.percentage.setAttributeNS(null, "dy", ".3em");
       svg.appendChild(this.percentage);
     } catch (err) {
       console.error(err);
