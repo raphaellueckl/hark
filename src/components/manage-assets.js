@@ -41,4 +41,4 @@ class AssetList extends HTMLElement {
   }
 }
 
-customElements.define("hk-asset-list", AssetList);
+customElements.define("hk-manage-assets", AssetList);
