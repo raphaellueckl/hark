@@ -58,4 +58,4 @@ class Asset extends HTMLElement {
   }
 }
 
-customElements.define("hk-asset", Asset);
+customElements.define("hk-manage-asset-row", Asset);
