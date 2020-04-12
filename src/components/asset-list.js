@@ -1,7 +1,7 @@
 import { databaseConnector } from "../data/database-connector.js";
 import { store } from "../store.js";
 
-import "./asset.js";
+import "./asset-row.js";
 import { resetUL } from "../css-globals.js";
 
 class AssetList extends HTMLElement {

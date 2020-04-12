@@ -4,8 +4,18 @@ import "./chart.js";
 const template = document.createElement("template");
 
 template.innerHTML = `
+<style>
+  div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>
+<div>
   <hk-chart title="Assets"></hk-chart>
-  <hk-chart title="Asset Spread"></hk-chart>`;
+  <hk-chart title="Asset Spread"></hk-chart>
+</div>`;
 
 class Chart extends HTMLElement {
   constructor() {
@@ -58,7 +68,6 @@ class Chart extends HTMLElement {
     let accumulatedStocks = assetList
       .filter(asset => asset.category === "stock")
       .reduce((accumulation, b) => accumulation + +b.value * +b.amount, 0);
-    debugger;
 
     this.shadowRoot
       .querySelector("hk-chart[title='Asset Spread']")

@@ -1,5 +1,5 @@
-import "../components/dashboard.js";
-import "../components/chart/asset-spread-chart.js";
+import "../components/asset-overview.js";
+import "../components/chart/chart-section.js";
 
 export const dashboardPage = `
 <style>
@@ -8,5 +8,5 @@ export const dashboardPage = `
 <h1>Dashboard</h1>
 <hk-asset-spread-chart></hk-asset-spread-chart>
 <div class="content">
-    <hk-dashboard></hk-dashboard>
+    <hk-asset-overview></hk-asset-overview>
 </div>`;

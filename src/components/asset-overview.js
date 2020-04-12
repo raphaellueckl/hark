@@ -1,8 +1,10 @@
 import { priceFetcher } from "../data/price-fetcher.js";
+import { resetUL } from "../css-globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
+    ${resetUL}
   </style>
   <ul>
       <!-- generated -->
@@ -37,4 +39,4 @@ class DashboardList extends HTMLElement {
   }
 }
 
-customElements.define("hk-dashboard", DashboardList);
+customElements.define("hk-asset-overview", DashboardList);
