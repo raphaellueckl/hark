@@ -5,6 +5,24 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     ${resetUL}
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+    }
   </style>
   <ul>
       <!-- generated -->
@@ -26,12 +44,16 @@ class DashboardList extends HTMLElement {
       const listHtml = assets.map(asset => {
         const li = document.createElement("li");
         li.innerHTML = `
-          <label>Asset: <input value="${asset.asset}"></label>
-          <label>Symbol: <input value="${asset.symbol}"></label>
-          <label>Category: <input value="${asset.category}"></label>
-          <label>Amount: <input value="${asset.amount}"></label>
-          <label>Price: <input value="${asset.value}"></label>
-          <label>Value: <input value="${asset.value * asset.amount}"></label>`;
+          <label><span>Asset:</span><span>${asset.asset}</span></label>
+          <label><span>Value:</span><span>${Number(
+            asset.value * asset.amount
+          ).toFixed(2)}</span></label>
+          <label><span>Price:</span><span>${Number(asset.value).toFixed(
+            2
+          )} CHF</span></label>
+          <label><span>Amount:</span><span>${asset.amount}</span></label>
+          <label><span>Symbol:</span><span>${asset.symbol}</span></label>
+          <label><span>Category:</span><span>${asset.category}</span></label>`;
         return li;
       });
       listHtml.forEach(asset => ul.appendChild(asset));
