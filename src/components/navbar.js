@@ -1,6 +1,10 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
+  :host {
+    width: 100%;
+  }
+  
   a {
     display: block;
   }

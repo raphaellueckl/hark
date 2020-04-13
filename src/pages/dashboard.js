@@ -3,10 +3,17 @@ import "../components/chart/chart-section.js";
 
 export const dashboardPage = `
 <style>
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 </style>
 
-<h1>Dashboard</h1>
-<hk-asset-spread-chart></hk-asset-spread-chart>
 <div class="content">
-    <hk-asset-overview></hk-asset-overview>
+    <h1>Dashboard</h1>
+    <div>
+        <hk-asset-spread-chart></hk-asset-spread-chart>
+        <hk-asset-overview></hk-asset-overview>
+    </div>
 </div>`;
