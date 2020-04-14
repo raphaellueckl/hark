@@ -28,17 +28,38 @@ class Chart extends HTMLElement {
   connectedCallback() {
     store.addEventListener("updated_assets-price", this._updateAssetChart);
     store.addEventListener("updated_assets-price", this._updateSpreadChart);
+
+    this.assetChart = this.shadowRoot.querySelector("hk-chart[title='Assets']");
+    store.addEventListener(
+      "mouseoverasset",
+      this._changeChartAssetHighlighting
+    );
+    store.addEventListener(
+      "mouseleaveasset",
+      this._changeChartAssetHighlighting
+    );
   }
 
+  _changeChartAssetHighlighting = ({ detail: compoundKey }) => {
+    if (compoundKey) {
+      this.assetChart.setAttribute("selected", compoundKey);
+    } else {
+      this.assetChart.removeAttribute("selected");
+    }
+  };
+
+  /**
+   * assetlist: {symbol, asset, category, amount, value}
+   */
   _updateAssetChart = ({ detail: assetList }) => {
     const sumOfValues = assetList
       .map(v => +v.value * +v.amount)
       .reduce((a, b) => a + b, 0);
-
     let chartData = assetList.map(asset => ({
       name: asset.asset,
       value: asset.value,
-      weight: Number(asset.value * asset.amount)
+      weight: Number(asset.value * asset.amount),
+      key: asset.category + asset.symbol
     }));
     chartData.sort((a, b) => b.value - a.value);
 

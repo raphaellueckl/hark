@@ -13,5 +13,4 @@ export const manageAssetsPage = `
     </div>
     <hk-add-asset></hk-add-asset>
     <hk-manage-assets></hk-manage-assets>
-</div>
-`;
+</div>`;

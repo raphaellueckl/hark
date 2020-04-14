@@ -1,5 +1,6 @@
 import { priceFetcher } from "../data/price-fetcher.js";
 import { resetUL } from "../css-globals.js";
+import { store } from "../store.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -54,6 +55,19 @@ class DashboardList extends HTMLElement {
           <label><span>Amount:</span><span>${asset.amount}</span></label>
           <label><span>Symbol:</span><span>${asset.symbol}</span></label>
           <label><span>Category:</span><span>${asset.category}</span></label>`;
+
+        // Those events will highlight the asset in the chart
+        li.addEventListener("mouseover", () => {
+          store.dispatchEvent(
+            new CustomEvent("mouseoverasset", {
+              detail: asset.category + asset.symbol
+            })
+          );
+        });
+        li.addEventListener("mouseleave", () => {
+          store.dispatchEvent(new CustomEvent("mouseleaveasset"));
+        });
+
         return li;
       });
       listHtml.forEach(asset => ul.appendChild(asset));

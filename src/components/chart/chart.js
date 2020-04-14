@@ -41,13 +41,22 @@ class Chart extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["title", "data"];
+    return ["title", "data", "selected"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "title") {
       this.shadowRoot.querySelector("h2").textContent = newValue;
+    } else if (name === "selected") {
+      if (newValue) {
+        this._highByAssetCompoundKey(newValue);
+      } else {
+        this._highByAssetCompoundKey();
+      }
     } else if (name === "data") {
+      /**
+       * data: {name, value, weight, key}
+       */
       let chartData = undefined;
       try {
         chartData = JSON.parse(newValue);
@@ -57,6 +66,33 @@ class Chart extends HTMLElement {
       }
     }
   }
+
+  _highlightEntry = entry => {
+    entry.style.strokeWidth = "65";
+    this.assetName.textContent = entry.assetName;
+    this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
+  };
+
+  _unhighlightEntry = entry => {
+    entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
+    this.assetName.textContent = undefined;
+    this.percentage.textContent = undefined;
+  };
+
+  /**
+   * key: asset.category + asset.symbol
+   */
+  _highByAssetCompoundKey = key => {
+    const circleFragments = [...this.shadowRoot.querySelectorAll("circle")];
+    for (const asset of circleFragments) {
+      if (asset.key !== key) {
+        this._unhighlightEntry(asset);
+      } else {
+        this._highlightEntry(asset);
+        break;
+      }
+    }
+  };
 
   _chartUpdater(chartData, sumOfValues) {
     const svg = this.shadowRoot.querySelector("svg");
@@ -84,18 +120,16 @@ class Chart extends HTMLElement {
         `transform: rotate(${accumulatedDegree}deg);`
       );
       entry.setAttribute("title", chartData[i].name);
+      entry.key = chartData[i].key;
       entry.percentage = (100 / sumOfValues) * chartData[i].weight;
       entry.assetName = chartData[i].name;
 
       entry.addEventListener("mouseenter", () => {
-        entry.style.strokeWidth = "65";
-        this.assetName.textContent = entry.assetName;
-        this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
+        this._highlightEntry(entry);
       });
+
       entry.addEventListener("mouseleave", () => {
-        entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
-        this.assetName.textContent = undefined;
-        this.percentage.textContent = undefined;
+        this._unhighlightEntry(entry);
       });
 
       const title = document.createElementNS(
