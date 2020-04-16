@@ -5,6 +5,7 @@ import {
   EVENT_UPDATE_FIAT_TRANSACTION,
   EVENT_UPDATED_FIAT_TRANSACTIONS,
   EVENT_REMOVE_ASSET_BY_INDEX,
+  EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
 } from "./globals.js";
 
 // EventTarget, so that listeners can be registered on it
@@ -59,5 +60,18 @@ store.addEventListener(EVENT_REMOVE_ASSET_BY_INDEX, ({ detail: index }) => {
     new CustomEvent(EVENT_ASSETS_UPDATED, { detail: updatedAssets })
   );
 });
+
+store.addEventListener(
+  EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
+  ({ detail: index }) => {
+    databaseConnector.removeFiatTransactionByIndex(index);
+    const updatedTransactions = databaseConnector.getFiatTransactions();
+    store.dispatchEvent(
+      new CustomEvent(EVENT_UPDATED_FIAT_TRANSACTIONS, {
+        detail: updatedTransactions,
+      })
+    );
+  }
+);
 
 export { store };

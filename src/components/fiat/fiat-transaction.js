@@ -1,6 +1,6 @@
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
-import { EVENT_REMOVE_ASSET_BY_INDEX } from "../../globals.js";
+import { EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX } from "../../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -50,7 +50,7 @@ class FiatTransaction extends HTMLElement {
       button.textContent = "remove";
       button.addEventListener("click", (e) => {
         store.dispatchEvent(
-          new CustomEvent(EVENT_REMOVE_ASSET_BY_INDEX, {
+          new CustomEvent(EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX, {
             detail: this.indexOfAsset,
           })
         );
