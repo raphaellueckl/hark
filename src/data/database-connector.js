@@ -33,6 +33,28 @@ class DatabaseConnector {
     }
   }
 
+  getFiatTransactions() {
+    const fiatTransactions = this.storage.getItem("fiat_transactions") || [];
+    return fiatTransactions.length ? JSON.parse(fiatTransactions) : [];
+  }
+
+  updateFiatTransaction(transaction) {
+    const transactions = this._removeFiatTransactionVirtual(transaction);
+    transactions.push(transaction);
+    this.storage.setItem("fiat_transactions", JSON.stringify(transactions));
+  }
+
+  _removeFiatTransactionVirtual(transaction) {
+    const transactions =
+      (this.storage.getItem("fiat_transactions") &&
+        JSON.parse(this.storage.getItem("fiat_transactions"))) ||
+      [];
+    const removeAssetFromAssets = transactions.filter(
+      _transaction => _transaction.symbol !== transaction.symbol
+    );
+    return removeAssetFromAssets;
+  }
+
   updateAsset(asset) {
     const assets = this._removeAssetVirtual(asset);
     assets.push(asset);

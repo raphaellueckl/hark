@@ -19,7 +19,7 @@ template.innerHTML = `
     <!-- generated -->
 </ul>`;
 
-class Asset extends HTMLElement {
+class FiatTransaction extends HTMLElement {
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: "open" });
@@ -58,4 +58,4 @@ class Asset extends HTMLElement {
   }
 }
 
-customElements.define("hk-fiat-transaction", Asset);
+customElements.define("hk-fiat-transaction", FiatTransaction);

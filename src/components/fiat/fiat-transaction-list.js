@@ -1,6 +1,7 @@
 import { databaseConnector } from "../../data/database-connector.js";
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
+import "./fiat-transaction";
 
 class AssetList extends HTMLElement {
   constructor() {
@@ -16,16 +17,16 @@ class AssetList extends HTMLElement {
     <ul>
         <!-- generated -->
     </ul>`;
-    // const assets = databaseConnector.getFiatTransactions() || [];
+    const transactions = databaseConnector.getFiatTransactions() || [];
 
-    // this._updateList(assets);
+    this._updateList(transactions);
 
-    // store.addEventListener(
-    //   "updated_fiat_transactions",
-    //   ({ detail: fiatTransactionList }) => {
-    //     this._updateList(fiatTransactionList);
-    //   }
-    // );
+    store.addEventListener(
+      "updated_fiat_transactions",
+      ({ detail: fiatTransactionList }) => {
+        this._updateList(fiatTransactionList);
+      }
+    );
   }
 
   _updateList(assets) {
@@ -33,12 +34,12 @@ class AssetList extends HTMLElement {
     ul.textContent = "";
     const listHtml = assets.map((transaction, index) => {
       const li = document.createElement("li");
-      li.innerHTML = `<hk-fiat-transaction index="${index}" asset='${JSON.stringify(
+      li.innerHTML = `<hk-fiat-transaction index="${index}" transaction='${JSON.stringify(
         transaction
       )}'></hk-fiat-transaction>`;
       return li;
     });
-    listHtml.forEach(asset => ul.appendChild(asset));
+    listHtml.forEach(transaction => ul.appendChild(transaction));
   }
 }
 
