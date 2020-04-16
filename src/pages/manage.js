@@ -8,9 +8,7 @@ export const manageAssetsPage = `
 <h1>Assets</h1>
 
 <div class="content">
-    <div class="text">
-        <p>Asset management content</p>
-    </div>
+    <p>Asset management content</p>
     <hk-add-asset></hk-add-asset>
     <hk-manage-assets></hk-manage-assets>
 </div>`;

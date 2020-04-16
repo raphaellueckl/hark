@@ -1,8 +1,9 @@
 import { databaseConnector } from "../data/database-connector.js";
 import { store } from "../store.js";
+import { resetUL } from "../css-globals.js";
+import { EVENT_ASSETS_UPDATED } from "../globals.js";
 
 import "./manage-asset-row.js";
-import { resetUL } from "../css-globals.js";
 
 class AssetList extends HTMLElement {
   constructor() {
@@ -22,7 +23,7 @@ class AssetList extends HTMLElement {
 
     this._updateList(assets);
 
-    store.addEventListener("updated_assets", ({ detail: assetList }) => {
+    store.addEventListener(EVENT_ASSETS_UPDATED, ({ detail: assetList }) => {
       this._updateList(assetList);
     });
   }
@@ -37,7 +38,7 @@ class AssetList extends HTMLElement {
       )}'></hk-manage-asset-row>`;
       return li;
     });
-    listHtml.forEach(asset => ul.appendChild(asset));
+    listHtml.forEach((asset) => ul.appendChild(asset));
   }
 }
 

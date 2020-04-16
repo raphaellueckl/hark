@@ -1,5 +1,6 @@
 import { store } from "../store.js";
 import { resetUL } from "../css-globals.js";
+import { EVENT_REMOVE_ASSET_BY_INDEX } from "../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -38,7 +39,7 @@ class Asset extends HTMLElement {
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
-      Object.keys(asset).forEach(property => {
+      Object.keys(asset).forEach((property) => {
         const li = document.createElement("li");
         li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}">`;
         ul.appendChild(li);
@@ -46,10 +47,12 @@ class Asset extends HTMLElement {
       const li = document.createElement("li");
       li.classList.add("remove-button-container");
       const button = document.createElement("button");
-      button.textContent = "remov";
-      button.addEventListener("click", e => {
+      button.textContent = "remove";
+      button.addEventListener("click", (e) => {
         store.dispatchEvent(
-          new CustomEvent("removeassetbyindex", { detail: this.indexOfAsset })
+          new CustomEvent(EVENT_REMOVE_ASSET_BY_INDEX, {
+            detail: this.indexOfAsset,
+          })
         );
       });
       li.appendChild(button);

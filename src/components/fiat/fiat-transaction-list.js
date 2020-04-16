@@ -1,6 +1,7 @@
 import { databaseConnector } from "../../data/database-connector.js";
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
+import { EVENT_UPDATED_FIAT_TRANSACTIONS } from "../../globals.js";
 import "./fiat-transaction";
 
 class AssetList extends HTMLElement {
@@ -22,7 +23,7 @@ class AssetList extends HTMLElement {
     this._updateList(transactions);
 
     store.addEventListener(
-      "updated_fiat_transactions",
+      EVENT_UPDATED_FIAT_TRANSACTIONS,
       ({ detail: fiatTransactionList }) => {
         this._updateList(fiatTransactionList);
       }
@@ -39,7 +40,7 @@ class AssetList extends HTMLElement {
       )}'></hk-fiat-transaction>`;
       return li;
     });
-    listHtml.forEach(transaction => ul.appendChild(transaction));
+    listHtml.forEach((transaction) => ul.appendChild(transaction));
   }
 }
 
