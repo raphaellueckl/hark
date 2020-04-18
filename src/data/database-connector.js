@@ -1,3 +1,5 @@
+import { TYPE_DEPOSIT, TYPE_WITHDRAWAL } from "../globals";
+
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
 const STORAGE_KEY_ASSETS = "assets";
 
@@ -111,8 +113,27 @@ class DatabaseConnector {
 
     if (!this.getFiatTransactions().length) {
       const mockData = [
-        { symbol: "CHF", amount: "340" },
-        { symbol: "USD", amount: "470" },
+        {
+          date: "01.01.2010",
+          exchange: "kraken",
+          symbol: "CHF",
+          amount: "340",
+          type: TYPE_DEPOSIT,
+        },
+        {
+          date: "01.01.2010",
+          exchange: "Swissquote",
+          symbol: "USD",
+          amount: "470",
+          type: TYPE_DEPOSIT,
+        },
+        {
+          date: "02.01.2010",
+          exchange: "Swissquote",
+          symbol: "USD",
+          amount: "100",
+          type: TYPE_WITHDRAWAL,
+        },
       ];
       this.storage.setItem(
         STORAGE_KEY_FIAT_TRANSACTIONS,

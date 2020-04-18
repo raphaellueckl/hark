@@ -23,10 +23,16 @@ template.innerHTML = `
 </style>
 <ul class="menu-container">
   <li>
+    <label for="date">Date:</label><input id="date">
+  </li>
+  <li>
     <label for="symbol">Currency:</label><input id="symbol">
   </li>
   <li>
     <label for="amount">Amount:</label><input id="amount">
+  </li>
+  <li>
+    <label for="type">Type:</label><input id="type">
   </li>
   <li class="add-button-container">
     <button>Add</button>
@@ -41,14 +47,18 @@ class AddAsset extends HTMLElement {
   }
 
   connectedCallback() {
-    const button = this.shadowRoot.querySelector("button");
+    this.dateInput = this.shadowRoot.querySelector("#date");
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.amountInput = this.shadowRoot.querySelector("#amount");
+    this.typeInput = this.shadowRoot.querySelector("#type");
+    const button = this.shadowRoot.querySelector("button");
 
     button.addEventListener("click", () => {
       const addTransaction = {
+        date: this.dateInput.value,
         symbol: this.symbolInput.value,
         amount: this.amountInput.value,
+        type: this.typeInput.value,
       };
 
       store.dispatchEvent(
@@ -61,8 +71,10 @@ class AddAsset extends HTMLElement {
   }
 
   _clearInputs() {
+    this.dateInput.value = "";
     this.symbolInput.value = "";
     this.amountInput.value = "";
+    this.typeInput.value = "";
   }
 }
 
