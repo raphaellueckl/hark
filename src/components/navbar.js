@@ -11,7 +11,7 @@ template.innerHTML = `
   
   a {
     display: flex;
-    border-right: black solid 2px;
+    border-right: black solid 1px;
     justify-content: center;
     padding: 5px 10px;
     align-items: center;
