@@ -1,6 +1,10 @@
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
-import { EVENT_UPDATE_FIAT_TRANSACTION } from "../../globals.js";
+import {
+  EVENT_UPDATE_FIAT_TRANSACTION,
+  TYPE_DEPOSIT,
+  TYPE_WITHDRAWAL,
+} from "../../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -23,16 +27,25 @@ template.innerHTML = `
 </style>
 <ul class="menu-container">
   <li>
-    <label for="date">Date:</label><input id="date">
+    <label for="date">Date:</label>
+    <input id="date">
   </li>
   <li>
-    <label for="symbol">Currency:</label><input id="symbol">
+    <label for="symbol">Currency:</label>
+    <input id="symbol">
   </li>
   <li>
-    <label for="amount">Amount:</label><input id="amount">
+    <label for="amount">Amount:</label>
+    <input id="amount">
   </li>
   <li>
-    <label for="type">Type:</label><input id="type">
+    <label>Type:</label>
+    <div>
+      <label for="deposit">Deposit</label>
+      <input name="type" id="deposit" type="radio" value="${TYPE_DEPOSIT}">
+      <label for="withdrawal">Withdrawal</label>
+      <input name="type" id="withdrawal" type="radio" value="${TYPE_WITHDRAWAL}">
+    </div>
   </li>
   <li class="add-button-container">
     <button>Add</button>
@@ -50,15 +63,20 @@ class AddAsset extends HTMLElement {
     this.dateInput = this.shadowRoot.querySelector("#date");
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.amountInput = this.shadowRoot.querySelector("#amount");
-    this.typeInput = this.shadowRoot.querySelector("#type");
+    this.depositInput = this.shadowRoot.querySelector("#deposit");
+    this.depositInput.checked = true;
+
     const button = this.shadowRoot.querySelector("button");
 
     button.addEventListener("click", () => {
+      const type = [
+        ...this.shadowRoot.querySelectorAll('input[name="type"]'),
+      ].filter((r) => r.checked === true)[0].value;
       const addTransaction = {
         date: this.dateInput.value,
         symbol: this.symbolInput.value,
         amount: this.amountInput.value,
-        type: this.typeInput.value,
+        type,
       };
 
       store.dispatchEvent(
@@ -74,7 +92,7 @@ class AddAsset extends HTMLElement {
     this.dateInput.value = "";
     this.symbolInput.value = "";
     this.amountInput.value = "";
-    this.typeInput.value = "";
+    this.depositInput.checked = true;
   }
 }
 
