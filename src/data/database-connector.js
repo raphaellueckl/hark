@@ -5,35 +5,7 @@ class DatabaseConnector {
   constructor() {
     this.storage = localStorage;
 
-    if (!this.getAssets().length) {
-      const mockData = [
-        {
-          symbol: "bitcoin",
-          asset: "bitcoin",
-          category: "crypto",
-          amount: 0.2,
-        },
-        {
-          symbol: "ethereum",
-          asset: "ethereum",
-          category: "crypto",
-          amount: 3,
-        },
-        {
-          symbol: "MSFT",
-          asset: "microsoft",
-          category: "stock",
-          amount: 1,
-        },
-        {
-          symbol: "XAU",
-          asset: "gold",
-          category: "resource",
-          amount: 10,
-        },
-      ];
-      this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
-    }
+    this._initMockData();
   }
 
   getFiatTransactions() {
@@ -104,6 +76,49 @@ class DatabaseConnector {
       (_asset) => _asset.symbol !== asset.symbol
     );
     return removeAssetFromAssets;
+  }
+
+  _initMockData() {
+    if (!this.getAssets().length) {
+      const mockData = [
+        {
+          symbol: "bitcoin",
+          asset: "bitcoin",
+          category: "crypto",
+          amount: 0.2,
+        },
+        {
+          symbol: "ethereum",
+          asset: "ethereum",
+          category: "crypto",
+          amount: 3,
+        },
+        {
+          symbol: "MSFT",
+          asset: "microsoft",
+          category: "stock",
+          amount: 1,
+        },
+        {
+          symbol: "XAU",
+          asset: "gold",
+          category: "resource",
+          amount: 10,
+        },
+      ];
+      this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
+    }
+
+    if (!this.getFiatTransactions().length) {
+      const mockData = [
+        { symbol: "CHF", amount: "340" },
+        { symbol: "USD", amount: "470" },
+      ];
+      this.storage.setItem(
+        STORAGE_KEY_FIAT_TRANSACTIONS,
+        JSON.stringify(mockData)
+      );
+    }
   }
 }
 
