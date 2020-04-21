@@ -1,4 +1,4 @@
-import { TYPE_DEPOSIT, TYPE_WITHDRAWAL } from "../globals";
+import { TYPE_DEPOSIT, TYPE_WITHDRAWAL } from "../globals.js";
 
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
 const STORAGE_KEY_ASSETS = "assets";

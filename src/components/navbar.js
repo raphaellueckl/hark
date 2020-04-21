@@ -1,4 +1,4 @@
-import { resetA } from "../css-globals";
+import { resetA } from "../css-globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
