@@ -32,7 +32,7 @@ function getRandomizedHex() {
     .join("")}`;
 }
 
-class Chart extends HTMLElement {
+class PieChart extends HTMLElement {
   constructor() {
     super();
 
@@ -67,13 +67,13 @@ class Chart extends HTMLElement {
     }
   }
 
-  _highlightEntry = entry => {
+  _highlightEntry = (entry) => {
     entry.style.strokeWidth = "65";
     this.assetName.textContent = entry.assetName;
     this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
   };
 
-  _unhighlightEntry = entry => {
+  _unhighlightEntry = (entry) => {
     entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
     this.assetName.textContent = undefined;
     this.percentage.textContent = undefined;
@@ -82,7 +82,7 @@ class Chart extends HTMLElement {
   /**
    * key: asset.category + asset.symbol
    */
-  _highByAssetCompoundKey = key => {
+  _highByAssetCompoundKey = (key) => {
     const circleFragments = [...this.shadowRoot.querySelectorAll("circle")];
     for (const asset of circleFragments) {
       if (asset.key !== key) {
@@ -168,4 +168,4 @@ class Chart extends HTMLElement {
   }
 }
 
-customElements.define("hk-chart", Chart);
+customElements.define("hk-chart", PieChart);

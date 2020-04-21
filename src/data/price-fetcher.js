@@ -1,5 +1,6 @@
 import { databaseConnector } from "./database-connector.js";
 import { store } from "../store.js";
+import { EVENT_ASSETS_UPDATED } from "../globals.js";
 
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
@@ -12,8 +13,8 @@ class PriceFetcher {
       new Date().getTime() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
     ) {
       fetch("https://api.exchangeratesapi.io/latest?base=CHF")
-        .then(res => res.json())
-        .then(dollarToChfConversionRate => {
+        .then((res) => res.json())
+        .then((dollarToChfConversionRate) => {
           store.USD_TO_CHF_MULTIPLICATOR =
             2 - dollarToChfConversionRate.rates.USD;
           store[TIMESTAMP] = new Date().getTime();
@@ -28,7 +29,7 @@ class PriceFetcher {
     const assets = databaseConnector.getAssets() || [];
     const valuePromises = [];
 
-    assets.forEach(_asset => {
+    assets.forEach((_asset) => {
       switch (_asset.category) {
         case "crypto": {
           valuePromises.push(cryptoFetcher.bySymbol(_asset.symbol));
@@ -60,7 +61,7 @@ class PriceFetcher {
     });
 
     store.dispatchEvent(
-      new CustomEvent("updated_assets-price", { detail: enrichedAssets })
+      new CustomEvent(EVENT_ASSETS_UPDATED, { detail: enrichedAssets })
     );
 
     return enrichedAssets;
@@ -85,13 +86,13 @@ class CryptoFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL + symbol)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         store[VALUE_KEY] = Object.values(data)[0].chf;
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   }
@@ -113,13 +114,13 @@ class StockFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL + symbol)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         store[VALUE_KEY] = Object.values(Object.values(data)[1])[0]["4. close"];
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   }
@@ -180,15 +181,15 @@ class ResourceFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL)
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         store[VALUE_KEY] = data[symbol.toUpperCase()].CHF;
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   }
