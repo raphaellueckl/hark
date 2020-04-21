@@ -124,7 +124,6 @@ class HistogramChart extends HTMLElement {
 
     const positiveYEnd = BAR_START - positiveHeight;
     const negativeYEnd = BAR_START - negativeHeight;
-    debugger;
     this.shadowRoot.querySelector(".positive").setAttribute("y1", positiveYEnd);
     this.shadowRoot.querySelector(".negative").setAttribute("y1", negativeYEnd);
 
