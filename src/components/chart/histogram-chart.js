@@ -126,79 +126,12 @@ class HistogramChart extends HTMLElement {
     const negativeYEnd = BAR_START - negativeHeight;
     this.shadowRoot.querySelector(".positive").setAttribute("y1", positiveYEnd);
     this.shadowRoot.querySelector(".negative").setAttribute("y1", negativeYEnd);
-
-    //
-
-    // const svg = this.shadowRoot.querySelector("svg");
-    // let accumulatedDegree = 0;
-    // for (let i = 0; i < chartData.length; i++) {
-    //   const entry = document.createElementNS(
-    //     "http://www.w3.org/2000/svg",
-    //     "circle"
-    //   );
-    //   entry.setAttribute("class", "value");
-    //   entry.setAttribute("cx", "125");
-    //   entry.setAttribute("cy", "125");
-    //   entry.setAttribute("r", "80");
-    //   entry.setAttribute("stroke", getRandomizedHex());
-    //   entry.setAttribute("stroke-width", DEFAULT_STROKE_WIDTH);
-    //   entry.setAttribute("fill", "none");
-    //   entry.setAttribute("stroke-dasharray", STEPS_UNTIL_FULL_CIRCLE);
-    //   entry.setAttribute(
-    //     "stroke-dashoffset",
-    //     STEPS_UNTIL_FULL_CIRCLE -
-    //       (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) * chartData[i].weight
-    //   );
-    //   entry.setAttribute(
-    //     "style",
-    //     `transform: rotate(${accumulatedDegree}deg);`
-    //   );
-    //   entry.setAttribute("title", chartData[i].name);
-    //   entry.key = chartData[i].key;
-    //   entry.percentage = (100 / sumOfValues) * chartData[i].weight;
-    //   entry.assetName = chartData[i].name;
-
-    //   entry.addEventListener("mouseenter", () => {
-    //     this._highlightEntry(entry);
-    //   });
-
-    //   entry.addEventListener("mouseleave", () => {
-    //     this._unhighlightEntry(entry);
-    //   });
-
-    //   const title = document.createElementNS(
-    //     "http://www.w3.org/2000/svg",
-    //     "title"
-    //   );
-    //   title.textContent = chartData[i].name;
-    //   entry.appendChild(title);
-    //   svg.appendChild(entry);
-
-    //   accumulatedDegree +=
-    //     (360 / STEPS_UNTIL_FULL_CIRCLE) *
-    //     (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) *
-    //     chartData[i].weight;
-    // }
-
-    // this.assetName = document.createElementNS(
-    //   "http://www.w3.org/2000/svg",
-    //   "text"
-    // );
-    // this.assetName.style.color = "#000000";
-    // this.assetName.setAttributeNS(null, "x", "50%");
-    // this.assetName.setAttributeNS(null, "y", "50%");
-    // this.assetName.setAttributeNS(null, "text-anchor", "middle");
-    // svg.appendChild(this.assetName);
-
-    // this.percentage = document.createElementNS(
-    //   "http://www.w3.org/2000/svg",
-    //   "text"
-    // );
-    // this.percentage.style.color = "#000000";
-    // this.percentage.setAttributeNS(null, "x", "50%");
-    // this.percentage.setAttributeNS(null, "y", "60%");
-    // this.percentage.setAttributeNS(null, "text-anchor", "middle");
-    // svg.appendChild(this.percentage);
+    this.shadowRoot.querySelector("#positive").textContent = positive.toFixed(
+      2
+    );
+    this.shadowRoot.querySelector("#negative").textContent = negative.toFixed(
+      2
+    );
   }
 }
 
