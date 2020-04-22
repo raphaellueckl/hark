@@ -2,10 +2,9 @@ import Router from "./router.js";
 import { manageAssetsPage } from "./pages/manage.js";
 import { dashboardPage } from "./pages/dashboard.js";
 import { fiatTransactionsPage } from "./pages/fiat-transactions.js";
+import { settingsPage } from "./pages/settings.js";
 
 import "./components/navbar.js";
-
-// import "./components/navbar.js";
 
 const router = new Router();
 
@@ -22,7 +21,7 @@ router
   })
   .add("/transactions", () => {
     document.querySelector("#root").innerHTML = fiatTransactionsPage;
+  })
+  .add("/settings", () => {
+    document.querySelector("#root").innerHTML = settingsPage;
   });
-//   .add("/about", () => {
-//     document.querySelector("#root").innerHTML = aboutPage;
-//   });

@@ -10,6 +10,18 @@ class DatabaseConnector {
     this._initMockData();
   }
 
+  getApplicationStateAsString() {
+    return JSON.stringify(localStorage);
+  }
+
+  setApplicationStateFromString(stateAsString) {
+    const state = JSON.parse(stateAsString);
+    localStorage.clear();
+    for (const key of Object.keys(state)) {
+      localStorage.setItem(key, state[key]);
+    }
+  }
+
   getFiatTransactions() {
     const fiatTransactions =
       this.storage.getItem(STORAGE_KEY_FIAT_TRANSACTIONS) || [];
