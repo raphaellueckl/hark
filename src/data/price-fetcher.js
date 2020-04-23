@@ -1,6 +1,11 @@
 import { databaseConnector } from "./database-connector.js";
 import { store } from "../store.js";
-import { EVENT_ASSETS_UPDATED } from "../globals.js";
+import {
+  EVENT_ASSETS_UPDATED,
+  CATEGORY_CRYPTO,
+  CATEGORY_RESOURCE,
+  CATEGORY_STOCK,
+} from "../globals.js";
 
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
@@ -31,15 +36,15 @@ class PriceFetcher {
 
     assets.forEach((_asset) => {
       switch (_asset.category) {
-        case "crypto": {
+        case CATEGORY_CRYPTO: {
           valuePromises.push(cryptoFetcher.bySymbol(_asset.symbol));
           break;
         }
-        case "stock": {
+        case CATEGORY_STOCK: {
           valuePromises.push(stockFetcher.bySymbol(_asset.symbol));
           break;
         }
-        case "resource": {
+        case CATEGORY_RESOURCE: {
           valuePromises.push(resourceFetcher.bySymbol(_asset.symbol));
           break;
         }

@@ -1,6 +1,11 @@
 import { store } from "../store.js";
 import { resetUL } from "../css-globals.js";
-import { EVENT_ASSET_UPDATE } from "../globals.js";
+import {
+  EVENT_ASSET_UPDATE,
+  CATEGORY_STOCK,
+  CATEGORY_CRYPTO,
+  CATEGORY_RESOURCE,
+} from "../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -29,7 +34,12 @@ template.innerHTML = `
     <label for="symbol">Symbol:</label><input id="symbol">
   </li>
   <li>
-    <label for="category">Category:</label><input id="category">
+    <label for="category">Category:</label>
+    <select id="category">
+      <option value="${CATEGORY_STOCK}">Stock</option>
+      <option value="${CATEGORY_CRYPTO}">Crypto</option>
+      <option value="${CATEGORY_RESOURCE}">Resource</option>
+</select>
   </li>
   <li>
     <label for="amount">Amount:</label><input id="amount">
@@ -52,7 +62,6 @@ class AddAsset extends HTMLElement {
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.categoryInput = this.shadowRoot.querySelector("#category");
     this.amountInput = this.shadowRoot.querySelector("#amount");
-
     button.addEventListener("click", () => {
       const updateAsset = {
         symbol: this.symbolInput.value,
@@ -60,6 +69,7 @@ class AddAsset extends HTMLElement {
         category: this.categoryInput.value,
         amount: this.amountInput.value,
       };
+      debugger;
 
       store.dispatchEvent(
         new CustomEvent(EVENT_ASSET_UPDATE, { detail: updateAsset })
@@ -71,7 +81,7 @@ class AddAsset extends HTMLElement {
   _clearInputs() {
     this.assetInput.value = "";
     this.symbolInput.value = "";
-    this.categoryInput.value = "";
+    this.categoryInput.value = CATEGORY_STOCK;
     this.amountInput.value = "";
   }
 }
