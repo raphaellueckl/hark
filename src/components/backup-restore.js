@@ -5,11 +5,11 @@ template.innerHTML = `
 <style>
 </style>
 <div>
-  <label>Backup & Export</label>
+  <label>Backup & Export:</label>
   <button id="export">Export</button>
 </div>
 <div>
-  <label>Import & Restore</label>
+  <label>Import & Restore:</label>
   <input id="import" type="file"></input>
 </div>`;
 
