@@ -5,20 +5,24 @@ import { EVENT_ASSETS_UPDATED } from "../globals.js";
 
 import "./manage-asset-row.js";
 
+const template = document.createElement("template");
+template.innerHTML = `
+<style>
+  ${resetUL}
+</style>
+<ul>
+  <!-- generated -->
+</ul>`;
+
 class AssetList extends HTMLElement {
   constructor() {
     super();
+
+    const shadow = this.attachShadow({ mode: "open" });
+    shadow.appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    let shadow = this.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-    <style>
-      ${resetUL}
-    </style>
-    <ul>
-        <!-- generated -->
-    </ul>`;
     const assets = databaseConnector.getAssets() || [];
 
     this._updateList(assets);

@@ -8,7 +8,7 @@ export const manageAssetsPage = `
 <h1>Assets</h1>
 
 <div class="content">
-    <p>Asset management content</p>
+    <p>Update assets after a trade.</p>
     <hk-add-asset></hk-add-asset>
     <hk-manage-assets></hk-manage-assets>
 </div>`;

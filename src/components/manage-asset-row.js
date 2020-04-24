@@ -5,19 +5,19 @@ import { EVENT_REMOVE_ASSET_BY_INDEX } from "../globals.js";
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
-    li {
-        display: flex;
-        justify-content: space-between;
-    }
+  ${resetUL}
 
-    .remove-button-container{
-      justify-content: flex-end;
-    }
+  li {
+      display: flex;
+      justify-content: space-between;
+  }
 
-    ${resetUL}
+  .remove-button-container{
+    justify-content: flex-end;
+  }
 </style>
 <ul>
-    <!-- generated -->
+  <!-- generated -->
 </ul>`;
 
 class Asset extends HTMLElement {
@@ -35,13 +35,12 @@ class Asset extends HTMLElement {
     if (name === "index") {
       this.indexOfAsset = +newValue;
     } else if (name === "asset") {
-      //   this.shadowRoot.querySelector("h2").textContent = newValue;
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
       Object.keys(asset).forEach((property) => {
         const li = document.createElement("li");
-        li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}">`;
+        li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}" disabled>`;
         ul.appendChild(li);
       });
       const li = document.createElement("li");

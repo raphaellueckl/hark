@@ -28,10 +28,10 @@ template.innerHTML = `
 </style>
 <ul class="menu-container">
   <li>
-    <label for="asset">Asset:</label><input id="asset">
+    <label for="asset">Asset:</label><input id="asset" placeholder="E.g. Google">
   </li>
   <li>
-    <label for="symbol">Symbol:</label><input id="symbol">
+    <label for="symbol">Symbol:</label><input id="symbol" placeholder="E.g. GOOGL">
   </li>
   <li>
     <label for="category">Category:</label>
@@ -42,7 +42,7 @@ template.innerHTML = `
 </select>
   </li>
   <li>
-    <label for="amount">Amount:</label><input id="amount">
+    <label for="amount">Amount:</label><input id="amount" placeholder="E.g. 5.5">
   </li>
   <li class="add-button-container">
     <button>Add</button>
