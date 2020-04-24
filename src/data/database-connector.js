@@ -28,8 +28,8 @@ class DatabaseConnector {
     return fiatTransactions.length ? JSON.parse(fiatTransactions) : [];
   }
 
-  updateFiatTransaction(transaction) {
-    const transactions = this._removeFiatTransactionVirtual(transaction);
+  addFiatTransaction(transaction) {
+    const transactions = this.getFiatTransactions();
     transactions.push(transaction);
     this.storage.setItem(
       STORAGE_KEY_FIAT_TRANSACTIONS,
@@ -58,8 +58,8 @@ class DatabaseConnector {
     );
   }
 
-  updateAsset(asset) {
-    const assets = this._removeAssetVirtual(asset);
+  addAsset(asset) {
+    const assets = this.getAssets();
     assets.push(asset);
 
     this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));

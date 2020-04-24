@@ -1,8 +1,8 @@
 import { databaseConnector } from "./data/database-connector.js";
 import {
-  EVENT_ASSET_UPDATE,
+  EVENT_ADD_ASSET,
   EVENT_ASSETS_UPDATED,
-  EVENT_UPDATE_FIAT_TRANSACTION,
+  EVENT_ADD_FIAT_TRANSACTION,
   EVENT_UPDATED_FIAT_TRANSACTIONS,
   EVENT_REMOVE_ASSET_BY_INDEX,
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
@@ -32,8 +32,8 @@ const _pipeline = {
 
 const store = new Proxy(_store, _pipeline);
 
-store.addEventListener(EVENT_ASSET_UPDATE, ({ detail: asset }) => {
-  databaseConnector.updateAsset(asset);
+store.addEventListener(EVENT_ADD_ASSET, ({ detail: asset }) => {
+  databaseConnector.addAsset(asset);
   const updatedAssets = databaseConnector.getAssets();
   store.dispatchEvent(
     new CustomEvent(EVENT_ASSETS_UPDATED, { detail: updatedAssets })
@@ -41,9 +41,9 @@ store.addEventListener(EVENT_ASSET_UPDATE, ({ detail: asset }) => {
 });
 
 store.addEventListener(
-  EVENT_UPDATE_FIAT_TRANSACTION,
+  EVENT_ADD_FIAT_TRANSACTION,
   ({ detail: transaction }) => {
-    databaseConnector.updateFiatTransaction(transaction);
+    databaseConnector.addFiatTransaction(transaction);
     const updatedTransactions = databaseConnector.getFiatTransactions();
     store.dispatchEvent(
       new CustomEvent(EVENT_UPDATED_FIAT_TRANSACTIONS, {

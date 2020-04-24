@@ -1,7 +1,7 @@
 import { store } from "../store.js";
 import { resetUL } from "../css-globals.js";
 import {
-  EVENT_ASSET_UPDATE,
+  EVENT_ADD_ASSET,
   CATEGORY_STOCK,
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
@@ -63,16 +63,15 @@ class AddAsset extends HTMLElement {
     this.categoryInput = this.shadowRoot.querySelector("#category");
     this.amountInput = this.shadowRoot.querySelector("#amount");
     button.addEventListener("click", () => {
-      const updateAsset = {
+      const addAsset = {
         symbol: this.symbolInput.value,
         asset: this.assetInput.value,
         category: this.categoryInput.value,
         amount: this.amountInput.value,
       };
-      debugger;
 
       store.dispatchEvent(
-        new CustomEvent(EVENT_ASSET_UPDATE, { detail: updateAsset })
+        new CustomEvent(EVENT_ADD_ASSET, { detail: addAsset })
       );
       this._clearInputs();
     });

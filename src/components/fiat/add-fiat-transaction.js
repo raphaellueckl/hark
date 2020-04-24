@@ -1,7 +1,7 @@
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
 import {
-  EVENT_UPDATE_FIAT_TRANSACTION,
+  EVENT_ADD_FIAT_TRANSACTION,
   TYPE_DEPOSIT,
   TYPE_WITHDRAWAL,
 } from "../../globals.js";
@@ -80,7 +80,7 @@ class AddAsset extends HTMLElement {
       };
 
       store.dispatchEvent(
-        new CustomEvent(EVENT_UPDATE_FIAT_TRANSACTION, {
+        new CustomEvent(EVENT_ADD_FIAT_TRANSACTION, {
           detail: addTransaction,
         })
       );
