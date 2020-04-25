@@ -36,6 +36,10 @@ template.innerHTML = `
     <input id="date" placeholder="yyyy-mm-dd">
   </li>
   <li>
+    <label for="exchange">Exchange:</label>
+    <input id="exchange" placeholder="E.g. Kraken">
+  </li>
+  <li>
     <label for="symbol">Currency:</label>
     <input id="symbol" placeholder="E.g. USD">
   </li>
@@ -64,6 +68,7 @@ class AddAsset extends HTMLElement {
     this.dateInput = this.shadowRoot.querySelector("#date");
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.amountInput = this.shadowRoot.querySelector("#amount");
+    this.exchangeInput = this.shadowRoot.querySelector("#exchange");
     this.depositInput = this.shadowRoot.querySelector("#deposit");
     this.depositInput.checked = true;
 
@@ -79,6 +84,7 @@ class AddAsset extends HTMLElement {
         date: this.dateInput.value,
         symbol: this.symbolInput.value,
         amount: this.amountInput.value,
+        exchange: this.exchangeInput.value,
         type,
       };
 
@@ -95,6 +101,7 @@ class AddAsset extends HTMLElement {
     this.dateInput.value = "";
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
+    this.exchangeInput = "";
     this.depositInput.checked = true;
   }
 }

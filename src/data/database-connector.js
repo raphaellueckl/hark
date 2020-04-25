@@ -31,27 +31,18 @@ class DatabaseConnector {
   addFiatTransaction(transaction) {
     const transactions = this.getFiatTransactions();
     transactions.push(transaction);
+    this._sortFiatTransactionsByDateDescending(transactions);
     this.storage.setItem(
       STORAGE_KEY_FIAT_TRANSACTIONS,
       JSON.stringify(transactions)
     );
   }
 
-  _removeFiatTransactionVirtual(transaction) {
-    const transactions =
-      (this.storage.getItem(STORAGE_KEY_FIAT_TRANSACTIONS) &&
-        JSON.parse(this.storage.getItem(STORAGE_KEY_FIAT_TRANSACTIONS))) ||
-      [];
-    const removeAssetFromAssets = transactions.filter(
-      (_transaction) => _transaction.symbol !== transaction.symbol
-    );
-    return removeAssetFromAssets;
-  }
-
   removeFiatTransactionByIndex(index) {
     const updatedTransactions = this.getFiatTransactions().filter(
       (_transaction, _index) => index !== _index
     );
+    this._sortFiatTransactionsByDateDescending(updatedTransactions);
     this.storage.setItem(
       STORAGE_KEY_FIAT_TRANSACTIONS,
       JSON.stringify(updatedTransactions)
@@ -67,6 +58,7 @@ class DatabaseConnector {
 
   removeAssetByIndex(index) {
     const assets = this.getAssets().filter((asset, _index) => index !== _index);
+
     this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
@@ -105,6 +97,10 @@ class DatabaseConnector {
       (_asset) => _asset.symbol !== asset.symbol
     );
     return removeAssetFromAssets;
+  }
+
+  _sortFiatTransactionsByDateDescending(assets) {
+    assets.sort((a, b) => (b.date > a.date ? 1 : -1));
   }
 
   _initMockData() {
