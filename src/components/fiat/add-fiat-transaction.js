@@ -28,16 +28,16 @@ template.innerHTML = `
 </style>
 <ul class="menu-container">
   <li>
+    <label for="amount">Amount:</label>
+    <input id="amount" placeholder="E.g. 10.5">
+  </li>
+  <li>
     <label for="date">Date:</label>
     <input id="date" placeholder="yyyy-mm-dd">
   </li>
   <li>
     <label for="symbol">Currency:</label>
     <input id="symbol" placeholder="E.g. USD">
-  </li>
-  <li>
-    <label for="amount">Amount:</label>
-    <input id="amount" placeholder="E.g. 10.5">
   </li>
   <li>
     <label>Type:</label>
@@ -66,6 +66,8 @@ class AddAsset extends HTMLElement {
     this.amountInput = this.shadowRoot.querySelector("#amount");
     this.depositInput = this.shadowRoot.querySelector("#deposit");
     this.depositInput.checked = true;
+
+    this.symbolInput.value = databaseConnector.getMostUsedCurrency();
 
     const button = this.shadowRoot.querySelector("button");
 
