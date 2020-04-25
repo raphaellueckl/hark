@@ -70,6 +70,21 @@ class DatabaseConnector {
     this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
+  getMostUsedCurrency() {
+    const transactions = this.getFiatTransactions();
+    if (transactions.length > 3) {
+      const symbolsAsArray = transactions.map((t) => t.symbol);
+      const frequency = new Map();
+      symbolsAsArray.forEach((t) => {
+        frequency.set(t, (frequency.get(t) || 0) + 1);
+      });
+      return [...frequency.entries()].reduce((a, e) =>
+        e[1] > a[1] ? e : a
+      )[0];
+    }
+    return "";
+  }
+
   removeAsset(asset) {
     const assets = this._removeAssetVirtual(asset);
 

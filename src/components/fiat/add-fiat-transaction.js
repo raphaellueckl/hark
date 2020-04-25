@@ -5,6 +5,7 @@ import {
   TYPE_DEPOSIT,
   TYPE_WITHDRAWAL,
 } from "../../globals.js";
+import { databaseConnector } from "../../data/database-connector.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -90,7 +91,7 @@ class AddAsset extends HTMLElement {
 
   _clearInputs() {
     this.dateInput.value = "";
-    this.symbolInput.value = "";
+    this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
     this.depositInput.checked = true;
   }
