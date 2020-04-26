@@ -12,3 +12,5 @@ export const TYPE_WITHDRAW = "Withdraw";
 export const CATEGORY_CRYPTO = "crypto";
 export const CATEGORY_RESOURCE = "resource";
 export const CATEGORY_STOCK = "stock";
+
+export const LOCALE_CURRENCY = "en-CH";

@@ -1,4 +1,6 @@
-const BAR_END = "20";
+import { LOCALE_CURRENCY } from "../../globals.js";
+
+const BAR_END = "40";
 const BAR_START = "220";
 const BAR_MAX_HEIGHT = BAR_START - BAR_END;
 
@@ -42,23 +44,18 @@ template.innerHTML = `
 <div>
   <h2></h2>
   <svg height="250" width="250">
+    <text id="difference" x="125" y="20"></text>
     <line class="data-line positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
     <line class="data-line negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
     <line id="bottom-line" x1="20" y1="220" x2="230" y2="220" />
-    <text id="positive" x="80" y="240">1000</text>
-    <text id="negative" x="170" y="240">2000</text>
+    <text id="positive" x="80" y="240"></text>
+    <text id="negative" x="170" y="240"></text>
   </svg>
 </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
 const DEFAULT_STROKE_WIDTH = "50";
 const STEPS_UNTIL_FULL_CIRCLE = 503;
-
-function getRandomizedHex() {
-  return `#${[...Array(6)]
-    .map(() => ALL_HEX_VALUES.charAt(Math.random() * 16))
-    .join("")}`;
-}
 
 class HistogramChart extends HTMLElement {
   constructor() {
@@ -126,12 +123,17 @@ class HistogramChart extends HTMLElement {
     const negativeYEnd = BAR_START - negativeHeight;
     this.shadowRoot.querySelector(".positive").setAttribute("y1", positiveYEnd);
     this.shadowRoot.querySelector(".negative").setAttribute("y1", negativeYEnd);
-    this.shadowRoot.querySelector("#positive").textContent = positive.toFixed(
-      2
-    );
-    this.shadowRoot.querySelector("#negative").textContent = negative.toFixed(
-      2
-    );
+    this.shadowRoot.querySelector("#positive").textContent = Number(
+      positive.toFixed(2)
+    ).toLocaleString(LOCALE_CURRENCY);
+    this.shadowRoot.querySelector("#negative").textContent = Number(
+      negative.toFixed(2)
+    ).toLocaleString(LOCALE_CURRENCY);
+    this.shadowRoot.querySelector("#difference").textContent = `${
+      positive - negative > 0 ? "+" : "-"
+    } ${Number(Math.abs(positive - negative).toFixed(2)).toLocaleString(
+      LOCALE_CURRENCY
+    )} CHF`;
   }
 }
 
