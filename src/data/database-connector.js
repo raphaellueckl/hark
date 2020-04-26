@@ -1,4 +1,4 @@
-import { TYPE_DEPOSIT, TYPE_WITHDRAWAL } from "../globals.js";
+import { TYPE_DEPOSIT, TYPE_WITHDRAW } from "../globals.js";
 
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
 const STORAGE_KEY_ASSETS = "assets";
@@ -155,7 +155,7 @@ class DatabaseConnector {
           exchange: "Swissquote",
           symbol: "USD",
           amount: "100",
-          type: TYPE_WITHDRAWAL,
+          type: TYPE_WITHDRAW,
         },
       ];
       this.storage.setItem(

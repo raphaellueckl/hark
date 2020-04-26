@@ -5,7 +5,7 @@ import {
   EVENT_ASSETS_UPDATED,
   EVENT_UPDATED_FIAT_TRANSACTIONS,
   TYPE_DEPOSIT,
-  TYPE_WITHDRAWAL,
+  TYPE_WITHDRAW,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -97,11 +97,13 @@ class Chart extends HTMLElement {
       .map((tr) => +tr.amount)
       .reduce((a, b) => a + b, 0);
     this.combinedWithdrawalsValue = transactionList
-      .filter((tr) => tr.type === TYPE_WITHDRAWAL)
+      .filter((tr) => tr.type === TYPE_WITHDRAW)
       .map((tr) => +tr.amount)
       .reduce((a, b) => a + b, 0);
+
+    if (isNaN(this.combinedAssetsTotalValue)) return;
     const totalValue =
-      this.combinedWithdrawalsValue + (this.combinedAssetsTotalValue || 0);
+      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
 
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
@@ -119,8 +121,10 @@ class Chart extends HTMLElement {
       .map((a) => +a.value)
       .reduce((a, b) => a + b, 0);
 
+    if (isNaN(this.combinedWithdrawalsValue)) return;
+
     const totalValue =
-      (this.combinedWithdrawalsValue || 0) + this.combinedAssetsTotalValue;
+      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
 
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)

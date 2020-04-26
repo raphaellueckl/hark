@@ -7,7 +7,7 @@ export const EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX =
   "removeFiatTransactionByIndex";
 
 export const TYPE_DEPOSIT = "Deposit";
-export const TYPE_WITHDRAWAL = "Withdrawal";
+export const TYPE_WITHDRAW = "Withdraw";
 
 export const CATEGORY_CRYPTO = "crypto";
 export const CATEGORY_RESOURCE = "resource";

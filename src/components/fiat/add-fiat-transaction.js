@@ -3,7 +3,7 @@ import { resetUL } from "../../css-globals.js";
 import {
   EVENT_ADD_FIAT_TRANSACTION,
   TYPE_DEPOSIT,
-  TYPE_WITHDRAWAL,
+  TYPE_WITHDRAW,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -49,7 +49,7 @@ template.innerHTML = `
       <label for="deposit">Deposit</label>
       <input name="type" id="deposit" type="radio" value="${TYPE_DEPOSIT}">
       <label for="withdrawal">Withdrawal</label>
-      <input name="type" id="withdrawal" type="radio" value="${TYPE_WITHDRAWAL}">
+      <input name="type" id="withdrawal" type="radio" value="${TYPE_WITHDRAW}">
     </div>
   </li>
   <li class="add-button-container">

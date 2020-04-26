@@ -55,15 +55,6 @@ class PriceFetcher {
     });
 
     const enrichedAssets = await Promise.all(enrichedAssetPromises);
-    debugger;
-    // const enrichedAssets = assets.map((_asset, index) => {
-    //   try {
-    //     _asset.value = values[index];
-    //   } catch (error) {
-    //     _asset.value = "n/a";
-    //   }
-    //   return _asset;
-    // });
 
     store.dispatchEvent(
       new CustomEvent(EVENT_ASSETS_UPDATED, { detail: enrichedAssets })
