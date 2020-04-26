@@ -76,12 +76,12 @@ class Chart extends HTMLElement {
    */
   _updateAssetChart = ({ detail: assetList }) => {
     const sumOfValues = assetList
-      .map((v) => +v.value * +v.amount)
+      .map((v) => +v.value)
       .reduce((a, b) => a + b, 0);
     let chartData = assetList.map((asset) => ({
       name: asset.asset,
       value: asset.value,
-      weight: Number(asset.value * asset.amount),
+      weight: Number(asset.value),
       key: asset.category + asset.symbol,
     }));
     chartData.sort((a, b) => b.value - a.value);
@@ -135,25 +135,25 @@ class Chart extends HTMLElement {
 
   _updateSpreadChart = ({ detail: assetList }) => {
     const sumOfValues = assetList
-      .map((v) => +v.value * +v.amount)
+      .map((v) => +v.value)
       .reduce((a, b) => a + b, 0);
 
     let chartData = assetList.map((asset) => ({
       name: asset.category,
       value: asset.value,
-      weight: Number(asset.value * asset.amount),
+      weight: Number(asset.value),
     }));
     chartData.sort((a, b) => b.value - a.value);
 
     let accumulatedCryptos = assetList
       .filter((asset) => asset.category === "crypto")
-      .reduce((accumulation, b) => accumulation + +b.value * +b.amount, 0);
+      .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedResources = assetList
       .filter((asset) => asset.category === "resource")
-      .reduce((accumulation, b) => accumulation + +b.value * +b.amount, 0);
+      .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedStocks = assetList
       .filter((asset) => asset.category === "stock")
-      .reduce((accumulation, b) => accumulation + +b.value * +b.amount, 0);
+      .reduce((accumulation, b) => accumulation + +b.value, 0);
 
     this.shadowRoot
       .querySelector(`hk-chart[${ATTRIBUTE_ASSETS_SPREAD}]`)

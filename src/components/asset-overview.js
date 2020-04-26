@@ -41,15 +41,15 @@ class DashboardList extends HTMLElement {
   connectedCallback() {
     const ul = this.shadowRoot.querySelector("ul");
 
-    priceFetcher.enrichAssetsWithPrice().then(assets => {
-      const listHtml = assets.map(asset => {
+    priceFetcher.enrichAssetsWithPrice().then((assets) => {
+      const listHtml = assets.map((asset) => {
         const li = document.createElement("li");
         li.innerHTML = `
           <label><span>Asset:</span><span>${asset.asset}</span></label>
-          <label><span>Value:</span><span>${Number(
-            asset.value * asset.amount
-          ).toFixed(2)}</span></label>
-          <label><span>Price:</span><span>${Number(asset.value).toFixed(
+          <label><span>Value:</span><span>${Number(asset.value).toFixed(
+            2
+          )}</span></label>
+          <label><span>Price:</span><span>${Number(asset.price).toFixed(
             2
           )} CHF</span></label>
           <label><span>Amount:</span><span>${asset.amount}</span></label>
@@ -60,7 +60,7 @@ class DashboardList extends HTMLElement {
         li.addEventListener("mouseover", () => {
           store.dispatchEvent(
             new CustomEvent("mouseoverasset", {
-              detail: asset.category + asset.symbol
+              detail: asset.category + asset.symbol,
             })
           );
         });
@@ -70,7 +70,7 @@ class DashboardList extends HTMLElement {
 
         return li;
       });
-      listHtml.forEach(asset => ul.appendChild(asset));
+      listHtml.forEach((asset) => ul.appendChild(asset));
     });
   }
 }
