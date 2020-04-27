@@ -1,6 +1,7 @@
 import { priceFetcher } from "../data/price-fetcher.js";
 import { resetUL } from "../css-globals.js";
 import { store } from "../store.js";
+import { numberToLocal } from "../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -46,13 +47,15 @@ class DashboardList extends HTMLElement {
         const li = document.createElement("li");
         li.innerHTML = `
           <label><span>Asset:</span><span>${asset.asset}</span></label>
-          <label><span>Value:</span><span>${Number(asset.value).toFixed(
-            2
+          <label><span>Value:</span><span>${numberToLocal(
+            Number(asset.value).toFixed(2)
           )}</span></label>
-          <label><span>Price:</span><span>${Number(asset.price).toFixed(
-            2
+          <label><span>Price:</span><span>${numberToLocal(
+            Number(asset.price).toFixed(2)
           )} CHF</span></label>
-          <label><span>Amount:</span><span>${asset.amount}</span></label>
+          <label><span>Amount:</span><span>${numberToLocal(
+            asset.amount
+          )}</span></label>
           <label><span>Symbol:</span><span>${asset.symbol}</span></label>
           <label><span>Category:</span><span>${asset.category}</span></label>`;
 

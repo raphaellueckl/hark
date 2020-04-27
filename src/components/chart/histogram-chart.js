@@ -1,4 +1,4 @@
-import { LOCALE_CURRENCY } from "../../globals.js";
+import { numberToLocal } from "../../globals.js";
 
 const BAR_END = "40";
 const BAR_START = "220";
@@ -123,17 +123,15 @@ class HistogramChart extends HTMLElement {
     const negativeYEnd = BAR_START - negativeHeight;
     this.shadowRoot.querySelector(".positive").setAttribute("y1", positiveYEnd);
     this.shadowRoot.querySelector(".negative").setAttribute("y1", negativeYEnd);
-    this.shadowRoot.querySelector("#positive").textContent = Number(
+    this.shadowRoot.querySelector("#positive").textContent = numberToLocal(
       positive.toFixed(2)
-    ).toLocaleString(LOCALE_CURRENCY);
-    this.shadowRoot.querySelector("#negative").textContent = Number(
+    );
+    this.shadowRoot.querySelector("#negative").textContent = numberToLocal(
       negative.toFixed(2)
-    ).toLocaleString(LOCALE_CURRENCY);
+    );
     this.shadowRoot.querySelector("#difference").textContent = `${
       positive - negative > 0 ? "+" : "-"
-    } ${Number(Math.abs(positive - negative).toFixed(2)).toLocaleString(
-      LOCALE_CURRENCY
-    )} CHF`;
+    } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
   }
 }
 
