@@ -1,6 +1,6 @@
 import { numberToLocal } from "../../globals.js";
 
-const BAR_END = "40";
+const BAR_END = "50";
 const BAR_START = "220";
 const BAR_MAX_HEIGHT = BAR_START - BAR_END;
 
@@ -19,12 +19,12 @@ template.innerHTML = `
   }
   
   .data-line {
-    stroke-width:50;
+    stroke-width:45;
     transition: stroke-width 0.2s;
   }
   
   .data-line:hover {
-    stroke-width:65;
+    stroke-width:60;
   }
   
   .negative {
@@ -44,7 +44,8 @@ template.innerHTML = `
 <div>
   <h2></h2>
   <svg height="250" width="250">
-    <text id="difference" x="125" y="20"></text>
+    <text id="difference" x="125" y="15"></text>
+    <text id="difference-percent" x="125" y="35"></text>
     <line class="data-line positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
     <line class="data-line negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
     <line id="bottom-line" x1="20" y1="220" x2="230" y2="220" />
@@ -52,10 +53,6 @@ template.innerHTML = `
     <text id="negative" x="170" y="240"></text>
   </svg>
 </div>`;
-
-const ALL_HEX_VALUES = "0123456789ABCDEF";
-const DEFAULT_STROKE_WIDTH = "50";
-const STEPS_UNTIL_FULL_CIRCLE = 503;
 
 class HistogramChart extends HTMLElement {
   constructor() {
@@ -86,33 +83,6 @@ class HistogramChart extends HTMLElement {
     }
   }
 
-  _highlightEntry = (entry) => {
-    entry.style.strokeWidth = "65";
-    this.assetName.textContent = entry.assetName;
-    this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
-  };
-
-  _unhighlightEntry = (entry) => {
-    entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
-    this.assetName.textContent = undefined;
-    this.percentage.textContent = undefined;
-  };
-
-  /**
-   * key: asset.category + asset.symbol
-   */
-  _highByAssetCompoundKey = (key) => {
-    const circleFragments = [...this.shadowRoot.querySelectorAll("circle")];
-    for (const asset of circleFragments) {
-      if (asset.key !== key) {
-        this._unhighlightEntry(asset);
-      } else {
-        this._highlightEntry(asset);
-        break;
-      }
-    }
-  };
-
   _chartUpdater(positive, negative) {
     const highestDataNumber = positive > negative ? positive : negative;
     const multiplicator = BAR_MAX_HEIGHT / highestDataNumber;
@@ -132,6 +102,11 @@ class HistogramChart extends HTMLElement {
     this.shadowRoot.querySelector("#difference").textContent = `${
       positive - negative > 0 ? "+" : "-"
     } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
+    this.shadowRoot.querySelector("#difference-percent").textContent = `${
+      positive - negative > 0 ? "+" : "-"
+    } ${numberToLocal(
+      Math.abs((100 / negative) * positive - 100).toFixed(2)
+    )} %`;
   }
 }
 
