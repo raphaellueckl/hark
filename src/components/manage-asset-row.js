@@ -22,6 +22,10 @@ template.innerHTML = `
     flex-wrap: wrap;
   }
 
+  input {
+    width: 100px;
+  }
+
   @media (min-width: ${BREAKPOINT_TABLET}) {
     ul {
       flex-direction: row;
@@ -58,11 +62,29 @@ class Asset extends HTMLElement {
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
-      Object.keys(asset).forEach(property => {
-        const li = document.createElement("li");
-        li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}" disabled>`;
-        ul.appendChild(li);
-      });
+
+      const symbol = document.createElement("li");
+      symbol.innerHTML = `<label for="symbol_input">Symbol:</label><input id="symbol_input" value="${asset.symbol}" disabled>`;
+      ul.appendChild(symbol);
+
+      const assetInput = document.createElement("li");
+      assetInput.innerHTML = `<label for="asset_input">Asset:</label><input id="asset_input" value="${asset.asset}" disabled>`;
+      ul.appendChild(assetInput);
+
+      const category = document.createElement("li");
+      category.innerHTML = `<label for="category_input">Category:</label><input id="category_input" value="${asset.category}" disabled>`;
+      ul.appendChild(category);
+
+      const amount = document.createElement("li");
+      amount.innerHTML = `<label for="amount_input">Amount:</label><input id="amount_input" value="${asset.amount}" disabled>`;
+      ul.appendChild(amount);
+
+      // Object.keys(asset).forEach(property => {
+      //   const li = document.createElement("li");
+      //   li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}" disabled>`;
+      //   ul.appendChild(li);
+      // });
+
       const li = document.createElement("li");
       li.classList.add("remove-button-container");
       const button = document.createElement("button");

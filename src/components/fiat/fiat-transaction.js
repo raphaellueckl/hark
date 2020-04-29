@@ -21,6 +21,10 @@ template.innerHTML = `
     flex-direction: column;
   }
 
+  input {
+    width: 100px;
+  }
+
   @media (min-width: ${BREAKPOINT_DESKTOP}) {
     ul {
       flex-direction: row;
