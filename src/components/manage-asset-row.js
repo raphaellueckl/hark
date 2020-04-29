@@ -19,6 +19,7 @@ template.innerHTML = `
   ul {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
   }
 
   @media (min-width: ${BREAKPOINT_TABLET}) {
@@ -57,7 +58,7 @@ class Asset extends HTMLElement {
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
-      Object.keys(asset).forEach((property) => {
+      Object.keys(asset).forEach(property => {
         const li = document.createElement("li");
         li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}" disabled>`;
         ul.appendChild(li);
@@ -66,10 +67,10 @@ class Asset extends HTMLElement {
       li.classList.add("remove-button-container");
       const button = document.createElement("button");
       button.textContent = "remove";
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", e => {
         store.dispatchEvent(
           new CustomEvent(EVENT_REMOVE_ASSET_BY_INDEX, {
-            detail: this.indexOfAsset,
+            detail: this.indexOfAsset
           })
         );
       });
