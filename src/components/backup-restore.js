@@ -27,7 +27,9 @@ class ExportApplicationState extends HTMLElement {
     exportButton.addEventListener("click", () => {
       const appState = databaseConnector.getApplicationStateAsString();
       const blob = new Blob([appState], { type: "text/json" });
-      const fileName = "hark_backup.json";
+      const fileName = `hark_backup_${
+        new Date().toISOString().split("T")[0]
+      }.json`;
 
       const tempElement = document.createElement("a");
       const url = URL.createObjectURL(blob);
