@@ -17,9 +17,10 @@ template.innerHTML = `
   }
 
   .menu-container {
+    width: 250px;
+
     display: flex;
     flex-direction: column;
-    width: 250px;
   }
 
   li {
