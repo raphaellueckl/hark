@@ -57,13 +57,29 @@ class FiatTransaction extends HTMLElement {
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
-      Object.keys(asset).forEach((property) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<label for="${this.indexOfAsset}">${property}:</label><input id="${this.indexOfAsset}" value="${asset[property]}" disabled>`;
-        ul.appendChild(li);
-      });
-      const li = document.createElement("li");
-      li.classList.add("remove-button-container");
+
+      const date = document.createElement("li");
+      date.innerHTML = `<label for="date_input">Date:</label><input id="date_input" value="${asset.date}" disabled>`;
+      ul.appendChild(date);
+
+      const symbol = document.createElement("li");
+      symbol.innerHTML = `<label for="symbol_input">Symbol:</label><input id="symbol_input" value="${asset.symbol}" disabled>`;
+      ul.appendChild(symbol);
+
+      const amount = document.createElement("li");
+      amount.innerHTML = `<label for="amount_input">Amount:</label><input id="amount_input" value="${asset.amount}" disabled>`;
+      ul.appendChild(amount);
+
+      const exchange = document.createElement("li");
+      exchange.innerHTML = `<label for="exchange_input">Exchange:</label><input id="exchange_input" value="${asset.exchange}" disabled>`;
+      ul.appendChild(exchange);
+
+      const type = document.createElement("li");
+      type.innerHTML = `<label for="type_input">Type:</label><input id="type_input" value="${asset.type}" disabled>`;
+      ul.appendChild(type);
+
+      const buttonContainer = document.createElement("li");
+      buttonContainer.classList.add("remove-button-container");
       const button = document.createElement("button");
       button.textContent = "remove";
       button.addEventListener("click", (e) => {
@@ -73,8 +89,8 @@ class FiatTransaction extends HTMLElement {
           })
         );
       });
-      li.appendChild(button);
-      ul.appendChild(li);
+      buttonContainer.appendChild(button);
+      ul.appendChild(buttonContainer);
     }
   }
 }
