@@ -81,7 +81,7 @@ template.innerHTML = `
   </div>
 </nav>`;
 
-class Navbar extends HTMLElement {
+class OverviewAssetItem extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: "open" });
@@ -89,4 +89,4 @@ class Navbar extends HTMLElement {
   }
 }
 
-customElements.define("hk-navbar", Navbar);
+customElements.define("hk-overview-asset-item", OverviewAssetItem);

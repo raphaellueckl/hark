@@ -1,5 +1,5 @@
 import { store } from "../store.js";
-import { resetUL } from "../css-globals.js";
+import { resetUL, BREAKPOINT_TABLET } from "../css-globals.js";
 import { EVENT_REMOVE_ASSET_BY_INDEX } from "../globals.js";
 
 const template = document.createElement("template");
@@ -14,6 +14,25 @@ template.innerHTML = `
 
   .remove-button-container{
     justify-content: flex-end;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: ${BREAKPOINT_TABLET}) {
+    ul {
+      flex-direction: row;
+    }
+
+    li {
+      padding-right: 5px;
+    }
+    
+    li:last-child {
+      padding-right: 0;
+    }
   }
 </style>
 <ul>

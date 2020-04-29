@@ -12,6 +12,11 @@ template.innerHTML = `
 <style>
   ${resetUL}
 
+  :host {
+    display: block;
+    width: 200px;
+  }
+
   .menu-container {
     display: flex;
     flex-direction: column;
@@ -26,6 +31,7 @@ template.innerHTML = `
     justify-content: flex-end;
   }
 </style>
+
 <ul class="menu-container">
   <li>
     <label for="asset">Asset:</label><input id="asset" placeholder="E.g. Google">
