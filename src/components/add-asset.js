@@ -4,7 +4,7 @@ import {
   EVENT_ADD_ASSET,
   CATEGORY_STOCK,
   CATEGORY_CRYPTO,
-  CATEGORY_RESOURCE,
+  CATEGORY_RESOURCE
 } from "../globals.js";
 
 const template = document.createElement("template");
@@ -14,12 +14,12 @@ template.innerHTML = `
 
   :host {
     display: block;
-    width: 200px;
   }
 
   .menu-container {
     display: flex;
     flex-direction: column;
+    width: 250px;
   }
 
   li {
@@ -73,7 +73,7 @@ class AddAsset extends HTMLElement {
         symbol: this.symbolInput.value,
         asset: this.assetInput.value,
         category: this.categoryInput.value,
-        amount: this.amountInput.value,
+        amount: this.amountInput.value
       };
 
       store.dispatchEvent(
