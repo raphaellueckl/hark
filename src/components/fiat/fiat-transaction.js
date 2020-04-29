@@ -24,6 +24,7 @@ template.innerHTML = `
   @media (min-width: ${BREAKPOINT_DESKTOP}) {
     ul {
       flex-direction: row;
+      flex-wrap: wrap;
     }
 
     li {
@@ -82,10 +83,10 @@ class FiatTransaction extends HTMLElement {
       buttonContainer.classList.add("remove-button-container");
       const button = document.createElement("button");
       button.textContent = "remove";
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", e => {
         store.dispatchEvent(
           new CustomEvent(EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX, {
-            detail: this.indexOfAsset,
+            detail: this.indexOfAsset
           })
         );
       });
