@@ -16,14 +16,24 @@ template.innerHTML = `
     }
 
     li {
-      display: flex;
-      flex-direction: column;
+      width: 200px;
       padding: 20px;
+
+      display: grid;
+      grid-gap: 0 10px;
+      grid-template-columns: 1fr 2fr;
+      justify-content: space-between;
     }
 
     label {
       display: flex;
       justify-content: space-between;
+    }
+
+    .value {
+      display: flex;
+      justify-content: flex-end;
+      word-break: break-all;
     }
   </style>
   <ul>
@@ -46,18 +56,18 @@ class DashboardList extends HTMLElement {
       const listHtml = assets.map((asset) => {
         const li = document.createElement("li");
         li.innerHTML = `
-          <label><span>Asset:</span><span>${asset.asset}</span></label>
-          <label><span>Value:</span><span>${numberToLocal(
+          <span>Asset:</span><span class="value">${asset.asset}</span>
+          <span>Value:</span><span class="value">${numberToLocal(
             Number(asset.value).toFixed(2)
-          )}</span></label>
-          <label><span>Price:</span><span>${numberToLocal(
+          )} CHF</span>
+          <span>Price:</span><span class="value">${numberToLocal(
             Number(asset.price).toFixed(2)
-          )} CHF</span></label>
-          <label><span>Amount:</span><span>${numberToLocal(
+          )} CHF</span>
+          <span>Amount:</span><span class="value">${numberToLocal(
             asset.amount
-          )}</span></label>
-          <label><span>Symbol:</span><span>${asset.symbol}</span></label>
-          <label><span>Category:</span><span>${asset.category}</span></label>`;
+          )}</span>
+          <span>Symbol:</span><span class="value">${asset.symbol}</span>
+          <span>Category:</span><span class="value">${asset.category}</span>`;
 
         // Those events will highlight the asset in the chart
         li.addEventListener("mouseover", () => {
