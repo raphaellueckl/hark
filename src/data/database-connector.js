@@ -150,21 +150,21 @@ class DatabaseConnector {
     if (!this.getFiatTransactions().length) {
       const mockData = [
         {
-          date: "01.01.2010",
+          date: "2010-12-24",
           exchange: "kraken",
           symbol: "CHF",
           amount: "340",
           type: TYPE_DEPOSIT
         },
         {
-          date: "01.01.2010",
+          date: "2015-05-13",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "470",
           type: TYPE_DEPOSIT
         },
         {
-          date: "02.01.2010",
+          date: "2020-03-31",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "100",

@@ -104,9 +104,9 @@ class Chart extends HTMLElement {
       .reduce((a, b) => a + b, 0);
 
     if (isNaN(this.combinedAssetsTotalValue)) return;
+
     const totalValue =
       this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
-
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
@@ -127,7 +127,6 @@ class Chart extends HTMLElement {
 
     const totalValue =
       this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
-
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
