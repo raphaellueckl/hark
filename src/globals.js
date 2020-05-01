@@ -9,11 +9,12 @@ export const EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX =
 export const TYPE_DEPOSIT = "Deposit";
 export const TYPE_WITHDRAW = "Withdraw";
 
-export const CATEGORY_CRYPTO = "crypto";
-export const CATEGORY_RESOURCE = "resource";
-export const CATEGORY_STOCK = "stock";
+export const CATEGORY_CRYPTO = "Crypto";
+export const CATEGORY_RESOURCE = "Resource";
+export const CATEGORY_STOCK = "Stock";
+export const CATEGORY_CURRENCY = "Currency";
 
-export const numberToLocal = (numberOrString) =>
+export const numberToLocal = numberOrString =>
   Number(numberOrString).toLocaleString("en-CH");
 
 export const createColumn = (label, value) => {

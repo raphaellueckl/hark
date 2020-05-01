@@ -1,4 +1,11 @@
-import { TYPE_DEPOSIT, TYPE_WITHDRAW } from "../globals.js";
+import {
+  TYPE_DEPOSIT,
+  TYPE_WITHDRAW,
+  CATEGORY_CRYPTO,
+  CATEGORY_STOCK,
+  CATEGORY_RESOURCE,
+  CATEGORY_CURRENCY
+} from "../globals.js";
 
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
 const STORAGE_KEY_ASSETS = "assets";
@@ -65,9 +72,9 @@ class DatabaseConnector {
   getMostUsedCurrency() {
     const transactions = this.getFiatTransactions();
     if (transactions.length > 3) {
-      const symbolsAsArray = transactions.map((t) => t.symbol);
+      const symbolsAsArray = transactions.map(t => t.symbol);
       const frequency = new Map();
-      symbolsAsArray.forEach((t) => {
+      symbolsAsArray.forEach(t => {
         frequency.set(t, (frequency.get(t) || 0) + 1);
       });
       return [...frequency.entries()].reduce((a, e) =>
@@ -94,7 +101,7 @@ class DatabaseConnector {
         JSON.parse(this.storage.getItem(STORAGE_KEY_ASSETS))) ||
       [];
     const removeAssetFromAssets = assets.filter(
-      (_asset) => _asset.symbol !== asset.symbol
+      _asset => _asset.symbol !== asset.symbol
     );
     return removeAssetFromAssets;
   }
@@ -109,27 +116,33 @@ class DatabaseConnector {
         {
           symbol: "bitcoin",
           asset: "bitcoin",
-          category: "crypto",
-          amount: 0.2,
+          category: CATEGORY_CRYPTO,
+          amount: 0.2
         },
         {
           symbol: "ethereum",
           asset: "ethereum",
-          category: "crypto",
-          amount: 3,
+          category: CATEGORY_CRYPTO,
+          amount: 3
         },
         {
           symbol: "MSFT",
           asset: "microsoft",
-          category: "stock",
-          amount: 1,
+          category: CATEGORY_STOCK,
+          amount: 1
         },
         {
           symbol: "XAU",
           asset: "gold",
-          category: "resource",
-          amount: 10,
+          category: CATEGORY_RESOURCE,
+          amount: 10
         },
+        {
+          symbol: "EUR",
+          asset: "Euro",
+          category: CATEGORY_CURRENCY,
+          amount: 2000
+        }
       ];
       this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
     }
@@ -141,22 +154,22 @@ class DatabaseConnector {
           exchange: "kraken",
           symbol: "CHF",
           amount: "340",
-          type: TYPE_DEPOSIT,
+          type: TYPE_DEPOSIT
         },
         {
           date: "01.01.2010",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "470",
-          type: TYPE_DEPOSIT,
+          type: TYPE_DEPOSIT
         },
         {
           date: "02.01.2010",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "100",
-          type: TYPE_WITHDRAW,
-        },
+          type: TYPE_WITHDRAW
+        }
       ];
       this.storage.setItem(
         STORAGE_KEY_FIAT_TRANSACTIONS,

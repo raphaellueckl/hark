@@ -6,6 +6,10 @@ import {
   EVENT_UPDATED_FIAT_TRANSACTIONS,
   TYPE_DEPOSIT,
   TYPE_WITHDRAW,
+  CATEGORY_CRYPTO,
+  CATEGORY_RESOURCE,
+  CATEGORY_STOCK,
+  CATEGORY_CURRENCY
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -75,14 +79,12 @@ class Chart extends HTMLElement {
    * assetlist: {symbol, asset, category, amount, value}
    */
   _updateAssetChart = ({ detail: assetList }) => {
-    const sumOfValues = assetList
-      .map((v) => +v.value)
-      .reduce((a, b) => a + b, 0);
-    let chartData = assetList.map((asset) => ({
+    const sumOfValues = assetList.map(v => +v.value).reduce((a, b) => a + b, 0);
+    let chartData = assetList.map(asset => ({
       name: asset.asset,
       value: asset.value,
       weight: Number(asset.value),
-      key: asset.category + asset.symbol,
+      key: asset.category + asset.symbol
     }));
     chartData.sort((a, b) => b.value - a.value);
 
@@ -93,12 +95,12 @@ class Chart extends HTMLElement {
 
   _updateTotalReturnChartByTransactions = ({ detail: transactionList }) => {
     this.combinedDepositsValue = transactionList
-      .filter((tr) => tr.type === TYPE_DEPOSIT)
-      .map((tr) => +tr.amount)
+      .filter(tr => tr.type === TYPE_DEPOSIT)
+      .map(tr => +tr.amount)
       .reduce((a, b) => a + b, 0);
     this.combinedWithdrawalsValue = transactionList
-      .filter((tr) => tr.type === TYPE_WITHDRAW)
-      .map((tr) => +tr.amount)
+      .filter(tr => tr.type === TYPE_WITHDRAW)
+      .map(tr => +tr.amount)
       .reduce((a, b) => a + b, 0);
 
     if (isNaN(this.combinedAssetsTotalValue)) return;
@@ -111,14 +113,14 @@ class Chart extends HTMLElement {
         "data",
         JSON.stringify({
           positive: totalValue,
-          negative: this.combinedDepositsValue,
+          negative: this.combinedDepositsValue
         })
       );
   };
 
   _updateTotalReturnChartByAssets = ({ detail: assetList }) => {
     this.combinedAssetsTotalValue = assetList
-      .map((a) => +a.value)
+      .map(a => +a.value)
       .reduce((a, b) => a + b, 0);
 
     if (isNaN(this.combinedWithdrawalsValue)) return;
@@ -132,31 +134,32 @@ class Chart extends HTMLElement {
         "data",
         JSON.stringify({
           positive: totalValue,
-          negative: this.combinedDepositsValue,
+          negative: this.combinedDepositsValue
         })
       );
   };
 
   _updateSpreadChart = ({ detail: assetList }) => {
-    const sumOfValues = assetList
-      .map((v) => +v.value)
-      .reduce((a, b) => a + b, 0);
+    const sumOfValues = assetList.map(v => +v.value).reduce((a, b) => a + b, 0);
 
-    let chartData = assetList.map((asset) => ({
+    let chartData = assetList.map(asset => ({
       name: asset.category,
       value: asset.value,
-      weight: Number(asset.value),
+      weight: Number(asset.value)
     }));
     chartData.sort((a, b) => b.value - a.value);
 
     let accumulatedCryptos = assetList
-      .filter((asset) => asset.category === "crypto")
+      .filter(asset => asset.category === CATEGORY_CRYPTO)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedResources = assetList
-      .filter((asset) => asset.category === "resource")
+      .filter(asset => asset.category === CATEGORY_RESOURCE)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedStocks = assetList
-      .filter((asset) => asset.category === "stock")
+      .filter(asset => asset.category === CATEGORY_STOCK)
+      .reduce((accumulation, b) => accumulation + +b.value, 0);
+    let accumulatedCurrencies = assetList
+      .filter(asset => asset.category === CATEGORY_CURRENCY)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
 
     this.shadowRoot
@@ -167,21 +170,26 @@ class Chart extends HTMLElement {
           sumOfValues,
           data: [
             {
-              name: "crypto",
+              name: CATEGORY_CRYPTO,
               value: accumulatedCryptos,
-              weight: accumulatedCryptos,
+              weight: accumulatedCryptos
             },
             {
-              name: "resource",
+              name: CATEGORY_RESOURCE,
               value: accumulatedResources,
-              weight: accumulatedResources,
+              weight: accumulatedResources
             },
             {
-              name: "stock",
+              name: CATEGORY_STOCK,
               value: accumulatedStocks,
-              weight: accumulatedStocks,
+              weight: accumulatedStocks
             },
-          ],
+            {
+              name: CATEGORY_CURRENCY,
+              value: accumulatedCurrencies,
+              weight: accumulatedCurrencies
+            }
+          ]
         })
       );
   };

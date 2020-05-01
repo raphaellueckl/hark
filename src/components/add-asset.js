@@ -4,7 +4,8 @@ import {
   EVENT_ADD_ASSET,
   CATEGORY_STOCK,
   CATEGORY_CRYPTO,
-  CATEGORY_RESOURCE
+  CATEGORY_RESOURCE,
+  CATEGORY_CURRENCY
 } from "../globals.js";
 
 const template = document.createElement("template");
@@ -46,6 +47,7 @@ template.innerHTML = `
       <option value="${CATEGORY_STOCK}">Stock</option>
       <option value="${CATEGORY_CRYPTO}">Crypto</option>
       <option value="${CATEGORY_RESOURCE}">Resource</option>
+      <option value="${CATEGORY_CURRENCY}">Currency</option>
 </select>
   </li>
   <li>
