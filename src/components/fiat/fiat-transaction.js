@@ -1,6 +1,9 @@
 import { store } from "../../store.js";
 import { resetUL, BREAKPOINT_DESKTOP } from "../../css-globals.js";
-import { EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX } from "../../globals.js";
+import {
+  EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
+  createColumn,
+} from "../../globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -63,34 +66,20 @@ class FiatTransaction extends HTMLElement {
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
 
-      const date = document.createElement("li");
-      date.innerHTML = `<label for="date_input">Date:</label><input id="date_input" value="${asset.date}" disabled>`;
-      ul.appendChild(date);
-
-      const symbol = document.createElement("li");
-      symbol.innerHTML = `<label for="symbol_input">Symbol:</label><input id="symbol_input" value="${asset.symbol}" disabled>`;
-      ul.appendChild(symbol);
-
-      const amount = document.createElement("li");
-      amount.innerHTML = `<label for="amount_input">Amount:</label><input id="amount_input" value="${asset.amount}" disabled>`;
-      ul.appendChild(amount);
-
-      const exchange = document.createElement("li");
-      exchange.innerHTML = `<label for="exchange_input">Exchange:</label><input id="exchange_input" value="${asset.exchange}" disabled>`;
-      ul.appendChild(exchange);
-
-      const type = document.createElement("li");
-      type.innerHTML = `<label for="type_input">Type:</label><input id="type_input" value="${asset.type}" disabled>`;
-      ul.appendChild(type);
+      ul.appendChild(createColumn("Date", asset.date));
+      ul.appendChild(createColumn("Symbol", asset.symbol));
+      ul.appendChild(createColumn("Amount", asset.amount));
+      ul.appendChild(createColumn("Exchange", asset.exchange));
+      ul.appendChild(createColumn("Type", asset.type));
 
       const buttonContainer = document.createElement("li");
       buttonContainer.classList.add("remove-button-container");
       const button = document.createElement("button");
       button.textContent = "remove";
-      button.addEventListener("click", e => {
+      button.addEventListener("click", (e) => {
         store.dispatchEvent(
           new CustomEvent(EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX, {
-            detail: this.indexOfAsset
+            detail: this.indexOfAsset,
           })
         );
       });

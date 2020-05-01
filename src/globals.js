@@ -15,3 +15,9 @@ export const CATEGORY_STOCK = "stock";
 
 export const numberToLocal = (numberOrString) =>
   Number(numberOrString).toLocaleString("en-CH");
+
+export const createColumn = (label, value) => {
+  const column = document.createElement("li");
+  column.innerHTML = `<label for="${label.toLowerCase()}_input">${label}:</label><input id="${label.toLowerCase()}_input" value="${value}" disabled>`;
+  return column;
+};
