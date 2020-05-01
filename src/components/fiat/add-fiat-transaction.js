@@ -3,7 +3,7 @@ import { resetUL } from "../../css-globals.js";
 import {
   EVENT_ADD_FIAT_TRANSACTION,
   TYPE_DEPOSIT,
-  TYPE_WITHDRAW,
+  TYPE_WITHDRAW
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -57,7 +57,7 @@ template.innerHTML = `
   </li>
 </ul>`;
 
-class AddAsset extends HTMLElement {
+class AddFiatTransaction extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: "open" });
@@ -78,19 +78,19 @@ class AddAsset extends HTMLElement {
 
     button.addEventListener("click", () => {
       const type = [
-        ...this.shadowRoot.querySelectorAll('input[name="type"]'),
-      ].filter((r) => r.checked === true)[0].value;
+        ...this.shadowRoot.querySelectorAll('input[name="type"]')
+      ].filter(r => r.checked === true)[0].value;
+
       const addTransaction = {
         date: this.dateInput.value,
         symbol: this.symbolInput.value,
         amount: this.amountInput.value,
         exchange: this.exchangeInput.value,
-        type,
+        type
       };
-
       store.dispatchEvent(
         new CustomEvent(EVENT_ADD_FIAT_TRANSACTION, {
-          detail: addTransaction,
+          detail: addTransaction
         })
       );
       this._clearInputs();
@@ -101,9 +101,9 @@ class AddAsset extends HTMLElement {
     this.dateInput.value = "";
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
-    this.exchangeInput = "";
+    this.exchangeInput.value = "";
     this.depositInput.checked = true;
   }
 }
 
-customElements.define("hk-add-fiat-transaction", AddAsset);
+customElements.define("hk-add-fiat-transaction", AddFiatTransaction);

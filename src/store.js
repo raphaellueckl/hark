@@ -5,7 +5,7 @@ import {
   EVENT_ADD_FIAT_TRANSACTION,
   EVENT_UPDATED_FIAT_TRANSACTIONS,
   EVENT_REMOVE_ASSET_BY_INDEX,
-  EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
+  EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX
 } from "./globals.js";
 
 // EventTarget, so that listeners can be registered on it
@@ -13,21 +13,21 @@ import {
 const _store = new EventTarget() || Element.prototype;
 
 const _pipeline = {
-  set: function (target, key, value) {
+  set: function(target, key, value) {
     _store[key] = value;
     if (typeof property !== "function")
       localStorage.setItem("store_" + key, JSON.stringify(value));
     return true;
   },
 
-  get: function (target, prop) {
+  get: function(target, prop) {
     // To be able to register an eventlistener on the _store object,
     // 'this' has to be linked to the target.
     const property = Reflect.get(target, prop);
     if (typeof property === "function") return property.bind(target);
     return JSON.parse(localStorage.getItem("store_" + prop));
     // return property;
-  },
+  }
 };
 
 const store = new Proxy(_store, _pipeline);
@@ -47,7 +47,7 @@ store.addEventListener(
     const updatedTransactions = databaseConnector.getFiatTransactions();
     store.dispatchEvent(
       new CustomEvent(EVENT_UPDATED_FIAT_TRANSACTIONS, {
-        detail: updatedTransactions,
+        detail: updatedTransactions
       })
     );
   }
@@ -68,7 +68,7 @@ store.addEventListener(
     const updatedTransactions = databaseConnector.getFiatTransactions();
     store.dispatchEvent(
       new CustomEvent(EVENT_UPDATED_FIAT_TRANSACTIONS, {
-        detail: updatedTransactions,
+        detail: updatedTransactions
       })
     );
   }
