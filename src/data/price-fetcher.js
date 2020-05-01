@@ -189,7 +189,8 @@ class CurrencyFetcher {
       .then(data => {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = data.rates[asset.symbol.toUpperCase()];
-        asset.value = asset.amount * asset.price;
+
+        asset.value = Number(asset.amount / asset.price);
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
