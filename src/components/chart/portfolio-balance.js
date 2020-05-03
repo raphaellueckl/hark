@@ -1,25 +1,18 @@
-import { numberToLocal } from "../../globals";
+import { numberToLocal } from "../../globals.js";
+import { widgetContainerStyles } from "../../css-globals.js";
 
 const template = document.createElement("template");
 
 template.innerHTML = `
 <style>
+    ${widgetContainerStyles}
+
     .content {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 250px;
-    }
-
-    .balance-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 250px;
-
-        background-color: #f7f7f7;
-        border-radius: 15px;
     }
 
     .emoji-container {
@@ -36,7 +29,7 @@ template.innerHTML = `
         word-break: break-word;
     }
 </style>
-<div class="balance-container">
+<div class="widget-container">
     <h2>Portfolio Balance</h2>
     <div class="content">
         <span id="balance"></span>

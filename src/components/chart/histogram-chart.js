@@ -1,4 +1,5 @@
 import { numberToLocal } from "../../globals.js";
+import { widgetContainerStyles } from "../../css-globals.js";
 
 const BAR_END = "50";
 const BAR_START = "220";
@@ -8,12 +9,7 @@ const BAR_MAX_HEIGHT = BAR_START - BAR_END;
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 250px;
-  }
+  ${widgetContainerStyles}
 
   .positive {
     stroke:#09d64a;
@@ -42,7 +38,7 @@ template.innerHTML = `
   }
 </style>
 
-<div>
+<div class="widget-container">
   <h2></h2>
   <svg height="250" width="250">
     <text id="difference" x="125" y="30"></text>

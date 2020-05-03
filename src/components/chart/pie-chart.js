@@ -1,26 +1,23 @@
+import { widgetContainerStyles } from "../../css-globals.js";
+
 const template = document.createElement("template");
 
 template.innerHTML = `
-    <style>
-        .value {
-            transform-origin: center;
-        }
+  <style>
+    ${widgetContainerStyles}
 
-        div {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 250px;
-        }
+    .value {
+        transform-origin: center;
+    }
 
-        circle {
-          transition: stroke-width 0.2s;
-        }
-    </style>
-    <div>
-      <h2></h2>
-      <svg height="250" width="250"></svg>
-    </div>`;
+    circle {
+      transition: stroke-width 0.2s;
+    }
+  </style>
+  <div class="widget-container">
+    <h2></h2>
+    <svg height="250" width="250"></svg>
+  </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
 const DEFAULT_STROKE_WIDTH = "50";
