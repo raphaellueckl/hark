@@ -5,8 +5,10 @@ import {
   CATEGORY_STOCK,
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
-  CATEGORY_CURRENCY
+  CATEGORY_CURRENCY,
 } from "../globals.js";
+
+import "./input.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -36,10 +38,10 @@ template.innerHTML = `
 
 <ul class="menu-container">
   <li>
-    <label for="asset">Asset:</label><input id="asset" placeholder="E.g. Google">
+    <label for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" />
   </li>
   <li>
-    <label for="symbol">Symbol:</label><input id="symbol" placeholder="E.g. GOOGL">
+    <label for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" />
   </li>
   <li>
     <label for="category">Category:</label>
@@ -51,7 +53,7 @@ template.innerHTML = `
 </select>
   </li>
   <li>
-    <label for="amount">Amount:</label><input id="amount" placeholder="E.g. 5.5">
+    <label for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" />
   </li>
   <li class="add-button-container">
     <button>Add</button>
@@ -76,7 +78,7 @@ class AddAsset extends HTMLElement {
         symbol: this.symbolInput.value,
         asset: this.assetInput.value,
         category: this.categoryInput.value,
-        amount: this.amountInput.value
+        amount: this.amountInput.value,
       };
 
       store.dispatchEvent(
