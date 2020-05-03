@@ -20,7 +20,7 @@ class Input extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["placeholder"];
+    return ["placeholder", "value"];
   }
 
   get value() {
@@ -34,6 +34,8 @@ class Input extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "placeholder") {
       this.input.setAttribute(name, newValue);
+    } else if (name === "value") {
+      this.input.value = newValue;
     }
   }
 }

@@ -1,3 +1,5 @@
+import "./components/input.js";
+
 export const EVENT_ADD_FIAT_TRANSACTION = "addFiatTransaction";
 export const EVENT_ASSETS_UPDATED = "updatedAssets";
 export const EVENT_ADD_ASSET = "addAsset";
@@ -19,6 +21,6 @@ export const numberToLocal = (numberOrString) =>
 
 export const createColumn = (label, value) => {
   const column = document.createElement("li");
-  column.innerHTML = `<label for="${label.toLowerCase()}_input">${label}:</label><input id="${label.toLowerCase()}_input" value="${value}" disabled>`;
+  column.innerHTML = `<label for="${label.toLowerCase()}_input">${label}:</label><hk-input id="${label.toLowerCase()}_input" value="${value}" disabled></hk-input>`;
   return column;
 };

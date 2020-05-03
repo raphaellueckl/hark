@@ -3,9 +3,11 @@ import { resetUL } from "../../css-globals.js";
 import {
   EVENT_ADD_FIAT_TRANSACTION,
   TYPE_DEPOSIT,
-  TYPE_WITHDRAW
+  TYPE_WITHDRAW,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
+
+import "../input.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -20,6 +22,7 @@ template.innerHTML = `
   li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .add-button-container{
@@ -29,19 +32,19 @@ template.innerHTML = `
 <ul class="menu-container">
   <li>
     <label for="amount">Amount:</label>
-    <input id="amount" placeholder="E.g. 10.5">
+    <hk-input id="amount" placeholder="E.g. 10.5" />
   </li>
   <li>
     <label for="date">Date:</label>
-    <input id="date" placeholder="yyyy-mm-dd">
+    <hk-input id="date" placeholder="yyyy-mm-dd" />
   </li>
   <li>
     <label for="exchange">Exchange:</label>
-    <input id="exchange" placeholder="E.g. Kraken">
+    <hk-input id="exchange" placeholder="E.g. Kraken" />
   </li>
   <li>
     <label for="symbol">Currency:</label>
-    <input id="symbol" placeholder="E.g. USD">
+    <hk-input id="symbol" placeholder="E.g. USD" />
   </li>
   <li>
     <label>Type:</label>
@@ -78,19 +81,19 @@ class AddFiatTransaction extends HTMLElement {
 
     button.addEventListener("click", () => {
       const type = [
-        ...this.shadowRoot.querySelectorAll('input[name="type"]')
-      ].filter(r => r.checked === true)[0].value;
+        ...this.shadowRoot.querySelectorAll('input[name="type"]'),
+      ].filter((r) => r.checked === true)[0].value;
 
       const addTransaction = {
         date: this.dateInput.value,
         symbol: this.symbolInput.value,
         amount: this.amountInput.value,
         exchange: this.exchangeInput.value,
-        type
+        type,
       };
       store.dispatchEvent(
         new CustomEvent(EVENT_ADD_FIAT_TRANSACTION, {
-          detail: addTransaction
+          detail: addTransaction,
         })
       );
       this._clearInputs();

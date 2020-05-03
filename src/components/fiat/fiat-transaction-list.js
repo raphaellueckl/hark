@@ -2,6 +2,7 @@ import { databaseConnector } from "../../data/database-connector.js";
 import { store } from "../../store.js";
 import { resetUL } from "../../css-globals.js";
 import { EVENT_UPDATED_FIAT_TRANSACTIONS } from "../../globals.js";
+
 import "./fiat-transaction.js";
 
 class AssetList extends HTMLElement {
