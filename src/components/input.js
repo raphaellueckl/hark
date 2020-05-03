@@ -36,14 +36,6 @@ class Input extends HTMLElement {
       this.input.setAttribute(name, newValue);
     }
   }
-
-  connectedCallback() {
-    this.input.addEventListener("change", (e) => {
-      console.log(e);
-      this.value = e.target.value;
-      debugger;
-    });
-  }
 }
 
 customElements.define("hk-input", Input);
