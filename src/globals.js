@@ -14,8 +14,8 @@ export const CATEGORY_RESOURCE = "Resource";
 export const CATEGORY_STOCK = "Stock";
 export const CATEGORY_CURRENCY = "Currency";
 
-export const numberToLocal = numberOrString =>
-  Number(numberOrString).toLocaleString("en-CH");
+export const numberToLocal = (numberOrString) =>
+  Number(Number(numberOrString).toFixed(2)).toLocaleString("en-CH");
 
 export const createColumn = (label, value) => {
   const column = document.createElement("li");
