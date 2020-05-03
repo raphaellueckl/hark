@@ -29,6 +29,7 @@ template.innerHTML = `
   li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .add-button-container{
