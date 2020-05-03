@@ -6,6 +6,7 @@ template.innerHTML = `
 <style>
     .content {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 250px;
@@ -16,6 +17,14 @@ template.innerHTML = `
         flex-direction: column;
         align-items: center;
         width: 250px;
+
+        background-color: #f7f7f7;
+        border-radius: 15px;
+    }
+
+    .emoji-container {
+        font-size: 32px;
+        padding: 20px 0;
     }
 
     #balance {
@@ -31,8 +40,28 @@ template.innerHTML = `
     <h2>Portfolio Balance</h2>
     <div class="content">
         <span id="balance"></span>
+        <span class="emoji-container"></span>
     </div>
 </div>`;
+
+const emoji = [
+  "🚀",
+  "👯‍♀️",
+  "🎯",
+  "🎉",
+  "🎊",
+  "❤️",
+  "🎈",
+  "🥁",
+  "🏋️‍♀️",
+  "🍻",
+  "🥂",
+  "🥃",
+  "🍪",
+  "🙏",
+];
+
+const emojiYielder = () => emoji[Math.floor(Math.random() * emoji.length)];
 
 class PortfolioBalance extends HTMLElement {
   constructor() {
@@ -48,6 +77,7 @@ class PortfolioBalance extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "balance") {
+      const emojiNow = emojiYielder();
       let balanceNumber = Number(newValue);
       // Cut away the after-comma part for 5 digit numbers
       if (balanceNumber >= 10000) {
@@ -55,6 +85,11 @@ class PortfolioBalance extends HTMLElement {
       }
       const balance = numberToLocal(balanceNumber);
       this.shadowRoot.querySelector("#balance").textContent = `${balance} CHF`;
+      [...this.shadowRoot.querySelectorAll(".emoji-container")].forEach(
+        (container) => {
+          container.textContent = emojiNow;
+        }
+      );
     }
   }
 }
