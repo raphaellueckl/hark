@@ -2,6 +2,7 @@ import { numberToLocal } from "../../globals.js";
 
 const BAR_END = "50";
 const BAR_START = "220";
+const CENTER_X = "125";
 const BAR_MAX_HEIGHT = BAR_START - BAR_END;
 
 const template = document.createElement("template");
@@ -101,6 +102,16 @@ class HistogramChart extends HTMLElement {
     this.shadowRoot.querySelector("#difference").textContent = `${
       positive - negative > 0 ? "+" : "-"
     } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
+
+    if (negative <= 0) {
+      this.shadowRoot.querySelector(".positive").setAttribute("x1", CENTER_X);
+      this.shadowRoot.querySelector(".positive").setAttribute("x2", CENTER_X);
+      this.shadowRoot.querySelector("#positive").setAttribute("x", CENTER_X);
+      this.shadowRoot.querySelector("#negative").style.display = "none";
+      this.shadowRoot.querySelector(".negative").style.display = "none";
+      this.shadowRoot.querySelector("#bottom-line").setAttribute("x1", "60");
+      this.shadowRoot.querySelector("#bottom-line").setAttribute("x2", "190");
+    }
   }
 }
 
