@@ -44,8 +44,7 @@ template.innerHTML = `
 <div>
   <h2></h2>
   <svg height="250" width="250">
-    <text id="difference" x="125" y="15"></text>
-    <text id="difference-percent" x="125" y="35"></text>
+    <text id="difference" x="125" y="30"></text>
     <line class="data-line positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
     <line class="data-line negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
     <line id="bottom-line" x1="20" y1="220" x2="230" y2="220" />
@@ -102,11 +101,6 @@ class HistogramChart extends HTMLElement {
     this.shadowRoot.querySelector("#difference").textContent = `${
       positive - negative > 0 ? "+" : "-"
     } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
-    this.shadowRoot.querySelector("#difference-percent").textContent = `${
-      positive - negative > 0 ? "+" : "-"
-    } ${numberToLocal(
-      Math.abs((100 / negative) * positive - 100).toFixed(2)
-    )} %`;
   }
 }
 

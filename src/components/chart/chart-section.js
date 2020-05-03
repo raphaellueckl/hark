@@ -9,7 +9,7 @@ import {
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
   CATEGORY_STOCK,
-  CATEGORY_CURRENCY
+  CATEGORY_CURRENCY,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -79,12 +79,14 @@ class Chart extends HTMLElement {
    * assetlist: {symbol, asset, category, amount, value}
    */
   _updateAssetChart = ({ detail: assetList }) => {
-    const sumOfValues = assetList.map(v => +v.value).reduce((a, b) => a + b, 0);
-    let chartData = assetList.map(asset => ({
+    const sumOfValues = assetList
+      .map((v) => +v.value)
+      .reduce((a, b) => a + b, 0);
+    let chartData = assetList.map((asset) => ({
       name: asset.asset,
       value: asset.value,
       weight: Number(asset.value),
-      key: asset.category + asset.symbol
+      key: asset.category + asset.symbol,
     }));
     chartData.sort((a, b) => b.value - a.value);
 
@@ -95,70 +97,76 @@ class Chart extends HTMLElement {
 
   _updateTotalReturnChartByTransactions = ({ detail: transactionList }) => {
     this.combinedDepositsValue = transactionList
-      .filter(tr => tr.type === TYPE_DEPOSIT)
-      .map(tr => +tr.amount)
+      .filter((tr) => tr.type === TYPE_DEPOSIT)
+      .map((tr) => +tr.amount)
       .reduce((a, b) => a + b, 0);
     this.combinedWithdrawalsValue = transactionList
-      .filter(tr => tr.type === TYPE_WITHDRAW)
-      .map(tr => +tr.amount)
+      .filter((tr) => tr.type === TYPE_WITHDRAW)
+      .map((tr) => +tr.amount)
       .reduce((a, b) => a + b, 0);
+
+    const withdrawalDepositDelta =
+      this.combinedWithdrawalsValue - this.combinedDepositsValue;
 
     if (isNaN(this.combinedAssetsTotalValue)) return;
 
-    const totalValue =
-      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
+    const totalValue = withdrawalDepositDelta + this.combinedAssetsTotalValue;
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
         "data",
         JSON.stringify({
           positive: totalValue,
-          negative: this.combinedDepositsValue
+          negative: withdrawalDepositDelta < 0 ? withdrawalDepositDelta : 0,
         })
       );
   };
 
   _updateTotalReturnChartByAssets = ({ detail: assetList }) => {
     this.combinedAssetsTotalValue = assetList
-      .map(a => +a.value)
+      .map((a) => +a.value)
       .reduce((a, b) => a + b, 0);
 
     if (isNaN(this.combinedWithdrawalsValue)) return;
 
-    const totalValue =
-      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
+    const withdrawalDepositDelta =
+      this.combinedWithdrawalsValue - this.combinedDepositsValue;
+    const totalValue = withdrawalDepositDelta + this.combinedAssetsTotalValue;
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
         "data",
         JSON.stringify({
           positive: totalValue,
-          negative: this.combinedDepositsValue
+          negative:
+            withdrawalDepositDelta < 0 ? Math.abs(withdrawalDepositDelta) : 0,
         })
       );
   };
 
   _updateSpreadChart = ({ detail: assetList }) => {
-    const sumOfValues = assetList.map(v => +v.value).reduce((a, b) => a + b, 0);
+    const sumOfValues = assetList
+      .map((v) => +v.value)
+      .reduce((a, b) => a + b, 0);
 
-    let chartData = assetList.map(asset => ({
+    let chartData = assetList.map((asset) => ({
       name: asset.category,
       value: asset.value,
-      weight: Number(asset.value)
+      weight: Number(asset.value),
     }));
     chartData.sort((a, b) => b.value - a.value);
 
     let accumulatedCryptos = assetList
-      .filter(asset => asset.category === CATEGORY_CRYPTO)
+      .filter((asset) => asset.category === CATEGORY_CRYPTO)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedResources = assetList
-      .filter(asset => asset.category === CATEGORY_RESOURCE)
+      .filter((asset) => asset.category === CATEGORY_RESOURCE)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedStocks = assetList
-      .filter(asset => asset.category === CATEGORY_STOCK)
+      .filter((asset) => asset.category === CATEGORY_STOCK)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
     let accumulatedCurrencies = assetList
-      .filter(asset => asset.category === CATEGORY_CURRENCY)
+      .filter((asset) => asset.category === CATEGORY_CURRENCY)
       .reduce((accumulation, b) => accumulation + +b.value, 0);
 
     this.shadowRoot
@@ -171,24 +179,24 @@ class Chart extends HTMLElement {
             {
               name: CATEGORY_CRYPTO,
               value: accumulatedCryptos,
-              weight: accumulatedCryptos
+              weight: accumulatedCryptos,
             },
             {
               name: CATEGORY_RESOURCE,
               value: accumulatedResources,
-              weight: accumulatedResources
+              weight: accumulatedResources,
             },
             {
               name: CATEGORY_STOCK,
               value: accumulatedStocks,
-              weight: accumulatedStocks
+              weight: accumulatedStocks,
             },
             {
               name: CATEGORY_CURRENCY,
               value: accumulatedCurrencies,
-              weight: accumulatedCurrencies
-            }
-          ]
+              weight: accumulatedCurrencies,
+            },
+          ],
         })
       );
   };
