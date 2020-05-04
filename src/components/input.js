@@ -1,13 +1,22 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+
     input {
         border: 1px solid black;
         border-radius: 3px;
         padding: 5px;
+        margin-top: 2px;
     }
 </style>
-<input />
+<div>
+    <slot></slot>
+    <input />
+</div>
 `;
 
 class Input extends HTMLElement {

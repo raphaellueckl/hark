@@ -21,6 +21,6 @@ export const numberToLocal = (numberOrString) =>
 
 export const createColumn = (label, value) => {
   const column = document.createElement("li");
-  column.innerHTML = `<label for="${label.toLowerCase()}_input">${label}:</label><hk-input id="${label.toLowerCase()}_input" value="${value}" disabled></hk-input>`;
+  column.innerHTML = `<hk-input id="${label.toLowerCase()}_input" value="${value}" disabled>${label}</hk-input>`;
   return column;
 };
