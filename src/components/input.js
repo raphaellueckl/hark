@@ -6,11 +6,14 @@ template.innerHTML = `
         flex-direction: column;
     }
 
+    ::slotted(label) {
+        margin-bottom: 2px;
+    }
+
     input {
         border: 1px solid black;
         border-radius: 3px;
         padding: 5px;
-        margin-top: 2px;
     }
 </style>
 <div>
