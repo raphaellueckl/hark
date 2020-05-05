@@ -12,12 +12,12 @@ template.innerHTML = `
   
   li {
     display: flex;
-    justify-content: space-between;
     padding: 5px;
   }
 
   .remove-button-container{
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
   }
 
   ul {
@@ -71,7 +71,7 @@ class FiatTransaction extends HTMLElement {
 
       const buttonContainer = document.createElement("li");
       buttonContainer.classList.add("remove-button-container");
-      const button = document.createElement("button");
+      const button = document.createElement("hk-button");
       button.textContent = "remove";
       button.addEventListener("click", (e) => {
         store.dispatchEvent(

@@ -8,6 +8,7 @@ import {
 import { databaseConnector } from "../../data/database-connector.js";
 
 import "../input.js";
+import "../button.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -56,7 +57,7 @@ template.innerHTML = `
     </div>
   </li>
   <li class="add-button-container">
-    <button>Add</button>
+    <hk-button>Add</hk-button>
   </li>
 </ul>`;
 
@@ -77,7 +78,7 @@ class AddFiatTransaction extends HTMLElement {
 
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
 
-    const button = this.shadowRoot.querySelector("button");
+    const button = this.shadowRoot.querySelector("hk-button");
 
     button.addEventListener("click", () => {
       const type = [

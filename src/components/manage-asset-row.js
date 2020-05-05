@@ -2,6 +2,8 @@ import { store } from "../store.js";
 import { resetUL, BREAKPOINT_TABLET } from "../css-globals.js";
 import { EVENT_REMOVE_ASSET_BY_INDEX, createColumn } from "../globals.js";
 
+import "./button.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
@@ -9,7 +11,6 @@ template.innerHTML = `
 
   li {
       display: flex;
-      justify-content: space-between;
   }
 
   .remove-button-container{
@@ -70,7 +71,7 @@ class Asset extends HTMLElement {
 
       const li = document.createElement("li");
       li.classList.add("remove-button-container");
-      const button = document.createElement("button");
+      const button = document.createElement("hk-button");
       button.textContent = "remove";
       button.addEventListener("click", (e) => {
         store.dispatchEvent(

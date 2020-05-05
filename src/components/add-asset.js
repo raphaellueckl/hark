@@ -9,6 +9,7 @@ import {
 } from "../globals.js";
 
 import "./input.js";
+import "./button.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -64,7 +65,7 @@ template.innerHTML = `
     <label for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" />
   </li>
   <li class="add-button-container">
-    <button>Add</button>
+    <hk-button>Add</hk-button>
   </li>
 </ul>`;
 
@@ -76,7 +77,7 @@ class AddAsset extends HTMLElement {
   }
 
   connectedCallback() {
-    const button = this.shadowRoot.querySelector("button");
+    const button = this.shadowRoot.querySelector("hk-button");
     this.assetInput = this.shadowRoot.querySelector("#asset");
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.categoryInput = this.shadowRoot.querySelector("#category");
