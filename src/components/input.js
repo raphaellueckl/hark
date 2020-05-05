@@ -14,6 +14,8 @@ template.innerHTML = `
         border: 1px solid black;
         border-radius: 3px;
         padding: 5px;
+        width: 138px;
+        height: 16px;
     }
 </style>
 <div>

@@ -35,6 +35,13 @@ template.innerHTML = `
   .add-button-container{
     justify-content: flex-end;
   }
+
+  select {
+    width: 150px;
+    height: 28px;
+    padding: 5px;
+    border: 1px solid black;
+  }
 </style>
 
 <ul class="menu-container">
