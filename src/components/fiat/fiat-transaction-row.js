@@ -33,6 +33,10 @@ template.innerHTML = `
     width: 100px;
   }
 
+  hk-button {
+    height: 50px;
+  }
+
   @media (min-width: ${BREAKPOINT_DESKTOP}) {
     ul {
       flex-direction: row;

@@ -1,28 +1,17 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
-    div {
-        display: flex;
-        flex-direction: column;
-    }
-
-    ::slotted(label) {
-        margin-bottom: 2px;
-    }
-
-    input {
-        border: 1px solid black;
-        border-radius: 3px;
-        padding: 5px;
-        width: 138px;
-        height: 16px;
+    :host {
+        display: block;
+        height: 30px;
     }
 
     button {
         border: 1px solid black;
         border-radius: 10px;
         width: 80px;
-        height: 50px;
+        height: inherit;
+        background-color: rgba(33, 33, 33, 0.2);
     }
 </style>
 <button>
