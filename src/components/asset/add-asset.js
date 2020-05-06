@@ -1,15 +1,15 @@
-import { store } from "../store.js";
-import { resetUL } from "../css-globals.js";
+import { store } from "../../store.js";
+import { resetUL } from "../../css-globals.js";
 import {
   EVENT_ADD_ASSET,
   CATEGORY_STOCK,
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
   CATEGORY_CURRENCY,
-} from "../globals.js";
+} from "../../globals.js";
 
-import "./input.js";
-import "./button.js";
+import "../input.js";
+import "../button.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -19,9 +19,6 @@ template.innerHTML = `
   :host {
     display: block;
   }
-
-
-
 
   .menu-container {
     display: flex;

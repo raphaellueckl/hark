@@ -1,5 +1,5 @@
-import "../components/add-asset.js";
-import "../components/manage-assets.js";
+import "../components/asset/add-asset.js";
+import "../components/asset/manage-assets.js";
 
 export const manageAssetsPage = `
 <style>

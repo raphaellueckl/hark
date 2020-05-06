@@ -1,7 +1,7 @@
-import { databaseConnector } from "../data/database-connector.js";
-import { store } from "../store.js";
-import { resetUL } from "../css-globals.js";
-import { EVENT_ASSETS_UPDATED } from "../globals.js";
+import { databaseConnector } from "../../data/database-connector.js";
+import { store } from "../../store.js";
+import { resetUL } from "../../css-globals.js";
+import { EVENT_ASSETS_UPDATED } from "../../globals.js";
 
 import "./manage-asset-row.js";
 

@@ -1,43 +1,45 @@
-import { store } from "../store.js";
-import { resetUL, BREAKPOINT_TABLET } from "../css-globals.js";
-import { EVENT_REMOVE_ASSET_BY_INDEX, createColumn } from "../globals.js";
+import { store } from "../../store.js";
+import { resetUL, BREAKPOINT_DESKTOP } from "../../css-globals.js";
+import { EVENT_REMOVE_ASSET_BY_INDEX, createColumn } from "../../globals.js";
 
-import "./button.js";
+import "../button.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
   ${resetUL}
-
+    
   li {
-      display: flex;
+    display: flex;
+    padding: 5px;
   }
 
   .remove-button-container{
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
   }
 
   ul {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    margin: 5px;
+    padding: 5px;
+    background-color: #f7f7f7;
+    border-radius: 15px;
   }
 
   input {
     width: 100px;
   }
 
-  @media (min-width: ${BREAKPOINT_TABLET}) {
+  hk-button {
+    height: 50px;
+  }
+
+  @media (min-width: ${BREAKPOINT_DESKTOP}) {
     ul {
       flex-direction: row;
-    }
-
-    li {
-      padding-right: 5px;
-    }
-    
-    li:last-child {
-      padding-right: 0;
+      flex-wrap: wrap;
     }
   }
 </style>
