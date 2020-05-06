@@ -18,42 +18,63 @@ template.innerHTML = `
   .menu-container {
     display: flex;
     flex-direction: column;
+
+    background-color: #f7f7f7;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
   }
 
   li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    margin: 5px 0;
+  }
+
+  .input-label {
+    margin-right: 5px;
   }
 
   .add-button-container{
     justify-content: flex-end;
   }
+
+  .type-container {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+  }
 </style>
 <ul class="menu-container">
   <li>
-    <label for="amount">Amount:</label>
+    <label class="input-label" for="amount">Amount:</label>
     <hk-input id="amount" placeholder="E.g. 10.5" />
   </li>
   <li>
-    <label for="date">Date:</label>
+    <label class="input-label" for="date">Date:</label>
     <hk-input id="date" placeholder="yyyy-mm-dd" />
   </li>
   <li>
-    <label for="exchange">Exchange:</label>
+    <label class="input-label" for="exchange">Exchange:</label>
     <hk-input id="exchange" placeholder="E.g. Kraken" />
   </li>
   <li>
-    <label for="symbol">Currency:</label>
+    <label class="input-label" for="symbol">Currency:</label>
     <hk-input id="symbol" placeholder="E.g. USD" />
   </li>
   <li>
     <label>Type:</label>
-    <div>
-      <label for="deposit">Deposit</label>
+    <div class="type-container">
+      <div>
       <input name="type" id="deposit" type="radio" value="${TYPE_DEPOSIT}">
-      <label for="withdrawal">Withdrawal</label>
+        <label class="input-label" for="deposit">Deposit</label>
+      </div>
+      <div>
       <input name="type" id="withdrawal" type="radio" value="${TYPE_WITHDRAW}">
+        <label class="input-label" for="withdrawal">Withdrawal</label>
+      <div>
     </div>
   </li>
   <li class="add-button-container">

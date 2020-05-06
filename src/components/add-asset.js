@@ -20,22 +20,52 @@ template.innerHTML = `
     display: block;
   }
 
-  .menu-container {
-    width: 250px;
 
+
+
+  .menu-container {
     display: flex;
     flex-direction: column;
+
+    background-color: #f7f7f7;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
   }
 
   li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    margin: 5px 0;
+  }
+
+  .input-label {
+    margin-right: 5px;
   }
 
   .add-button-container{
     justify-content: flex-end;
   }
+
+
+
+
+
+  // .menu-container {
+  //   width: 250px;
+
+  //   display: flex;
+  //   flex-direction: column;
+  // }
+
+  // li {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  // }
+
 
   select {
     width: 150px;
@@ -47,13 +77,13 @@ template.innerHTML = `
 
 <ul class="menu-container">
   <li>
-    <label for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" />
+    <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" />
   </li>
   <li>
-    <label for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" />
+    <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" />
   </li>
   <li>
-    <label for="category">Category:</label>
+    <label class="input-label" for="category">Category:</label>
     <select id="category">
       <option value="${CATEGORY_STOCK}">Stock</option>
       <option value="${CATEGORY_CRYPTO}">Crypto</option>
@@ -62,7 +92,7 @@ template.innerHTML = `
 </select>
   </li>
   <li>
-    <label for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" />
+    <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" />
   </li>
   <li class="add-button-container">
     <hk-button>Add</hk-button>
