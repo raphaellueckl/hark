@@ -49,24 +49,6 @@ template.innerHTML = `
     justify-content: flex-end;
   }
 
-
-
-
-
-  // .menu-container {
-  //   width: 250px;
-
-  //   display: flex;
-  //   flex-direction: column;
-  // }
-
-  // li {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  // }
-
-
   select {
     width: 150px;
     height: 28px;
