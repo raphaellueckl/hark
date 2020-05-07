@@ -1,17 +1,38 @@
 import { databaseConnector } from "../data/database-connector.js";
 
+import "./button.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
-<style>
-</style>
-<div>
-  <label>Backup & Export:</label>
-  <button id="export">Export</button>
-</div>
-<div>
-  <label>Import & Restore:</label>
-  <input id="import" type="file"></input>
-</div>`;
+  <style>
+    hk-button {
+      display:inline;
+    }
+
+    div {
+      margin: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    #file-upload-button {
+      display:none;
+    }
+  </style>
+  <div>
+    <label>Backup & Export:</label>
+    <hk-button id="export">Export</hk-button>
+  </div>
+  <div>
+    <label>Import & Restore:</label>
+    <input id="import-file-hidden-button" type="file" style="display:none;"></input>
+    <hk-button id="import">Import</hk-button>
+  </div>
+  <div>
+    <label>Clear Database:</label>
+    <hk-button>Boom!</hk-button>
+  </div>
+`;
 
 class ExportApplicationState extends HTMLElement {
   constructor() {
@@ -23,6 +44,9 @@ class ExportApplicationState extends HTMLElement {
   connectedCallback() {
     const exportButton = this.shadowRoot.querySelector("#export");
     const importButton = this.shadowRoot.querySelector("#import");
+    const hiddenImportFileButton = this.shadowRoot.querySelector(
+      "#import-file-hidden-button"
+    );
 
     exportButton.addEventListener("click", () => {
       const appState = databaseConnector.getApplicationStateAsString();
@@ -44,7 +68,11 @@ class ExportApplicationState extends HTMLElement {
       });
     });
 
-    importButton.addEventListener("change", (event) => {
+    importButton.addEventListener("click", (event) => {
+      hiddenImportFileButton.click();
+    });
+
+    hiddenImportFileButton.addEventListener("change", (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.readAsText(file, "UTF-8");
