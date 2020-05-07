@@ -8,6 +8,11 @@ export const dashboardPage = `
         flex-direction: column;
         align-items: center;
     }
+
+    hk-asset-overview {
+        display: block;
+        margin-top: 50px;
+    }
 </style>
 
 <div class="content">
