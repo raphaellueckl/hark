@@ -4,34 +4,34 @@ import {
   CATEGORY_CRYPTO,
   CATEGORY_STOCK,
   CATEGORY_RESOURCE,
-  CATEGORY_CURRENCY
+  CATEGORY_CURRENCY,
 } from "../globals.js";
 
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
 const STORAGE_KEY_ASSETS = "assets";
 
+const storage = localStorage;
+
 class DatabaseConnector {
   constructor() {
-    this.storage = localStorage;
-
     this._initMockData();
   }
 
   getApplicationStateAsString() {
-    return JSON.stringify(localStorage);
+    return JSON.stringify(storage);
   }
 
   setApplicationStateFromString(stateAsString) {
     const state = JSON.parse(stateAsString);
-    localStorage.clear();
+    storage.clear();
     for (const key of Object.keys(state)) {
-      localStorage.setItem(key, state[key]);
+      storage.setItem(key, state[key]);
     }
   }
 
   getFiatTransactions() {
     const fiatTransactions =
-      this.storage.getItem(STORAGE_KEY_FIAT_TRANSACTIONS) || [];
+      storage.getItem(STORAGE_KEY_FIAT_TRANSACTIONS) || [];
     return fiatTransactions.length ? JSON.parse(fiatTransactions) : [];
   }
 
@@ -39,7 +39,7 @@ class DatabaseConnector {
     const transactions = this.getFiatTransactions();
     transactions.push(transaction);
     this._sortFiatTransactionsByDateDescending(transactions);
-    this.storage.setItem(
+    storage.setItem(
       STORAGE_KEY_FIAT_TRANSACTIONS,
       JSON.stringify(transactions)
     );
@@ -50,7 +50,7 @@ class DatabaseConnector {
       (_transaction, _index) => index !== _index
     );
     this._sortFiatTransactionsByDateDescending(updatedTransactions);
-    this.storage.setItem(
+    storage.setItem(
       STORAGE_KEY_FIAT_TRANSACTIONS,
       JSON.stringify(updatedTransactions)
     );
@@ -60,21 +60,21 @@ class DatabaseConnector {
     const assets = this.getAssets();
     assets.push(asset);
 
-    this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
   removeAssetByIndex(index) {
     const assets = this.getAssets().filter((asset, _index) => index !== _index);
 
-    this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
   getMostUsedCurrency() {
     const transactions = this.getFiatTransactions();
     if (transactions.length > 3) {
-      const symbolsAsArray = transactions.map(t => t.symbol);
+      const symbolsAsArray = transactions.map((t) => t.symbol);
       const frequency = new Map();
-      symbolsAsArray.forEach(t => {
+      symbolsAsArray.forEach((t) => {
         frequency.set(t, (frequency.get(t) || 0) + 1);
       });
       return [...frequency.entries()].reduce((a, e) =>
@@ -87,21 +87,25 @@ class DatabaseConnector {
   removeAsset(asset) {
     const assets = this._removeAssetVirtual(asset);
 
-    this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
   getAssets() {
-    const assets = this.storage.getItem(STORAGE_KEY_ASSETS) || [];
+    const assets = storage.getItem(STORAGE_KEY_ASSETS) || [];
     return assets.length ? JSON.parse(assets) : [];
+  }
+
+  clearDatabase() {
+    storage.clear();
   }
 
   _removeAssetVirtual(asset) {
     const assets =
-      (this.storage.getItem(STORAGE_KEY_ASSETS) &&
-        JSON.parse(this.storage.getItem(STORAGE_KEY_ASSETS))) ||
+      (storage.getItem(STORAGE_KEY_ASSETS) &&
+        JSON.parse(storage.getItem(STORAGE_KEY_ASSETS))) ||
       [];
     const removeAssetFromAssets = assets.filter(
-      _asset => _asset.symbol !== asset.symbol
+      (_asset) => _asset.symbol !== asset.symbol
     );
     return removeAssetFromAssets;
   }
@@ -117,34 +121,34 @@ class DatabaseConnector {
           symbol: "bitcoin",
           asset: "bitcoin",
           category: CATEGORY_CRYPTO,
-          amount: 0.2
+          amount: 0.2,
         },
         {
           symbol: "ethereum",
           asset: "ethereum",
           category: CATEGORY_CRYPTO,
-          amount: 3
+          amount: 3,
         },
         {
           symbol: "MSFT",
           asset: "microsoft",
           category: CATEGORY_STOCK,
-          amount: 1
+          amount: 1,
         },
         {
           symbol: "XAU",
           asset: "gold",
           category: CATEGORY_RESOURCE,
-          amount: 10
+          amount: 10,
         },
         {
           symbol: "EUR",
           asset: "Euro",
           category: CATEGORY_CURRENCY,
-          amount: 2000
-        }
+          amount: 2000,
+        },
       ];
-      this.storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
+      storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
     }
 
     if (!this.getFiatTransactions().length) {
@@ -154,27 +158,24 @@ class DatabaseConnector {
           exchange: "kraken",
           symbol: "CHF",
           amount: "340",
-          type: TYPE_DEPOSIT
+          type: TYPE_DEPOSIT,
         },
         {
           date: "2015-05-13",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "470",
-          type: TYPE_DEPOSIT
+          type: TYPE_DEPOSIT,
         },
         {
           date: "2020-03-31",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "100",
-          type: TYPE_WITHDRAW
-        }
+          type: TYPE_WITHDRAW,
+        },
       ];
-      this.storage.setItem(
-        STORAGE_KEY_FIAT_TRANSACTIONS,
-        JSON.stringify(mockData)
-      );
+      storage.setItem(STORAGE_KEY_FIAT_TRANSACTIONS, JSON.stringify(mockData));
     }
   }
 }

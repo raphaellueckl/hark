@@ -50,7 +50,7 @@ template.innerHTML = `
     </li>
     <li>
       <label class="input-label">Clear Database:</label>
-      <hk-button>Boom!</hk-button>
+      <hk-button id="clear-database">Boom!</hk-button>
     </li>
   </ul>
 `;
@@ -67,6 +67,9 @@ class ExportApplicationState extends HTMLElement {
     const importButton = this.shadowRoot.querySelector("#import");
     const hiddenImportFileButton = this.shadowRoot.querySelector(
       "#import-file-hidden-button"
+    );
+    const clearDatabaseButton = this.shadowRoot.querySelector(
+      "#clear-database"
     );
 
     exportButton.addEventListener("click", () => {
@@ -89,7 +92,7 @@ class ExportApplicationState extends HTMLElement {
       });
     });
 
-    importButton.addEventListener("click", (event) => {
+    importButton.addEventListener("click", () => {
       hiddenImportFileButton.click();
     });
 
@@ -103,8 +106,12 @@ class ExportApplicationState extends HTMLElement {
         databaseConnector.setApplicationStateFromString(backupAsString);
       };
       reader.onerror = function (evt) {
-        console.log("Error when loading file!");
+        console.log("Error when loading file!", evt);
       };
+    });
+
+    clearDatabaseButton.addEventListener("click", (ev) => {
+      databaseConnector.clearDatabase();
     });
   }
 }
