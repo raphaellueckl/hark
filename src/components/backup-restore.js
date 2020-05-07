@@ -1,37 +1,58 @@
 import { databaseConnector } from "../data/database-connector.js";
+import { resetUL } from "../css-globals.js";
 
 import "./button.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
+    ${resetUL}
+
     hk-button {
       display:inline;
     }
 
-    div {
-      margin: 10px;
+    li {
       display: flex;
+      justify-content: space-between;
       align-items: center;
+  
+      margin: 5px 0;
     }
 
     #file-upload-button {
       display:none;
     }
+
+    .menu-container {
+      display: flex;
+      flex-direction: column;
+  
+      background-color: #f7f7f7;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px;
+    }
+
+    .input-label {
+      margin-right: 5px;
+    }
   </style>
-  <div>
-    <label>Backup & Export:</label>
-    <hk-button id="export">Export</hk-button>
-  </div>
-  <div>
-    <label>Import & Restore:</label>
-    <input id="import-file-hidden-button" type="file" style="display:none;"></input>
-    <hk-button id="import">Import</hk-button>
-  </div>
-  <div>
-    <label>Clear Database:</label>
-    <hk-button>Boom!</hk-button>
-  </div>
+  <ul class="menu-container">
+    <li>
+      <label class="input-label">Backup & Export:</label>
+      <hk-button id="export">Export</hk-button>
+    </li>
+    <li>
+      <label class="input-label">Import & Restore:</label>
+      <input id="import-file-hidden-button" type="file" style="display:none;"></input>
+      <hk-button id="import">Import</hk-button>
+    </li>
+    <li>
+      <label class="input-label">Clear Database:</label>
+      <hk-button>Boom!</hk-button>
+    </li>
+  </ul>
 `;
 
 class ExportApplicationState extends HTMLElement {
