@@ -1,5 +1,5 @@
 import { priceFetcher } from "../data/price-fetcher.js";
-import { resetUL } from "../css-globals.js";
+import { resetUL, ITEM_BACKGROUND } from "../css-globals.js";
 import { store } from "../store.js";
 import { numberToLocal } from "../globals.js";
 
@@ -18,6 +18,9 @@ template.innerHTML = `
     li {
       width: 200px;
       padding: 20px;
+      margin: 10px;
+      background-color: ${ITEM_BACKGROUND};
+      border-radius: 15px;
 
       display: grid;
       grid-gap: 0 10px;

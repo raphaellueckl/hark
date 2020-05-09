@@ -1,5 +1,9 @@
 import { store } from "../../store.js";
-import { resetUL, BREAKPOINT_DESKTOP } from "../../css-globals.js";
+import {
+  resetUL,
+  BREAKPOINT_DESKTOP,
+  ITEM_BACKGROUND,
+} from "../../css-globals.js";
 import {
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
   createColumn,
@@ -25,7 +29,7 @@ template.innerHTML = `
     flex-direction: column;
     margin: 5px;
     padding: 5px;
-    background-color: #f7f7f7;
+    background-color: ${ITEM_BACKGROUND};
     border-radius: 15px;
   }
 

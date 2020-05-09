@@ -15,6 +15,8 @@ export const BREAKPOINT_TABLET = "768px";
 export const BREAKPOINT_MOBILE = "576px";
 export const BREAKPOINT_DESKTOP = "1024px";
 
+export const ITEM_BACKGROUND = "#f7f7f7";
+
 export const widgetContainerStyles = `.widget-container {
     display: flex;
     flex-direction: column;
@@ -22,6 +24,6 @@ export const widgetContainerStyles = `.widget-container {
     width: 250px;
     margin: 5px;
 
-    background-color: #f7f7f7;
+    background-color: ${ITEM_BACKGROUND};
     border-radius: 15px;
 }`;

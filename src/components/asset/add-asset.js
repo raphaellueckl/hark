@@ -1,5 +1,5 @@
 import { store } from "../../store.js";
-import { resetUL } from "../../css-globals.js";
+import { resetUL, ITEM_BACKGROUND } from "../../css-globals.js";
 import {
   EVENT_ADD_ASSET,
   CATEGORY_STOCK,
@@ -24,7 +24,7 @@ template.innerHTML = `
     display: flex;
     flex-direction: column;
 
-    background-color: #f7f7f7;
+    background-color: ${ITEM_BACKGROUND};
     border-radius: 15px;
     padding: 20px;
     margin: 20px;
