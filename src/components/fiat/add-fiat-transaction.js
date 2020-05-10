@@ -106,7 +106,6 @@ class AddFiatTransaction extends HTMLElement {
       this.symbolInput,
       this.amountInput,
       this.exchangeInput,
-      this.depositInput,
     ];
 
     button.addEventListener("click", () => {
