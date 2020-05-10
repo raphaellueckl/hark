@@ -3,6 +3,7 @@ import {
   resetUL,
   BREAKPOINT_DESKTOP,
   ITEM_BACKGROUND,
+  BREAKPOINT_TABLET,
 } from "../../css-globals.js";
 import { EVENT_REMOVE_ASSET_BY_INDEX, createColumn } from "../../globals.js";
 
@@ -44,6 +45,18 @@ template.innerHTML = `
     ul {
       flex-direction: row;
       flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: 1023px) {
+    ul {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    li {
+      justify-content: center;
+      flex-basis: 30%
     }
   }
 </style>

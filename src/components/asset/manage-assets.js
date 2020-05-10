@@ -1,6 +1,6 @@
 import { databaseConnector } from "../../data/database-connector.js";
 import { store } from "../../store.js";
-import { resetUL } from "../../css-globals.js";
+import { resetUL, BREAKPOINT_TABLET } from "../../css-globals.js";
 import { EVENT_ASSETS_UPDATED } from "../../globals.js";
 
 import "./manage-asset-row.js";
@@ -9,6 +9,12 @@ const template = document.createElement("template");
 template.innerHTML = `
 <style>
   ${resetUL}
+
+  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: 1023px) {
+    li {
+      margin: 0 40px;
+    }
+  }
 </style>
 <ul>
   <!-- generated -->

@@ -11,7 +11,7 @@ a {
     text-decoration: inherit;
 }`;
 
-export const BREAKPOINT_TABLET = "768px";
+export const BREAKPOINT_TABLET = 768;
 export const BREAKPOINT_MOBILE = "576px";
 export const BREAKPOINT_DESKTOP = "1024px";
 

@@ -1,6 +1,6 @@
 import { databaseConnector } from "../../data/database-connector.js";
 import { store } from "../../store.js";
-import { resetUL } from "../../css-globals.js";
+import { resetUL, BREAKPOINT_TABLET } from "../../css-globals.js";
 import { EVENT_UPDATED_FIAT_TRANSACTIONS } from "../../globals.js";
 
 import "./fiat-transaction-row.js";
@@ -15,6 +15,12 @@ class AssetList extends HTMLElement {
     shadow.innerHTML = `
     <style>
       ${resetUL}
+
+      @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: 1023px) {
+        li {
+          margin: 0 40px;
+        }
+      }
     </style>
     <ul>
         <!-- generated -->

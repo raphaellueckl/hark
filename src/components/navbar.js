@@ -13,7 +13,7 @@ template.innerHTML = `
     width: 100%;
   }
 
-  @media (min-width: ${BREAKPOINT_TABLET}) {
+  @media (min-width: ${BREAKPOINT_TABLET}px) {
     :host {
       width: 80%;
     }
