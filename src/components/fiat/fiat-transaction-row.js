@@ -49,7 +49,7 @@ template.innerHTML = `
     }
   }
 
-  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: (max-width: ${
+  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: ${
   BREAKPOINT_DESKTOP - 1
 }px) {
     ul {
