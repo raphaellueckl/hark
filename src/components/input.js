@@ -17,10 +17,19 @@ template.innerHTML = `
         width: 138px;
         height: 16px;
     }
+
+    span {
+      display: block;
+      overflow: hidden;
+      transition: max-height 0.3s;
+      color: #de071c;
+      margin-top: 2px;
+    }
 </style>
 <div>
     <slot></slot>
     <input />
+    <span id="validation"></span>
 </div>
 `;
 
@@ -34,7 +43,7 @@ class Input extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["placeholder", "value"];
+    return ["placeholder", "value", "error-msg", "invalid"];
   }
 
   get value() {
@@ -50,6 +59,14 @@ class Input extends HTMLElement {
       this.input.setAttribute(name, newValue);
     } else if (name === "value") {
       this.input.value = newValue;
+    } else if (name === "error-msg") {
+      this.shadowRoot.querySelector("#validation").textContent = newValue;
+    } else if (name === "invalid") {
+      if (newValue === "") {
+        this.shadowRoot.querySelector("#validation").style.maxHeight = "20px";
+      } else {
+        this.shadowRoot.querySelector("#validation").style.maxHeight = 0;
+      }
     }
   }
 }

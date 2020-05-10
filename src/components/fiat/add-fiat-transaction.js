@@ -101,7 +101,27 @@ class AddFiatTransaction extends HTMLElement {
 
     const button = this.shadowRoot.querySelector("hk-button");
 
+    const requiredInputs = [
+      this.dateInput,
+      this.symbolInput,
+      this.amountInput,
+      this.exchangeInput,
+      this.depositInput,
+    ];
+
     button.addEventListener("click", () => {
+      let validationErrors = false;
+      for (let input of requiredInputs) {
+        if (!input.value) {
+          input.setAttribute("error-msg", "Required filed");
+          input.setAttribute("invalid", "");
+          validationErrors = true;
+        } else {
+          input.removeAttribute("invalid");
+        }
+      }
+      if (validationErrors) return;
+
       const type = [
         ...this.shadowRoot.querySelectorAll('input[name="type"]'),
       ].filter((r) => r.checked === true)[0].value;

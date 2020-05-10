@@ -56,7 +56,7 @@ template.innerHTML = `
 
 <ul class="menu-container">
   <li>
-    <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" />
+    <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" error-msg="hallo" invalid />
   </li>
   <li>
     <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" />
@@ -91,7 +91,27 @@ class AddAsset extends HTMLElement {
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.categoryInput = this.shadowRoot.querySelector("#category");
     this.amountInput = this.shadowRoot.querySelector("#amount");
+
+    const requiredInputs = [
+      this.assetInput,
+      this.symbolInput,
+      this.categoryInput,
+      this.amountInput,
+    ];
+
     button.addEventListener("click", () => {
+      let validationErrors = false;
+      for (let input of requiredInputs) {
+        if (!input.value) {
+          input.setAttribute("error-msg", "Required filed");
+          input.setAttribute("invalid", "");
+          validationErrors = true;
+        } else {
+          input.removeAttribute("invalid");
+        }
+      }
+      if (validationErrors) return;
+
       const addAsset = {
         symbol: this.symbolInput.value,
         asset: this.assetInput.value,
