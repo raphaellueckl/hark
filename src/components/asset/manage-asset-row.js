@@ -41,14 +41,16 @@ template.innerHTML = `
     height: 50px;
   }
 
-  @media (min-width: ${BREAKPOINT_DESKTOP}) {
+  @media (min-width: ${BREAKPOINT_DESKTOP}px) {
     ul {
       flex-direction: row;
       flex-wrap: wrap;
     }
   }
 
-  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: 1023px) {
+  @media (min-width: ${BREAKPOINT_TABLET}px) and (max-width: ${
+  BREAKPOINT_DESKTOP - 1
+}px) {
     ul {
       flex-direction: row;
       flex-wrap: wrap;

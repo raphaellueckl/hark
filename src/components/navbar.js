@@ -54,7 +54,7 @@ template.innerHTML = `
     display: none;
   }
 
-  @media (min-width: ${BREAKPOINT_MOBILE}) {
+  @media (min-width: ${BREAKPOINT_MOBILE}px) {
     .navbar-item-title {
       display: inline;
     }

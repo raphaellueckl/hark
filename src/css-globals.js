@@ -12,8 +12,8 @@ a {
 }`;
 
 export const BREAKPOINT_TABLET = 768;
-export const BREAKPOINT_MOBILE = "576px";
-export const BREAKPOINT_DESKTOP = "1024px";
+export const BREAKPOINT_MOBILE = 576;
+export const BREAKPOINT_DESKTOP = 1024;
 
 export const ITEM_BACKGROUND = "#f7f7f7";
 
