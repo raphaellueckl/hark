@@ -4,6 +4,7 @@ import {
   EVENT_ADD_FIAT_TRANSACTION,
   TYPE_DEPOSIT,
   TYPE_WITHDRAW,
+  isValidIsoDateString,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -50,19 +51,19 @@ template.innerHTML = `
 <ul class="menu-container">
   <li>
     <label class="input-label" for="amount">Amount:</label>
-    <hk-input id="amount" placeholder="E.g. 10.5" />
+    <hk-input id="amount" placeholder="E.g. 10.5" invalid />
   </li>
   <li>
     <label class="input-label" for="date">Date:</label>
-    <hk-input id="date" placeholder="yyyy-mm-dd" />
+    <hk-input id="date" placeholder="yyyy-mm-dd" invalid />
   </li>
   <li>
     <label class="input-label" for="exchange">Exchange:</label>
-    <hk-input id="exchange" placeholder="E.g. Kraken" />
+    <hk-input id="exchange" placeholder="E.g. Kraken" invalid />
   </li>
   <li>
     <label class="input-label" for="symbol">Currency:</label>
-    <hk-input id="symbol" placeholder="E.g. USD" />
+    <hk-input id="symbol" placeholder="E.g. USD" invalid />
   </li>
   <li>
     <label>Type:</label>
@@ -78,7 +79,7 @@ template.innerHTML = `
     </div>
   </li>
   <li class="add-button-container">
-    <hk-button>Add</hk-button>
+    <hk-button disabled>Add</hk-button>
   </li>
 </ul>`;
 
@@ -99,28 +100,52 @@ class AddFiatTransaction extends HTMLElement {
 
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
 
-    const button = this.shadowRoot.querySelector("hk-button");
+    this.addButton = this.shadowRoot.querySelector("hk-button");
 
-    const requiredInputs = [
+    this.inputsToValidate = [
       this.dateInput,
       this.symbolInput,
       this.amountInput,
       this.exchangeInput,
     ];
 
-    button.addEventListener("click", () => {
-      let validationErrors = false;
-      for (let input of requiredInputs) {
-        if (!input.value) {
-          input.setAttribute("error-msg", "Required filed");
-          input.setAttribute("invalid", "");
-          validationErrors = true;
-        } else {
-          input.removeAttribute("invalid");
-        }
+    this.dateInput.addEventListener("blur", (ev) => {
+      if (this.dateInput.value === "") {
+        this._invalidate(this.dateInput, "Required filed");
+      } else if (!isValidIsoDateString(this.dateInput.value)) {
+        this._invalidate(this.dateInput, "Invalid date format");
+      } else {
+        this._validate(this.dateInput);
       }
-      if (validationErrors) return;
+    });
 
+    this.amountInput.addEventListener("blur", (ev) => {
+      if (this.amountInput.value === "") {
+        this._invalidate(this.amountInput, "Required filed");
+      } else if (isNaN(this.amountInput.value)) {
+        this._invalidate(this.amountInput, "Invalid number format");
+      } else {
+        this._validate(this.amountInput);
+      }
+    });
+
+    this.exchangeInput.addEventListener("blur", (ev) => {
+      if (this.exchangeInput.value === "") {
+        this._invalidate(this.exchangeInput, "Required filed");
+      } else {
+        this._validate(this.exchangeInput);
+      }
+    });
+
+    this.symbolInput.addEventListener("blur", (ev) => {
+      if (this.symbolInput.value === "") {
+        this._invalidate(this.symbolInput, "Required filed");
+      } else {
+        this._validate(this.symbolInput);
+      }
+    });
+
+    this.addButton.addEventListener("click", () => {
       const type = [
         ...this.shadowRoot.querySelectorAll('input[name="type"]'),
       ].filter((r) => r.checked === true)[0].value;
@@ -139,6 +164,20 @@ class AddFiatTransaction extends HTMLElement {
       );
       this._clearInputs();
     });
+  }
+
+  _invalidate(input, msg) {
+    input.setAttribute("error-msg", msg);
+    input.setAttribute("invalid", "");
+    this.addButton.setAttribute("disabled", "");
+  }
+
+  _validate(input) {
+    input.removeAttribute("invalid");
+    for (let input of this.inputsToValidate) {
+      if (input.getAttribute("invalid") !== null) return;
+    }
+    this.addButton.removeAttribute("disabled");
   }
 
   _clearInputs() {

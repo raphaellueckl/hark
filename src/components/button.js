@@ -24,6 +24,22 @@ class Button extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
+
+    this.button = this.shadowRoot.querySelector("button");
+  }
+
+  static get observedAttributes() {
+    return ["disabled"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "disabled") {
+      if (newValue === "") {
+        this.button.setAttribute(name, newValue);
+      } else {
+        this.button.removeAttribute(name);
+      }
+    }
   }
 }
 
