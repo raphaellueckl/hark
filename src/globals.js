@@ -16,6 +16,9 @@ export const CATEGORY_RESOURCE = "Resource";
 export const CATEGORY_STOCK = "Stock";
 export const CATEGORY_CURRENCY = "Currency";
 
+export const VALIDATION_REQUIRED = "Required field";
+export const VALIDATION_INVALID_NUMBER = "Invalid number";
+
 export const numberToLocal = (numberOrString) =>
   Number(Number(numberOrString).toFixed(2)).toLocaleString("en-CH");
 

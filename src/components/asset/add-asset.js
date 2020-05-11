@@ -6,6 +6,8 @@ import {
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
   CATEGORY_CURRENCY,
+  VALIDATION_REQUIRED,
+  VALIDATION_INVALID_NUMBER,
 } from "../../globals.js";
 
 import "../input.js";
@@ -56,10 +58,10 @@ template.innerHTML = `
 
 <ul class="menu-container">
   <li>
-    <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" error-msg="hallo" invalid />
+    <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" invalid />
   </li>
   <li>
-    <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" />
+    <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" invalid />
   </li>
   <li>
     <label class="input-label" for="category">Category:</label>
@@ -71,10 +73,10 @@ template.innerHTML = `
 </select>
   </li>
   <li>
-    <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" />
+    <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" invalid />
   </li>
   <li class="add-button-container">
-    <hk-button>Add</hk-button>
+    <hk-button disabled>Add</hk-button>
   </li>
 </ul>`;
 
@@ -86,32 +88,46 @@ class AddAsset extends HTMLElement {
   }
 
   connectedCallback() {
-    const button = this.shadowRoot.querySelector("hk-button");
     this.assetInput = this.shadowRoot.querySelector("#asset");
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.categoryInput = this.shadowRoot.querySelector("#category");
     this.amountInput = this.shadowRoot.querySelector("#amount");
 
-    const requiredInputs = [
+    this.addButton = this.shadowRoot.querySelector("hk-button");
+
+    this.inputsToValidate = [
       this.assetInput,
       this.symbolInput,
-      this.categoryInput,
       this.amountInput,
     ];
 
-    button.addEventListener("click", () => {
-      let validationErrors = false;
-      for (let input of requiredInputs) {
-        if (!input.value) {
-          input.setAttribute("error-msg", "Required filed");
-          input.setAttribute("invalid", "");
-          validationErrors = true;
-        } else {
-          input.removeAttribute("invalid");
-        }
+    this.assetInput.addEventListener("blur", (ev) => {
+      if (this.assetInput.value === "") {
+        this._invalidate(this.assetInput, VALIDATION_REQUIRED);
+      } else {
+        this._validate(this.assetInput);
       }
-      if (validationErrors) return;
+    });
 
+    this.symbolInput.addEventListener("blur", (ev) => {
+      if (this.symbolInput.value === "") {
+        this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
+      } else {
+        this._validate(this.symbolInput);
+      }
+    });
+
+    this.amountInput.addEventListener("blur", (ev) => {
+      if (this.amountInput.value === "") {
+        this._invalidate(this.amountInput, VALIDATION_REQUIRED);
+      } else if (isNaN(this.amountInput.value)) {
+        this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
+      } else {
+        this._validate(this.amountInput);
+      }
+    });
+
+    this.addButton.addEventListener("click", () => {
       const addAsset = {
         symbol: this.symbolInput.value,
         asset: this.assetInput.value,
@@ -126,7 +142,23 @@ class AddAsset extends HTMLElement {
     });
   }
 
+  _invalidate(input, msg) {
+    input.setAttribute("error-msg", msg);
+    input.setAttribute("invalid", "");
+    this.addButton.setAttribute("disabled", "");
+  }
+
+  _validate(input) {
+    input.removeAttribute("invalid");
+    for (let input of this.inputsToValidate) {
+      if (input.getAttribute("invalid") !== null) return;
+    }
+    this.addButton.removeAttribute("disabled");
+  }
+
   _clearInputs() {
+    this.inputsToValidate.forEach((input) => input.setAttribute("invalid", ""));
+    this.addButton.setAttribute("disabled", "");
     this.assetInput.value = "";
     this.symbolInput.value = "";
     this.categoryInput.value = CATEGORY_STOCK;

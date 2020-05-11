@@ -5,6 +5,8 @@ import {
   TYPE_DEPOSIT,
   TYPE_WITHDRAW,
   isValidIsoDateString,
+  VALIDATION_REQUIRED,
+  VALIDATION_INVALID_NUMBER,
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
@@ -111,7 +113,7 @@ class AddFiatTransaction extends HTMLElement {
 
     this.dateInput.addEventListener("blur", (ev) => {
       if (this.dateInput.value === "") {
-        this._invalidate(this.dateInput, "Required filed");
+        this._invalidate(this.dateInput, VALIDATION_REQUIRED);
       } else if (!isValidIsoDateString(this.dateInput.value)) {
         this._invalidate(this.dateInput, "Invalid date format");
       } else {
@@ -121,9 +123,9 @@ class AddFiatTransaction extends HTMLElement {
 
     this.amountInput.addEventListener("blur", (ev) => {
       if (this.amountInput.value === "") {
-        this._invalidate(this.amountInput, "Required filed");
+        this._invalidate(this.amountInput, VALIDATION_REQUIRED);
       } else if (isNaN(this.amountInput.value)) {
-        this._invalidate(this.amountInput, "Invalid number format");
+        this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
       } else {
         this._validate(this.amountInput);
       }
@@ -131,7 +133,7 @@ class AddFiatTransaction extends HTMLElement {
 
     this.exchangeInput.addEventListener("blur", (ev) => {
       if (this.exchangeInput.value === "") {
-        this._invalidate(this.exchangeInput, "Required filed");
+        this._invalidate(this.exchangeInput, VALIDATION_REQUIRED);
       } else {
         this._validate(this.exchangeInput);
       }
@@ -139,7 +141,7 @@ class AddFiatTransaction extends HTMLElement {
 
     this.symbolInput.addEventListener("blur", (ev) => {
       if (this.symbolInput.value === "") {
-        this._invalidate(this.symbolInput, "Required filed");
+        this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
       } else {
         this._validate(this.symbolInput);
       }
@@ -181,6 +183,8 @@ class AddFiatTransaction extends HTMLElement {
   }
 
   _clearInputs() {
+    this.inputsToValidate.forEach((input) => input.setAttribute("invalid", ""));
+    this.addButton.setAttribute("disabled", "");
     this.dateInput.value = "";
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
