@@ -22,9 +22,11 @@ export const VALIDATION_INVALID_NUMBER = "Invalid number";
 export const numberToLocal = (numberOrString) =>
   Number(Number(numberOrString).toFixed(2)).toLocaleString("en-CH");
 
-export const createColumn = (label, value) => {
+export const createColumn = (label, value, isDisabled) => {
   const column = document.createElement("li");
-  column.innerHTML = `<hk-input id="${label.toLowerCase()}_input" value="${value}" disabled><label>${label}</label></hk-input>`;
+  column.innerHTML = `<hk-input id="${label.toLowerCase()}_input" value="${value}" ${
+    isDisabled ? "disabled" : ""
+  }><label>${label}</label></hk-input>`;
   return column;
 };
 

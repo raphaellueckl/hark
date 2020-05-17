@@ -86,11 +86,11 @@ class FiatTransaction extends HTMLElement {
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
 
-      ul.appendChild(createColumn("Date", asset.date));
-      ul.appendChild(createColumn("Symbol", asset.symbol));
-      ul.appendChild(createColumn("Amount", asset.amount));
-      ul.appendChild(createColumn("Exchange", asset.exchange));
-      ul.appendChild(createColumn("Type", asset.type));
+      ul.appendChild(createColumn("Date", asset.date, true));
+      ul.appendChild(createColumn("Symbol", asset.symbol, true));
+      ul.appendChild(createColumn("Amount", asset.amount, true));
+      ul.appendChild(createColumn("Exchange", asset.exchange, true));
+      ul.appendChild(createColumn("Type", asset.type, true));
 
       const buttonContainer = document.createElement("li");
       buttonContainer.classList.add("remove-button-container");

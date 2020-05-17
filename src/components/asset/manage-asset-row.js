@@ -85,10 +85,10 @@ class Asset extends HTMLElement {
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
 
-      ul.appendChild(createColumn("Symbol", asset.symbol));
-      ul.appendChild(createColumn("Asset", asset.asset));
-      ul.appendChild(createColumn("Category", asset.category));
-      ul.appendChild(createColumn("Amount", asset.amount));
+      ul.appendChild(createColumn("Symbol", asset.symbol, true));
+      ul.appendChild(createColumn("Asset", asset.asset, true));
+      ul.appendChild(createColumn("Category", asset.category, true));
+      ul.appendChild(createColumn("Amount", asset.amount, true));
 
       const li = document.createElement("li");
       li.classList.add("remove-button-container");

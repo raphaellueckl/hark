@@ -43,7 +43,7 @@ class Input extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["placeholder", "value", "error-msg", "invalid"];
+    return ["placeholder", "value", "error-msg", "invalid", "disabled"];
   }
 
   get value() {
@@ -52,6 +52,14 @@ class Input extends HTMLElement {
 
   set value(newValue) {
     this.input.value = newValue;
+  }
+
+  get disabled() {
+    return this.input.disabled;
+  }
+
+  set disabled(isDisabled) {
+    this.input.disabled = isDisabled;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -67,6 +75,8 @@ class Input extends HTMLElement {
       } else {
         this.shadowRoot.querySelector("#validation").style.maxHeight = 0;
       }
+    } else if (name === "disabled") {
+      this.input.disabled = newValue === "" ? true : false;
     }
   }
 }
