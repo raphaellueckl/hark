@@ -1,9 +1,10 @@
-import { widgetContainerStyles } from "../../css-globals.js";
+import { widgetContainerStyles, resetUL } from "../../css-globals.js";
 
 const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
+    ${resetUL}
     ${widgetContainerStyles}
 
     .value {
@@ -13,10 +14,25 @@ template.innerHTML = `
     circle {
       transition: stroke-width 0.2s;
     }
+
+    #legend {
+      display: flex;
+      width: 150px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .legend-item {
+      display: block;
+      padding: 3px;
+      margin: 2px;
+      border-radius: 5px;
+    }
   </style>
   <div class="widget-container">
     <h2></h2>
     <svg height="250" width="250"></svg>
+    <ul id="legend"></ul>
   </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
@@ -95,6 +111,7 @@ class PieChart extends HTMLElement {
     const svg = this.shadowRoot.querySelector("svg");
     let accumulatedDegree = 0;
     for (let i = 0; i < chartData.length; i++) {
+      const randomColor = getRandomizedHex();
       const entry = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "circle"
@@ -103,7 +120,7 @@ class PieChart extends HTMLElement {
       entry.setAttribute("cx", "125");
       entry.setAttribute("cy", "125");
       entry.setAttribute("r", "80");
-      entry.setAttribute("stroke", getRandomizedHex());
+      entry.setAttribute("stroke", randomColor);
       entry.setAttribute("stroke-width", DEFAULT_STROKE_WIDTH);
       entry.setAttribute("fill", "none");
       entry.setAttribute("stroke-dasharray", STEPS_UNTIL_FULL_CIRCLE);
@@ -141,6 +158,19 @@ class PieChart extends HTMLElement {
         (360 / STEPS_UNTIL_FULL_CIRCLE) *
         (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) *
         chartData[i].weight;
+
+      const legendList = this.shadowRoot.querySelector("#legend");
+      const legendItem = document.createElement("li");
+      legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${chartData[i].name}</span>`;
+      legendList.appendChild(legendItem);
+
+      legendItem.addEventListener("mouseover", () => {
+        this._highlightEntry(entry);
+      });
+
+      legendItem.addEventListener("mouseleave", () => {
+        this._unhighlightEntry(entry);
+      });
     }
 
     this.assetName = document.createElementNS(
