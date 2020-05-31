@@ -21,6 +21,8 @@ template.innerHTML = `
       width: 200px;
       flex-wrap: wrap;
       margin-bottom: 10px;
+      height: 85px;
+      overflow: scroll;
     }
 
     .legend-item {

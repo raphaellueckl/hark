@@ -12,7 +12,7 @@ template.innerHTML = `
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 250px;
+        height: 150px;
     }
 
     .emoji-container {
@@ -22,9 +22,10 @@ template.innerHTML = `
 
     #balance {
         display: inline-block;
+        margin-top: 15px;
         text-align: center;
-        font-weight: 900;
-        font-size: 24px;
+        font-weight: 600;
+        font-size: 20px;
         max-width: 250px;
         word-break: break-word;
     }

@@ -1,9 +1,9 @@
 import { numberToLocal } from "../../globals.js";
 import { widgetContainerStyles } from "../../css-globals.js";
 
-const BAR_END = "50";
-const BAR_START = "220";
-const CENTER_X = "125";
+const BAR_END = 100;
+const BAR_START = 295;
+const CENTER_X = 125;
 const BAR_MAX_HEIGHT = BAR_START - BAR_END;
 
 const template = document.createElement("template");
@@ -36,17 +36,28 @@ template.innerHTML = `
     stroke:#000;
     stroke-width:2;
   }
+
+  svg {
+    margin-bottom: 10px;
+  }
+
+  #difference {
+    font-weight: 600;
+    font-size: 20px;
+    max-width: 250px;
+    word-break: break-word;
+  }
 </style>
 
 <div class="widget-container">
   <h2></h2>
-  <svg height="250" width="250">
-    <text id="difference" x="125" y="30"></text>
+  <svg height="335" width="250">
+    <text id="difference" x="125" y="50"></text>
     <line class="data-line positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
     <line class="data-line negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
-    <line id="bottom-line" x1="20" y1="220" x2="230" y2="220" />
-    <text id="positive" x="80" y="240"></text>
-    <text id="negative" x="170" y="240"></text>
+    <line id="bottom-line" x1="20" y1="${BAR_START}" x2="230" y2="${BAR_START}" />
+    <text id="positive" x="80" y="${BAR_START + 20}"></text>
+    <text id="negative" x="170" y="${BAR_START + 20}"></text>
   </svg>
 </div>`;
 
