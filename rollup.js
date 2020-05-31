@@ -6,13 +6,16 @@ export default [
     input: "src/index.js",
     output: {
       file: "./dist/index.js",
-      format: "iife"
+      format: "iife",
     },
     plugins: [
       babel(),
       copy({
-        targets: [{ src: "src/index.html", dest: "dist" }]
-      })
-    ]
-  }
+        targets: [
+          { src: "src/index.html", dest: "dist" },
+          { src: "src/assets", dest: "dist" },
+        ],
+      }),
+    ],
+  },
 ];
