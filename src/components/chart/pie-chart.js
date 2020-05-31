@@ -21,13 +21,13 @@ template.innerHTML = `
       width: 200px;
       flex-wrap: wrap;
       margin-bottom: 10px;
-      height: 85px;
+      height: 92px;
       overflow: scroll;
     }
 
     .legend-item {
       display: block;
-      padding: 3px;
+      padding: 4px 5px;
       margin: 2px;
       border-radius: 5px;
     }

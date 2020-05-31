@@ -38,7 +38,7 @@ template.innerHTML = `
   }
 
   svg {
-    margin-bottom: 10px;
+    margin-bottom: 17px;
   }
 
   #difference {
