@@ -17,7 +17,8 @@ template.innerHTML = `
 
     #legend {
       display: flex;
-      width: 150px;
+      justify-content: center;
+      width: 200px;
       flex-wrap: wrap;
       margin-bottom: 10px;
     }
