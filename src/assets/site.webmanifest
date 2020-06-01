@@ -1,6 +1,7 @@
 {
   "name": "Hark - Asset Manager",
   "short_name": "Hark",
+  "description": "An asset management application for crypto, stocks and resources.",
   "icons": [
     {
       "src": "/assets/android-chrome-192x192.png",
@@ -11,6 +12,10 @@
       "src": "/assets/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any"
     }
   ],
   "theme_color": "#ffffff",
