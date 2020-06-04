@@ -34,6 +34,12 @@
     <meta name="msapplication-config" content="/assets/browserconfig.xml" />
     <meta name="theme-color" content="#ffffff" />
 
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+
     <style>
       html,
       body {
