@@ -22,7 +22,7 @@ template.innerHTML = `
       flex-wrap: wrap;
       margin-bottom: 10px;
       height: 92px;
-      overflow: scroll;
+      overflow: auto;
     }
 
     .legend-item {
