@@ -83,7 +83,6 @@ class ExportApplicationState extends HTMLElement {
       const url = URL.createObjectURL(blob);
       tempElement.href = url;
       tempElement.download = fileName;
-      tempElement.target = "_self";
       document.body.appendChild(tempElement);
       tempElement.click();
 
