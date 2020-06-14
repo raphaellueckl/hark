@@ -4,12 +4,13 @@ template.innerHTML = `
     :host {
         display: block;
         height: 30px;
+        width: 80px;
     }
 
     button {
         border: 1px solid black;
         border-radius: 10px;
-        width: 80px;
+        width: inherit;
         height: inherit;
         background-color: rgba(33, 33, 33, 0.2);
     }
