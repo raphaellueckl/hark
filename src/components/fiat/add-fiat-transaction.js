@@ -65,7 +65,7 @@ template.innerHTML = `
   </li>
   <li>
     <label class="input-label" for="symbol">Currency:</label>
-    <hk-input id="symbol" placeholder="E.g. USD" invalid />
+    <hk-input id="symbol" placeholder="E.g. USD" />
   </li>
   <li>
     <label>Type:</label>
@@ -100,7 +100,11 @@ class AddFiatTransaction extends HTMLElement {
     this.depositInput = this.shadowRoot.querySelector("#deposit");
     this.depositInput.checked = true;
 
-    this.symbolInput.value = databaseConnector.getMostUsedCurrency();
+    const mostUsedCurrency = databaseConnector.getMostUsedCurrency();
+    this.symbolInput.value = mostUsedCurrency;
+    if (!mostUsedCurrency) {
+      this.symbolInput.setAttribute("invalid", "");
+    }
 
     this.addButton = this.shadowRoot.querySelector("hk-button");
 
@@ -183,13 +187,15 @@ class AddFiatTransaction extends HTMLElement {
   }
 
   _clearInputs() {
-    this.inputsToValidate.forEach((input) => input.setAttribute("invalid", ""));
     this.addButton.setAttribute("disabled", "");
     this.dateInput.value = "";
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
     this.exchangeInput.value = "";
     this.depositInput.checked = true;
+    this.inputsToValidate.forEach((input) => {
+      if (!input.value) input.setAttribute("invalid", "");
+    });
   }
 }
 
