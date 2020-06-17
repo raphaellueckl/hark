@@ -33,11 +33,21 @@ class Button extends HTMLElement {
     return ["disabled"];
   }
 
+  addEventListener(event, func) {
+    this.button.addEventListener(event, () => {
+      if (!this.disabled) {
+        func();
+      }
+    });
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "disabled") {
       if (newValue === "") {
+        this.disabled = true;
         this.button.setAttribute(name, newValue);
       } else {
+        this.disabled = false;
         this.button.removeAttribute(name);
       }
     }
