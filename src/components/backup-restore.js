@@ -42,6 +42,9 @@ template.innerHTML = `
     <li>
       <label class="input-label">Backup & Export:</label>
       <hk-button id="export">Export</hk-button>
+      <a id="hidden-export-button" download="hark_backup_${
+        new Date().toISOString().split("T")[0]
+      }.json" href style="display:none;"></a>
     </li>
     <li>
       <label class="input-label">Import & Restore:</label>
@@ -63,6 +66,9 @@ class ExportApplicationState extends HTMLElement {
   }
 
   connectedCallback() {
+    const exporFakeButton = this.shadowRoot.querySelector(
+      "#hidden-export-button"
+    );
     const exportButton = this.shadowRoot.querySelector("#export");
     const importButton = this.shadowRoot.querySelector("#import");
     const hiddenImportFileButton = this.shadowRoot.querySelector(
@@ -74,22 +80,8 @@ class ExportApplicationState extends HTMLElement {
 
     exportButton.addEventListener("click", () => {
       const appState = databaseConnector.getApplicationStateAsString();
-      const blob = new Blob([appState], { type: "text/json" });
-      const fileName = `hark_backup_${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-
-      const tempElement = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      tempElement.href = url;
-      tempElement.download = fileName;
-      document.body.appendChild(tempElement);
-      tempElement.click();
-
-      setTimeout(function () {
-        document.body.removeChild(tempElement);
-        window.URL.revokeObjectURL(url);
-      });
+      exporFakeButton.setAttribute("href", "data:text/json;," + appState);
+      exporFakeButton.click();
     });
 
     importButton.addEventListener("click", () => {
@@ -103,6 +95,7 @@ class ExportApplicationState extends HTMLElement {
 
       reader.onload = function (evt) {
         const backupAsString = evt.target.result;
+        debugger;
         databaseConnector.setApplicationStateFromString(backupAsString);
       };
       reader.onerror = function (evt) {
