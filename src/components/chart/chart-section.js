@@ -14,7 +14,7 @@ import {
 } from "../../globals.js";
 import { databaseConnector } from "../../data/database-connector.js";
 
-const ATTRIBUTE_TOTAL_RETURN = 'title="Total Return (CHF)"';
+const ATTRIBUTE_TOTAL_RETURN = 'title="Overall Return"';
 const ATTRIBUTE_ASSETS = 'title="Assets"';
 const ATTRIBUTE_ASSETS_SPREAD = 'title="Asset Spread"';
 

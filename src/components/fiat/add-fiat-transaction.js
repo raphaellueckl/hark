@@ -115,40 +115,32 @@ class AddFiatTransaction extends HTMLElement {
       this.exchangeInput,
     ];
 
-    this.dateInput.addEventListener("blur", (ev) => {
-      if (this.dateInput.value === "") {
-        this._invalidate(this.dateInput, VALIDATION_REQUIRED);
-      } else if (!isValidIsoDateString(this.dateInput.value)) {
-        this._invalidate(this.dateInput, "Invalid date format");
-      } else {
-        this._validate(this.dateInput);
-      }
+    this.dateInput.addEventListener("input", () => {
+      this._setDateInputValidationState();
+    });
+    this.dateInput.addEventListener("blur", () => {
+      this._setDateInputValidationState();
     });
 
-    this.amountInput.addEventListener("blur", (ev) => {
-      if (this.amountInput.value === "") {
-        this._invalidate(this.amountInput, VALIDATION_REQUIRED);
-      } else if (isNaN(this.amountInput.value)) {
-        this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
-      } else {
-        this._validate(this.amountInput);
-      }
+    this.amountInput.addEventListener("input", () => {
+      this._setAmountInputValidationState();
+    });
+    this.amountInput.addEventListener("blur", () => {
+      this._setAmountInputValidationState();
     });
 
-    this.exchangeInput.addEventListener("blur", (ev) => {
-      if (this.exchangeInput.value === "") {
-        this._invalidate(this.exchangeInput, VALIDATION_REQUIRED);
-      } else {
-        this._validate(this.exchangeInput);
-      }
+    this.exchangeInput.addEventListener("input", () => {
+      this._setExchangeInputValidationState();
+    });
+    this.exchangeInput.addEventListener("blur", () => {
+      this._setExchangeInputValidationState();
     });
 
-    this.symbolInput.addEventListener("blur", (ev) => {
-      if (this.symbolInput.value === "") {
-        this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
-      } else {
-        this._validate(this.symbolInput);
-      }
+    this.symbolInput.addEventListener("input", () => {
+      this._setSymbolInputValidationState();
+    });
+    this.symbolInput.addEventListener("blur", () => {
+      this._setSymbolInputValidationState();
     });
 
     this.addButton.addEventListener("click", () => {
@@ -172,6 +164,42 @@ class AddFiatTransaction extends HTMLElement {
     });
   }
 
+  _setSymbolInputValidationState() {
+    if (this.symbolInput.value === "") {
+      this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
+    } else {
+      this._validate(this.symbolInput);
+    }
+  }
+
+  _setExchangeInputValidationState() {
+    if (this.exchangeInput.value === "") {
+      this._invalidate(this.exchangeInput, VALIDATION_REQUIRED);
+    } else {
+      this._validate(this.exchangeInput);
+    }
+  }
+
+  _setAmountInputValidationState() {
+    if (this.amountInput.value === "") {
+      this._invalidate(this.amountInput, VALIDATION_REQUIRED);
+    } else if (isNaN(this.amountInput.value)) {
+      this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
+    } else {
+      this._validate(this.amountInput);
+    }
+  }
+
+  _setDateInputValidationState() {
+    if (this.dateInput.value === "") {
+      this._invalidate(this.dateInput, VALIDATION_REQUIRED);
+    } else if (!isValidIsoDateString(this.dateInput.value)) {
+      this._invalidate(this.dateInput, "Invalid date format");
+    } else {
+      this._validate(this.dateInput);
+    }
+  }
+
   _invalidate(input, msg) {
     input.setAttribute("error-msg", msg);
     input.setAttribute("invalid", "");
@@ -193,9 +221,6 @@ class AddFiatTransaction extends HTMLElement {
     this.amountInput.value = "";
     this.exchangeInput.value = "";
     this.depositInput.checked = true;
-    this.inputsToValidate.forEach((input) => {
-      if (!input.value) input.setAttribute("invalid", "");
-    });
   }
 }
 

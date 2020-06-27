@@ -102,29 +102,24 @@ class AddAsset extends HTMLElement {
     ];
 
     this.assetInput.addEventListener("blur", (ev) => {
-      if (this.assetInput.value === "") {
-        this._invalidate(this.assetInput, VALIDATION_REQUIRED);
-      } else {
-        this._validate(this.assetInput);
-      }
+      this._setAssetInputValidationState();
+    });
+    this.assetInput.addEventListener("input", (ev) => {
+      this._setAssetInputValidationState();
     });
 
     this.symbolInput.addEventListener("blur", (ev) => {
-      if (this.symbolInput.value === "") {
-        this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
-      } else {
-        this._validate(this.symbolInput);
-      }
+      this._setSymbolInputValidationState();
+    });
+    this.symbolInput.addEventListener("input", (ev) => {
+      this._setSymbolInputValidationState();
     });
 
     this.amountInput.addEventListener("blur", (ev) => {
-      if (this.amountInput.value === "") {
-        this._invalidate(this.amountInput, VALIDATION_REQUIRED);
-      } else if (isNaN(this.amountInput.value)) {
-        this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
-      } else {
-        this._validate(this.amountInput);
-      }
+      this._setAmountInputValidationState();
+    });
+    this.amountInput.addEventListener("input", (ev) => {
+      this._setAmountInputValidationState();
     });
 
     this.addButton.addEventListener("click", () => {
@@ -142,6 +137,32 @@ class AddAsset extends HTMLElement {
     });
   }
 
+  _setAmountInputValidationState() {
+    if (this.amountInput.value === "") {
+      this._invalidate(this.amountInput, VALIDATION_REQUIRED);
+    } else if (isNaN(this.amountInput.value)) {
+      this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
+    } else {
+      this._validate(this.amountInput);
+    }
+  }
+
+  _setSymbolInputValidationState() {
+    if (this.symbolInput.value === "") {
+      this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
+    } else {
+      this._validate(this.symbolInput);
+    }
+  }
+
+  _setAssetInputValidationState() {
+    if (this.assetInput.value === "") {
+      this._invalidate(this.assetInput, VALIDATION_REQUIRED);
+    } else {
+      this._validate(this.assetInput);
+    }
+  }
+
   _invalidate(input, msg) {
     input.setAttribute("error-msg", msg);
     input.setAttribute("invalid", "");
@@ -157,7 +178,6 @@ class AddAsset extends HTMLElement {
   }
 
   _clearInputs() {
-    this.inputsToValidate.forEach((input) => input.setAttribute("invalid", ""));
     this.addButton.setAttribute("disabled", "");
     this.assetInput.value = "";
     this.symbolInput.value = "";
