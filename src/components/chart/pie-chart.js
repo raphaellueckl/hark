@@ -1,4 +1,4 @@
-import { widgetContainerStyles, resetUL } from "../../css-globals.js";
+import { widgetContainerStyles, resetUL, COLORS } from "../../css-globals.js";
 
 const template = document.createElement("template");
 
@@ -42,10 +42,23 @@ const ALL_HEX_VALUES = "0123456789ABCDEF";
 const DEFAULT_STROKE_WIDTH = "50";
 const STEPS_UNTIL_FULL_CIRCLE = 503;
 
-function getRandomizedHex() {
-  return `#${[...Array(6)]
+function _getRandomHexColor() {
+  const color = [...Array(6)]
     .map(() => ALL_HEX_VALUES.charAt(Math.random() * 16))
-    .join("")}`;
+    .join("");
+
+  const rgb = parseInt(color, 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >> 8) & 0xff;
+  const b = (rgb >> 0) & 0xff;
+
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  if (luma < 130) {
+    return _getRandomHexColor();
+  } else {
+    return `#${color}`;
+  }
 }
 
 class PieChart extends HTMLElement {
@@ -114,7 +127,7 @@ class PieChart extends HTMLElement {
     const svg = this.shadowRoot.querySelector("svg");
     let accumulatedDegree = 0;
     for (let i = 0; i < chartData.length; i++) {
-      const randomColor = getRandomizedHex();
+      const randomColor = _getRandomHexColor();
       const entry = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "circle"
