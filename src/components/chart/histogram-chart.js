@@ -17,11 +17,12 @@ template.innerHTML = `
   
   .data-line {
     stroke-width:45;
-    transition: stroke-width 0.2s;
+    transition: stroke-width 0.2s, font-size 0.2s;
   }
   
   .data-line:hover {
     stroke-width:60;
+    font-size: 20px;
   }
   
   .negative {
@@ -53,11 +54,15 @@ template.innerHTML = `
   <h2></h2>
   <svg height="335" width="250">
     <text id="difference" x="125" y="50"></text>
-    <line class="data-line positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
-    <line class="data-line negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
+    <g class="data-line">
+      <line class="positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
+      <text id="positive" x="80" y="${BAR_START + 20}"></text>
+    </g>
+    <g class="data-line">
+      <line class="negative" x1="170" y1="${BAR_END}" x2="170" y2="${BAR_START}" />
+      <text id="negative" x="170" y="${BAR_START + 20}"></text>
+    </g>
     <line id="bottom-line" x1="20" y1="${BAR_START}" x2="230" y2="${BAR_START}" />
-    <text id="positive" x="80" y="${BAR_START + 20}"></text>
-    <text id="negative" x="170" y="${BAR_START + 20}"></text>
   </svg>
 </div>`;
 
