@@ -26,4 +26,5 @@ export const widgetContainerStyles = `.widget-container {
 
     background-color: ${ITEM_BACKGROUND};
     border-radius: 15px;
+    min-height: 250px;
 }`;

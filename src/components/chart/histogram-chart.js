@@ -1,6 +1,8 @@
 import { numberToLocal } from "../../globals.js";
 import { widgetContainerStyles } from "../../css-globals.js";
 
+import "../hk-spinner.js";
+
 const BAR_END = 100;
 const BAR_START = 295;
 const CENTER_X = 125;
@@ -10,6 +12,14 @@ const template = document.createElement("template");
 template.innerHTML = `
 <style>
   ${widgetContainerStyles}
+
+  .after-loaded {
+    display: none;
+  }
+
+  .spinner {
+
+  }
 
   .positive {
     stroke:#09d64a;
@@ -48,9 +58,18 @@ template.innerHTML = `
     max-width: 250px;
     word-break: break-word;
   }
+
+  h2 {
+    display: none;
+  }
+
+  svg {
+    display: none;
+  }
 </style>
 
 <div class="widget-container">
+  <hk-spinner></hk-spinner>
   <h2></h2>
   <svg height="335" width="250">
     <text id="difference" x="125" y="50"></text>
@@ -72,6 +91,13 @@ class HistogramChart extends HTMLElement {
 
     let shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
+
+    this.titleEl = this.shadowRoot.querySelector("h2");
+    this.positiveBarEl = this.shadowRoot.querySelector(".positive");
+    this.negativeBarEl = this.shadowRoot.querySelector(".negative");
+    this.positiveTextEl = this.shadowRoot.querySelector("#positive");
+    this.negativeTextEl = this.shadowRoot.querySelector("#negative");
+    this.bottomLineEl = this.shadowRoot.querySelector("#bottom-line");
   }
 
   static get observedAttributes() {
@@ -80,11 +106,14 @@ class HistogramChart extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "title") {
-      this.shadowRoot.querySelector("h2").textContent = newValue;
+      this.titleEl.textContent = newValue;
     } else if (name === "data") {
       /**
        * data: {name, value, weight, key}
        */
+      this.shadowRoot.querySelector("hk-spinner").style.display = "none";
+      this.titleEl.style.display = "block";
+      this.shadowRoot.querySelector("svg").style.display = "block";
       let chartData = undefined;
       try {
         chartData = JSON.parse(newValue);
@@ -103,26 +132,22 @@ class HistogramChart extends HTMLElement {
 
     const positiveYEnd = BAR_START - positiveHeight;
     const negativeYEnd = BAR_START - negativeHeight;
-    this.shadowRoot.querySelector(".positive").setAttribute("y1", positiveYEnd);
-    this.shadowRoot.querySelector(".negative").setAttribute("y1", negativeYEnd);
-    this.shadowRoot.querySelector("#positive").textContent = numberToLocal(
-      positive.toFixed(2)
-    );
-    this.shadowRoot.querySelector("#negative").textContent = numberToLocal(
-      negative.toFixed(2)
-    );
+    this.positiveBarEl.setAttribute("y1", positiveYEnd);
+    this.negativeBarEl.setAttribute("y1", negativeYEnd);
+    this.positiveTextEl.textContent = numberToLocal(positive.toFixed(2));
+    this.negativeTextEl.textContent = numberToLocal(negative.toFixed(2));
     this.shadowRoot.querySelector("#difference").textContent = `${
       positive - negative > 0 ? "+" : "-"
     } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
 
     if (negative <= 0) {
-      this.shadowRoot.querySelector(".positive").setAttribute("x1", CENTER_X);
-      this.shadowRoot.querySelector(".positive").setAttribute("x2", CENTER_X);
-      this.shadowRoot.querySelector("#positive").setAttribute("x", CENTER_X);
-      this.shadowRoot.querySelector("#negative").style.display = "none";
-      this.shadowRoot.querySelector(".negative").style.display = "none";
-      this.shadowRoot.querySelector("#bottom-line").setAttribute("x1", "60");
-      this.shadowRoot.querySelector("#bottom-line").setAttribute("x2", "190");
+      this.positiveBarEl.setAttribute("x1", CENTER_X);
+      this.positiveBarEl.setAttribute("x2", CENTER_X);
+      this.positiveTextEl.setAttribute("x", CENTER_X);
+      this.negativeTextEl.style.display = "none";
+      this.negativeBarEl.style.display = "none";
+      this.bottomLineEl.setAttribute("x1", "60");
+      this.bottomLineEl.setAttribute("x2", "190");
     }
   }
 }
