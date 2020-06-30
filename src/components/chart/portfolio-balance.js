@@ -29,10 +29,15 @@ template.innerHTML = `
         max-width: 250px;
         word-break: break-word;
     }
+
+    .hidden {
+      display: none;
+    }
 </style>
 <div class="widget-container">
     <h2>Portfolio Balance</h2>
-    <div class="content">
+    <hk-spinner></hk-spinner>
+    <div class="content hidden">
         <span id="balance"></span>
         <span class="emoji-container"></span>
     </div>
@@ -71,6 +76,9 @@ class PortfolioBalance extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "balance") {
+      const balanceEl = this.shadowRoot.querySelector("#balance");
+      this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
+      this.shadowRoot.querySelector(".content").classList.remove("hidden");
       const emojiNow = emojiYielder();
       let balanceNumber = Number(newValue);
       // Cut away the after-comma part for 5 digit numbers
@@ -78,7 +86,7 @@ class PortfolioBalance extends HTMLElement {
         balanceNumber = Number.parseInt(balanceNumber);
       }
       const balance = numberToLocal(balanceNumber);
-      this.shadowRoot.querySelector("#balance").textContent = `${balance} CHF`;
+      balanceEl.textContent = `${balance} CHF`;
       [...this.shadowRoot.querySelectorAll(".emoji-container")].forEach(
         (container) => {
           container.textContent = emojiNow;

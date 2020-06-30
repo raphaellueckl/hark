@@ -59,19 +59,15 @@ template.innerHTML = `
     word-break: break-word;
   }
 
-  h2 {
-    display: none;
-  }
-
-  svg {
+  .hidden {
     display: none;
   }
 </style>
 
 <div class="widget-container">
-  <hk-spinner></hk-spinner>
   <h2></h2>
-  <svg height="335" width="250">
+  <hk-spinner></hk-spinner>
+  <svg height="335" width="250" class="hidden">
     <text id="difference" x="125" y="50"></text>
     <g class="data-line">
       <line class="positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
@@ -111,9 +107,9 @@ class HistogramChart extends HTMLElement {
       /**
        * data: {name, value, weight, key}
        */
-      this.shadowRoot.querySelector("hk-spinner").style.display = "none";
-      this.titleEl.style.display = "block";
-      this.shadowRoot.querySelector("svg").style.display = "block";
+      this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
+      this.titleEl.classList.remove("hidden");
+      this.shadowRoot.querySelector("svg").classList.remove("hidden");
       let chartData = undefined;
       try {
         chartData = JSON.parse(newValue);
