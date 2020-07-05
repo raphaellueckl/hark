@@ -79,6 +79,14 @@ class Input extends HTMLElement {
       this.input.disabled = newValue === "" ? true : false;
     }
   }
+
+  connectedCallback() {
+    this.input.addEventListener("change", (ev) => {
+      this.dispatchEvent(
+        new CustomEvent("hk-change", { detail: ev.target.value })
+      );
+    });
+  }
 }
 
 customElements.define("hk-input", Input);

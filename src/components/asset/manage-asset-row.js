@@ -5,7 +5,11 @@ import {
   ITEM_BACKGROUND,
   BREAKPOINT_TABLET,
 } from "../../css-globals.js";
-import { EVENT_REMOVE_ASSET_BY_INDEX, createColumn } from "../../globals.js";
+import {
+  EVENT_CHANGE_ASSET_AMOUNT,
+  EVENT_REMOVE_ASSET_BY_INDEX,
+  createColumn,
+} from "../../globals.js";
 
 import "../button.js";
 
@@ -89,7 +93,21 @@ class Asset extends HTMLElement {
       ul.appendChild(createColumn("Symbol", asset.symbol, true));
       ul.appendChild(createColumn("Asset", asset.asset, true));
       ul.appendChild(createColumn("Category", asset.category, true));
-      ul.appendChild(createColumn("Amount", asset.amount, true));
+      ul.appendChild(createColumn("Amount", asset.amount, false));
+
+      const amountInput = this.shadowRoot.querySelector("#amount_input");
+      amountInput.addEventListener("hk-change", ({ detail: newAmount }) => {
+        if (isNaN(+newAmount)) {
+          amountInput.setAttribute("error-msg", "Invalid Number");
+          amountInput.setAttribute("invalid", "");
+        } else {
+          amountInput.removeAttribute("invalid");
+          asset.amount = +newAmount;
+          store.dispatchEvent(
+            new CustomEvent(EVENT_CHANGE_ASSET_AMOUNT, { detail: asset })
+          );
+        }
+      });
 
       const li = document.createElement("li");
       li.classList.add("remove-button-container");

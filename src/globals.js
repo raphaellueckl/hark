@@ -7,6 +7,7 @@ export const EVENT_UPDATED_FIAT_TRANSACTIONS = "fiatTransactionsUpdated";
 export const EVENT_REMOVE_ASSET_BY_INDEX = "removeAssetByIndex";
 export const EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX =
   "removeFiatTransactionByIndex";
+export const EVENT_CHANGE_ASSET_AMOUNT = "changeAssetAmount";
 
 export const TYPE_DEPOSIT = "Deposit";
 export const TYPE_WITHDRAW = "Withdraw";

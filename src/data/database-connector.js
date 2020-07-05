@@ -69,6 +69,27 @@ class DatabaseConnector {
     storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
+  updateAssetAmount(asset) {
+    const assetsBeforeUpdate = this.getAssets();
+    const indexOfOutdatedAsset = assetsBeforeUpdate.findIndex(
+      (a) =>
+        a.asset === asset.asset &&
+        a.category === asset.category &&
+        a.symbol === asset.symbol
+    );
+    if (indexOfOutdatedAsset !== -1) {
+      this.removeAssetByIndex(indexOfOutdatedAsset);
+      this.addAsset(asset);
+      return true;
+    } else {
+      console.error(
+        "Asset should have been updated, but none was found.",
+        JSON.stringify(asset)
+      );
+      return false;
+    }
+  }
+
   getMostUsedCurrency() {
     const transactions = this.getFiatTransactions();
     if (transactions.length > 3) {

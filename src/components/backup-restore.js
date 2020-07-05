@@ -95,7 +95,6 @@ class ExportApplicationState extends HTMLElement {
 
       reader.onload = function (evt) {
         const backupAsString = evt.target.result;
-        debugger;
         databaseConnector.setApplicationStateFromString(backupAsString);
       };
       reader.onerror = function (evt) {
