@@ -1,19 +1,24 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
+    :host {
+        display: flex;
+        height: 200px;
+    }
+
     .loader,
     .loader:before,
     .loader:after {
         background: rgb(214, 18, 22);
         animation: load1 1s infinite ease-in-out;
-        width: 1em;
-        height: 4em;
+        width: 11px;
+        height: 44px;
     }
 
     .loader {
         color: rgb(214, 18, 22);
-        text-indent: -9999em;
-        margin: 97px auto;
+        text-indent: -99999px;
+        margin: 0px auto;
         position: relative;
         font-size: 11px;
         transform: translateZ(0);
@@ -28,29 +33,37 @@ template.innerHTML = `
     }
 
     .loader:before {
-        left: -1.5em;
+        left: -16.5px;
         animation-delay: -0.32s;
     }
 
     .loader:after {
-        left: 1.5em;
+        left: 16.5px;
     }
 
     @keyframes load1 {
-    0%,
-    80%,
-    100% {
-        box-shadow: 0 0;
-        height: 4em;
+        0%,
+        80%,
+        100% {
+            box-shadow: 0 0;
+            height: 44px;
+        }
+        40% {
+            box-shadow: 0 -22px;
+            height: 55px;
+        }
     }
-    40% {
-        box-shadow: 0 -2em;
-        height: 5em;
-    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
-<div class="loader"></div>`;
+<div class="container">
+    <div class="loader"></div>
+</div>`;
 
 class Spinner extends HTMLElement {
   constructor() {

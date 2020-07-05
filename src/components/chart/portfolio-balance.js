@@ -35,7 +35,7 @@ template.innerHTML = `
     }
 </style>
 <div class="widget-container">
-    <h2 class="hidden">Portfolio Balance</h2>
+    <h2>Portfolio Balance</h2>
     <hk-spinner></hk-spinner>
     <div class="content hidden">
         <span id="balance"></span>
@@ -79,7 +79,6 @@ class PortfolioBalance extends HTMLElement {
       const balanceEl = this.shadowRoot.querySelector("#balance");
       this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
       this.shadowRoot.querySelector(".content").classList.remove("hidden");
-      this.shadowRoot.querySelector("h2").classList.remove("hidden");
       const emojiNow = emojiYielder();
       let balanceNumber = Number(newValue);
       // Cut away the after-comma part for 5 digit numbers

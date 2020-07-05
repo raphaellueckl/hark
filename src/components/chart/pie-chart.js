@@ -1,4 +1,4 @@
-import { widgetContainerStyles, resetUL, COLORS } from "../../css-globals.js";
+import { widgetContainerStyles, resetUL } from "../../css-globals.js";
 import "../hk-spinner.js";
 
 const template = document.createElement("template");
@@ -38,7 +38,7 @@ template.innerHTML = `
     }
   </style>
   <div class="widget-container">
-    <h2 class="hidden"></h2>
+    <h2></h2>
     <hk-spinner></hk-spinner>
     <svg height="250" width="250" class="hidden"></svg>
     <ul class="legend hidden"></ul>
@@ -90,7 +90,6 @@ class PieChart extends HTMLElement {
       }
     } else if (name === "data") {
       this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
-      this.shadowRoot.querySelector("h2").classList.remove("hidden");
       this.shadowRoot.querySelector("svg").classList.remove("hidden");
       this.shadowRoot.querySelector("ul").classList.remove("hidden");
       /**

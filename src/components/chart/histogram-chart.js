@@ -65,7 +65,7 @@ template.innerHTML = `
 </style>
 
 <div class="widget-container">
-  <h2 class="hidden"></h2>
+  <h2></h2>
   <hk-spinner></hk-spinner>
   <svg height="335" width="250" class="hidden">
     <text id="difference" x="125" y="50"></text>
@@ -108,7 +108,6 @@ class HistogramChart extends HTMLElement {
        * data: {name, value, weight, key}
        */
       this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
-      this.titleEl.classList.remove("hidden");
       this.shadowRoot.querySelector("svg").classList.remove("hidden");
       let chartData = undefined;
       try {
