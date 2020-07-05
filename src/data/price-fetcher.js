@@ -5,22 +5,23 @@ import {
   CATEGORY_CRYPTO,
   CATEGORY_RESOURCE,
   CATEGORY_STOCK,
-  CATEGORY_CURRENCY
+  CATEGORY_CURRENCY,
+  KEY_LAST_FETCH_IN_MILLIS,
 } from "../globals.js";
 
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
 class PriceFetcher {
   constructor() {
-    const TIMESTAMP = "USD_TO_CHF_MULTIPLICATOR_LAST_FETCH_IN_MILLIS";
+    const TIMESTAMP = `USD_TO_CHF_MULTIPLICATOR${KEY_LAST_FETCH_IN_MILLIS}`;
     if (
       !store.USD_TO_CHF_MULTIPLICATOR ||
       !store[TIMESTAMP] ||
       new Date().getTime() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
     ) {
       fetch("https://api.exchangeratesapi.io/latest?base=CHF")
-        .then(res => res.json())
-        .then(dollarToChfConversionRate => {
+        .then((res) => res.json())
+        .then((dollarToChfConversionRate) => {
           store.USD_TO_CHF_MULTIPLICATOR =
             2 - dollarToChfConversionRate.rates.USD;
           store[TIMESTAMP] = new Date().getTime();
@@ -36,7 +37,7 @@ class PriceFetcher {
     const assets = databaseConnector.getAssets() || [];
     const enrichedAssetPromises = [];
 
-    assets.forEach(_asset => {
+    assets.forEach((_asset) => {
       switch (_asset.category) {
         case CATEGORY_CRYPTO: {
           enrichedAssetPromises.push(cryptoFetcher.addPrice(_asset));
@@ -80,7 +81,7 @@ class CryptoFetcher {
 
   addPrice(asset) {
     const ASSET_KEY = "CRYPTO_" + asset.symbol;
-    const TIMESTAMP = ASSET_KEY + "_LAST_FETCH_IN_MILLIS";
+    const TIMESTAMP = ASSET_KEY + KEY_LAST_FETCH_IN_MILLIS;
     if (
       store[TIMESTAMP] &&
       new Date().getTime() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
@@ -88,15 +89,15 @@ class CryptoFetcher {
       return Promise.resolve(store[ASSET_KEY]);
     }
     return fetch(this.BASE_URL + asset.symbol)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = Object.values(data)[0].chf;
         asset.value = asset.amount * asset.price;
         store[ASSET_KEY] = asset;
         return store[ASSET_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(`Could not fetch crypto: ${asset.symbol}`, e);
         return store[ASSET_KEY];
       });
@@ -111,7 +112,7 @@ class StockFetcher {
 
   addPrice(asset) {
     const VALUE_KEY = "STOCK_" + asset.symbol;
-    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+    const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
     if (
       store[TIMESTAMP] &&
       new Date().getTime() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
@@ -119,15 +120,15 @@ class StockFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL + asset.symbol)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = Object.values(Object.values(data)[1])[0]["4. close"];
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(`Could not fetch stock: ${asset.symbol}`, e);
         return store[VALUE_KEY];
       });
@@ -141,7 +142,7 @@ class ResourceFetcher {
 
   addPrice(asset) {
     const VALUE_KEY = "RESOURCE_" + asset.symbol;
-    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+    const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
 
     if (
       store[TIMESTAMP] &&
@@ -150,17 +151,17 @@ class ResourceFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL)
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = data[asset.symbol.toUpperCase()].CHF;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(`Could not fetch resource: ${asset.symbol}`, e);
         return store[VALUE_KEY];
       });
@@ -174,7 +175,7 @@ class CurrencyFetcher {
 
   addPrice(asset) {
     const VALUE_KEY = "CURRENCY_" + asset.symbol;
-    const TIMESTAMP = VALUE_KEY + "_LAST_FETCH_IN_MILLIS";
+    const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
 
     if (
       store[TIMESTAMP] &&
@@ -183,10 +184,10 @@ class CurrencyFetcher {
       return Promise.resolve(store[VALUE_KEY]);
     }
     return fetch(this.BASE_URL)
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = data.rates[asset.symbol.toUpperCase()];
 
@@ -194,7 +195,7 @@ class CurrencyFetcher {
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(`Could not fetch currency: ${asset.symbol}`, e);
         return store[VALUE_KEY];
       });

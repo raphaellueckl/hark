@@ -20,6 +20,8 @@ export const CATEGORY_CURRENCY = "Currency";
 export const VALIDATION_REQUIRED = "Required field";
 export const VALIDATION_INVALID_NUMBER = "Invalid number";
 
+export const KEY_LAST_FETCH_IN_MILLIS = "_LAST_FETCH_IN_MILLIS";
+
 export const numberToLocal = (numberOrString) =>
   Number(Number(numberOrString).toFixed(2)).toLocaleString("en-CH");
 

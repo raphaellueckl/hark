@@ -5,6 +5,7 @@ import {
   CATEGORY_STOCK,
   CATEGORY_RESOURCE,
   CATEGORY_CURRENCY,
+  KEY_LAST_FETCH_IN_MILLIS,
 } from "../globals.js";
 
 const STORAGE_KEY_FIAT_TRANSACTIONS = "fiat_transactions";
@@ -61,6 +62,7 @@ class DatabaseConnector {
     assets.push(asset);
 
     storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    this._triggerPriceUpdate();
   }
 
   removeAssetByIndex(index) {
@@ -118,6 +120,14 @@ class DatabaseConnector {
 
   clearDatabase() {
     storage.clear();
+  }
+
+  _triggerPriceUpdate() {
+    Object.keys(storage).forEach((storageKey) => {
+      if (storageKey.includes(KEY_LAST_FETCH_IN_MILLIS)) {
+        storage.removeItem(storageKey);
+      }
+    });
   }
 
   _removeAssetVirtual(asset) {
