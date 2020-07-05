@@ -65,7 +65,7 @@ template.innerHTML = `
 </style>
 
 <div class="widget-container">
-  <h2></h2>
+  <h2 class="hidden"></h2>
   <hk-spinner></hk-spinner>
   <svg height="335" width="250" class="hidden">
     <text id="difference" x="125" y="50"></text>

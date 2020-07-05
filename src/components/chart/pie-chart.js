@@ -1,4 +1,5 @@
 import { widgetContainerStyles, resetUL, COLORS } from "../../css-globals.js";
+import "../hk-spinner.js";
 
 const template = document.createElement("template");
 
@@ -15,7 +16,7 @@ template.innerHTML = `
       transition: stroke-width 0.2s;
     }
 
-    #legend {
+    .legend {
       display: flex;
       justify-content: center;
       width: 200px;
@@ -31,11 +32,16 @@ template.innerHTML = `
       margin: 2px;
       border-radius: 5px;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
   <div class="widget-container">
-    <h2></h2>
-    <svg height="250" width="250"></svg>
-    <ul id="legend"></ul>
+    <h2 class="hidden"></h2>
+    <hk-spinner></hk-spinner>
+    <svg height="250" width="250" class="hidden"></svg>
+    <ul id="legend" class="hidden"></ul>
   </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
@@ -83,6 +89,10 @@ class PieChart extends HTMLElement {
         this._highByAssetCompoundKey();
       }
     } else if (name === "data") {
+      this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
+      this.shadowRoot.querySelector("h2").classList.remove("hidden");
+      this.shadowRoot.querySelector("svg").classList.remove("hidden");
+      this.shadowRoot.querySelector("ul").classList.remove("hidden");
       /**
        * data: {name, value, weight, key}
        */
@@ -175,7 +185,7 @@ class PieChart extends HTMLElement {
         (STEPS_UNTIL_FULL_CIRCLE / sumOfValues) *
         chartData[i].weight;
 
-      const legendList = this.shadowRoot.querySelector("#legend");
+      const legendList = this.shadowRoot.querySelector(".legend");
       const legendItem = document.createElement("li");
       legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${chartData[i].name}</span>`;
       legendList.appendChild(legendItem);
