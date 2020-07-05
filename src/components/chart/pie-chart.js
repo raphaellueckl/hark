@@ -41,7 +41,7 @@ template.innerHTML = `
     <h2 class="hidden"></h2>
     <hk-spinner></hk-spinner>
     <svg height="250" width="250" class="hidden"></svg>
-    <ul id="legend" class="hidden"></ul>
+    <ul class="legend hidden"></ul>
   </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
