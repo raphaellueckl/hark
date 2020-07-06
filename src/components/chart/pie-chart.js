@@ -136,6 +136,7 @@ class PieChart extends HTMLElement {
     const svg = this.shadowRoot.querySelector("svg");
     let accumulatedDegree = 0;
     for (let i = 0; i < chartData.length; i++) {
+      if (!chartData[i].weight) continue;
       const randomColor = _getRandomHexColor();
       const entry = document.createElementNS(
         "http://www.w3.org/2000/svg",
