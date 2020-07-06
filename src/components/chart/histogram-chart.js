@@ -17,10 +17,6 @@ template.innerHTML = `
     display: none;
   }
 
-  .spinner {
-
-  }
-
   .positive {
     stroke:#09d64a;
   }
@@ -112,7 +108,13 @@ class HistogramChart extends HTMLElement {
       let chartData = undefined;
       try {
         chartData = JSON.parse(newValue);
-        this._chartUpdater(chartData.positive, chartData.negative);
+        if (chartData !== null) {
+          this._chartUpdater(chartData.positive, chartData.negative);
+        } else {
+          this.shadowRoot
+            .querySelector(".widget-container")
+            .classList.add("hidden");
+        }
       } catch (e) {
         console.error("Failed to update chart data.", e);
       }

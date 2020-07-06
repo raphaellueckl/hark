@@ -119,10 +119,15 @@ class Chart extends HTMLElement {
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
         "data",
-        JSON.stringify({
-          positive: totalValue,
-          negative: withdrawalDepositDelta < 0 ? withdrawalDepositDelta : 0,
-        })
+        JSON.stringify(
+          !this.combinedWithdrawalsValue && !this.combinedDepositsValue
+            ? null
+            : {
+                positive: totalValue,
+                negative:
+                  withdrawalDepositDelta < 0 ? withdrawalDepositDelta : 0,
+              }
+        )
       );
   };
 
@@ -139,10 +144,14 @@ class Chart extends HTMLElement {
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
         "data",
-        JSON.stringify({
-          positive: totalValue,
-          negative: this.combinedDepositsValue,
-        })
+        JSON.stringify(
+          !this.combinedWithdrawalsValue && !this.combinedDepositsValue
+            ? null
+            : {
+                positive: totalValue,
+                negative: this.combinedDepositsValue,
+              }
+        )
       );
   };
 
