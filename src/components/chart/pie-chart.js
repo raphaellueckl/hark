@@ -16,14 +16,17 @@ template.innerHTML = `
       transition: stroke-width 0.2s;
     }
 
+    .badge-container {
+      width: 230px;
+      height: 92px;
+      margin-bottom: 10px;
+      overflow: auto;
+    }
+
     .legend {
       display: flex;
       justify-content: center;
-      width: 200px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
-      height: 92px;
-      overflow: auto;
     }
 
     .legend-item {
@@ -41,7 +44,9 @@ template.innerHTML = `
     <h2></h2>
     <hk-spinner></hk-spinner>
     <svg height="250" width="250" class="hidden"></svg>
-    <ul class="legend hidden"></ul>
+    <div class="badge-container">
+      <ul class="legend hidden"></ul>
+    </div>
   </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
@@ -135,6 +140,9 @@ class PieChart extends HTMLElement {
   _chartUpdater(chartData, sumOfValues) {
     const svg = this.shadowRoot.querySelector("svg");
     let accumulatedDegree = 0;
+    chartData.sort((a, b) =>
+      a.weight < b.weight ? 1 : a.weight > b.weight ? -1 : 0
+    );
     for (let i = 0; i < chartData.length; i++) {
       if (!chartData[i].weight) continue;
       const randomColor = _getRandomHexColor();
@@ -187,7 +195,9 @@ class PieChart extends HTMLElement {
 
       const legendList = this.shadowRoot.querySelector(".legend");
       const legendItem = document.createElement("li");
-      legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${chartData[i].name}</span>`;
+      legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
+        0
+      )}% ${chartData[i].name}</span>`;
       legendList.appendChild(legendItem);
 
       legendItem.addEventListener("mouseover", () => {
