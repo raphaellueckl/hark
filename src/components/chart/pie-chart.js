@@ -1,5 +1,5 @@
 import { widgetContainerStyles, resetUL } from "../../css-globals.js";
-import "../hk-spinner.js";
+import "../spinner.js";
 
 const template = document.createElement("template");
 

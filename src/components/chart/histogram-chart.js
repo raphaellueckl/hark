@@ -1,7 +1,7 @@
 import { numberToLocal } from "../../globals.js";
 import { widgetContainerStyles } from "../../css-globals.js";
 
-import "../hk-spinner.js";
+import "../spinner.js";
 
 const BAR_END = 100;
 const BAR_START = 295;
