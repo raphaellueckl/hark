@@ -52,7 +52,7 @@ template.innerHTML = `
       <hk-button id="import">Import</hk-button>
     </li>
     <li>
-      <label class="input-label">Clear Database:</label>
+      <label class="input-label">Reset Database:</label>
       <hk-button id="clear-database">Boom!</hk-button>
     </li>
   </ul>

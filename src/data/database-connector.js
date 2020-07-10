@@ -120,6 +120,7 @@ class DatabaseConnector {
 
   clearDatabase() {
     storage.clear();
+    this._initMockData();
   }
 
   _triggerPriceUpdate() {
@@ -146,8 +147,8 @@ class DatabaseConnector {
   }
 
   _initMockData() {
-    if (!this.getAssets().length) {
-      const mockData = [
+    if (!this.getAssets().length && !this.getFiatTransactions().length) {
+      const assetsMockData = [
         {
           symbol: "bitcoin",
           asset: "bitcoin",
@@ -179,11 +180,9 @@ class DatabaseConnector {
           amount: 2000,
         },
       ];
-      storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(mockData));
-    }
+      storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assetsMockData));
 
-    if (!this.getFiatTransactions().length) {
-      const mockData = [
+      const fiatTransactionsMockData = [
         {
           date: "2010-12-24",
           exchange: "kraken",
@@ -206,7 +205,10 @@ class DatabaseConnector {
           type: TYPE_WITHDRAW,
         },
       ];
-      storage.setItem(STORAGE_KEY_FIAT_TRANSACTIONS, JSON.stringify(mockData));
+      storage.setItem(
+        STORAGE_KEY_FIAT_TRANSACTIONS,
+        JSON.stringify(fiatTransactionsMockData)
+      );
     }
   }
 }
