@@ -69,7 +69,9 @@ template.innerHTML = `
         <h2>Delete?</h2>
     </div>
     <div class="modal-body">
-      <p>Do you really want to delete this item?</p>
+      <p>
+        <slot></slot>
+      </p>
     </div>
     <div class="modal-footer">
       <hk-button class="decline">No</hk-button>

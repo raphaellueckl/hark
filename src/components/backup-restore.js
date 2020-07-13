@@ -2,6 +2,7 @@ import { databaseConnector } from "../data/database-connector.js";
 import { resetUL, ITEM_BACKGROUND } from "../css-globals.js";
 
 import "./button.js";
+import "./modal.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -103,7 +104,18 @@ class ExportApplicationState extends HTMLElement {
     });
 
     clearDatabaseButton.addEventListener("click", (ev) => {
-      databaseConnector.clearDatabase();
+      const modal = document.createElement("hk-modal");
+      modal.textContent =
+        "ATTENTION: This will remove all your entries! There is almost never a reason to do this, so please make a backup before executing this action, otherwise all your data will be lost!";
+      modal.setAttribute("open", "");
+      modal.onAccept = () => {
+        databaseConnector.clearDatabase();
+        document.querySelector("body").removeChild(modal);
+      };
+      modal.onDecline = () => {
+        document.querySelector("body").removeChild(modal);
+      };
+      document.querySelector("body").appendChild(modal);
     });
   }
 }
