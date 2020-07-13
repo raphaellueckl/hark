@@ -118,12 +118,16 @@ class Asset extends HTMLElement {
       button.addEventListener("click", (e) => {
         const modal = document.createElement("hk-modal");
         modal.setAttribute("open", "");
-        modal.onSuccess = () => {
+        modal.onAccept = () => {
           store.dispatchEvent(
             new CustomEvent(EVENT_REMOVE_ASSET_BY_INDEX, {
               detail: this.indexOfAsset,
             })
           );
+          document.querySelector("body").removeChild(modal);
+        };
+        modal.onDecline = () => {
+          document.querySelector("body").removeChild(modal);
         };
         document.querySelector("body").appendChild(modal);
       });

@@ -110,12 +110,13 @@ class Modal extends HTMLElement {
     this.modal.addEventListener("click", (ev) => {
       if (ev.target === this.modal || ev.target === this.closeButton) {
         this.removeAttribute("open");
+        this.onDecline();
       }
     });
 
     this.successButton.addEventListener("click", () => {
       this.removeAttribute("open");
-      this.onSuccess();
+      this.onAccept();
     });
   }
 }
