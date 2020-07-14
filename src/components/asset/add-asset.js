@@ -9,6 +9,7 @@ import {
   VALIDATION_REQUIRED,
   VALIDATION_INVALID_NUMBER,
 } from "../../globals.js";
+import { priceFetcher } from "../../data/price-fetcher.js";
 
 import "../input.js";
 import "../button.js";
@@ -61,9 +62,6 @@ template.innerHTML = `
     <label class="input-label" for="asset">Asset:</label><hk-input id="asset" placeholder="E.g. Google" invalid />
   </li>
   <li>
-    <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" invalid />
-  </li>
-  <li>
     <label class="input-label" for="category">Category:</label>
     <select id="category">
       <option value="${CATEGORY_STOCK}">Stock</option>
@@ -71,6 +69,9 @@ template.innerHTML = `
       <option value="${CATEGORY_RESOURCE}">Resource</option>
       <option value="${CATEGORY_CURRENCY}">Currency</option>
 </select>
+  </li>
+  <li>
+    <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" invalid />
   </li>
   <li>
     <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" invalid />
@@ -109,7 +110,7 @@ class AddAsset extends HTMLElement {
     });
 
     this.symbolInput.addEventListener("blur", (ev) => {
-      this._setSymbolInputValidationState();
+      this._setSymbolInputValidationState(true);
     });
     this.symbolInput.addEventListener("input", (ev) => {
       this._setSymbolInputValidationState();
@@ -147,7 +148,18 @@ class AddAsset extends HTMLElement {
     }
   }
 
-  _setSymbolInputValidationState() {
+  async _setSymbolInputValidationState(validateSymbol) {
+    if (validateSymbol) {
+      const symbolExists = await priceFetcher.testAssetByCategory(
+        this.symbolInput.value,
+        this.categoryInput.value
+      );
+      if (!symbolExists) {
+        this._invalidate(this.symbolInput, "Invalid Symbol!");
+        return;
+      }
+    }
+
     if (this.symbolInput.value === "") {
       this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
     } else {

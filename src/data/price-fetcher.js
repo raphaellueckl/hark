@@ -13,6 +13,11 @@ const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
 class PriceFetcher {
   constructor() {
+    this.cryptoFetcher = new CryptoFetcher();
+    this.stockFetcher = new StockFetcher();
+    this.resourceFetcher = new ResourceFetcher();
+    this.currencyFetcher = new CurrencyFetcher();
+
     const TIMESTAMP = `USD_TO_CHF_MULTIPLICATOR${KEY_LAST_FETCH_IN_MILLIS}`;
     if (
       !store.USD_TO_CHF_MULTIPLICATOR ||
@@ -30,29 +35,25 @@ class PriceFetcher {
   }
 
   async enrichAssetsWithPrice() {
-    const cryptoFetcher = new CryptoFetcher();
-    const stockFetcher = new StockFetcher();
-    const resourceFetcher = new ResourceFetcher();
-    const currencyFetcher = new CurrencyFetcher();
     const assets = databaseConnector.getAssets() || [];
     const enrichedAssetPromises = [];
 
     assets.forEach((_asset) => {
       switch (_asset.category) {
         case CATEGORY_CRYPTO: {
-          enrichedAssetPromises.push(cryptoFetcher.addPrice(_asset));
+          enrichedAssetPromises.push(this.cryptoFetcher.addPrice(_asset));
           break;
         }
         case CATEGORY_STOCK: {
-          enrichedAssetPromises.push(stockFetcher.addPrice(_asset));
+          enrichedAssetPromises.push(this.stockFetcher.addPrice(_asset));
           break;
         }
         case CATEGORY_RESOURCE: {
-          enrichedAssetPromises.push(resourceFetcher.addPrice(_asset));
+          enrichedAssetPromises.push(this.resourceFetcher.addPrice(_asset));
           break;
         }
         case CATEGORY_CURRENCY: {
-          enrichedAssetPromises.push(currencyFetcher.addPrice(_asset));
+          enrichedAssetPromises.push(this.currencyFetcher.addPrice(_asset));
           break;
         }
         default: {
@@ -69,9 +70,23 @@ class PriceFetcher {
 
     return enrichedAssets;
   }
-}
 
-export const priceFetcher = new PriceFetcher();
+  async testAssetByCategory(asset, category) {
+    debugger;
+    switch (category) {
+      case CATEGORY_CRYPTO:
+        return await this.cryptoFetcher.doesSymbolExist(asset);
+      case CATEGORY_STOCK:
+        return await this.stockFetcher.doesSymbolExist(asset);
+      case CATEGORY_RESOURCE:
+        return await this.resourceFetcher.doesSymbolExist(asset);
+      case CATEGORY_CURRENCY:
+        return await this.currencyFetcher.doesSymbolExist(asset);
+      default:
+        console.error("Category does not exist");
+    }
+  }
+}
 
 class CryptoFetcher {
   constructor() {
@@ -101,6 +116,19 @@ class CryptoFetcher {
         console.error(`Could not fetch crypto: ${asset.symbol}`, e);
         return store[ASSET_KEY];
       });
+  }
+
+  async doesSymbolExist(symbol) {
+    const request = await fetch(this.BASE_URL + symbol);
+    const jsonResponse = await request.json();
+    try {
+      if (Object.values(jsonResponse)[0].chf) {
+        return true;
+      }
+    } catch (err) {
+      // Does not have a value => Nullpointer.
+    }
+    return false;
   }
 }
 
@@ -132,6 +160,20 @@ class StockFetcher {
         console.error(`Could not fetch stock: ${asset.symbol}`, e);
         return store[VALUE_KEY];
       });
+  }
+
+  async doesSymbolExist(symbol) {
+    debugger;
+    const request = await fetch(this.BASE_URL + symbol);
+    const jsonResponse = await request.json();
+    try {
+      if (Object.values(Object.values(jsonResponse)[1])[0]["4. close"]) {
+        return true;
+      }
+    } catch (err) {
+      // Does not have a value => Nullpointer.
+    }
+    return false;
   }
 }
 
@@ -165,6 +207,19 @@ class ResourceFetcher {
         console.error(`Could not fetch resource: ${asset.symbol}`, e);
         return store[VALUE_KEY];
       });
+  }
+
+  async doesSymbolExist(symbol) {
+    const request = await fetch(this.BASE_URL);
+    const jsonResponse = await request.json();
+    try {
+      if (jsonResponse[symbol.toUpperCase()].CHF) {
+        return true;
+      }
+    } catch (err) {
+      // Does not have a value => Nullpointer.
+    }
+    return false;
   }
 }
 
@@ -200,4 +255,19 @@ class CurrencyFetcher {
         return store[VALUE_KEY];
       });
   }
+
+  async doesSymbolExist(symbol) {
+    const request = await fetch(this.BASE_URL);
+    const jsonResponse = await request.json();
+    try {
+      if (jsonResponse.rates[symbol.toUpperCase()]) {
+        return true;
+      }
+    } catch (err) {
+      // Does not have a value => Nullpointer.
+    }
+    return false;
+  }
 }
+
+export const priceFetcher = new PriceFetcher();
