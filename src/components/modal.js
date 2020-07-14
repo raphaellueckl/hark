@@ -58,17 +58,7 @@ template.innerHTML = `
     justify-content: center;
     width: 100%;
   }
-
-  @media(min-width: ${BREAKPOINT_TABLET}px) {
-    .modal-content {
-      width: 30%;
-    }
-    
-    .modal-footer {
-      width: 80%;
-    }
-  }
-
+  
   .modal-text {
     text-align: center;
   }
@@ -76,6 +66,13 @@ template.innerHTML = `
   hk-button {
       margin: 15px 20px;
   }
+  
+  @media(min-width: ${BREAKPOINT_TABLET}px) {
+    .modal-content {
+      width: 50%;
+    }
+  }
+
 </style>
 
 <div class="modal">
