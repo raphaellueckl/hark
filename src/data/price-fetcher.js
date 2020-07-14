@@ -72,7 +72,6 @@ class PriceFetcher {
   }
 
   async testAssetByCategory(asset, category) {
-    debugger;
     switch (category) {
       case CATEGORY_CRYPTO:
         return await this.cryptoFetcher.doesSymbolExist(asset);
@@ -163,7 +162,6 @@ class StockFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    debugger;
     const request = await fetch(this.BASE_URL + symbol);
     const jsonResponse = await request.json();
     try {
