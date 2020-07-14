@@ -1,4 +1,5 @@
 import "./button.js";
+import { BREAKPOINT_TABLET } from "../css-globals.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -21,10 +22,10 @@ template.innerHTML = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    width: 80%;
 
     margin: auto;
-    padding: 50px;
+    padding: 10px;
     background: #fff;
     border: 1px solid #888;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
@@ -49,16 +50,31 @@ template.innerHTML = `
   }
   
   .modal-body {
-    }
+  }
   
   .modal-footer {
     display: flex;
-    justify-content: space-between;
-    width: 80%;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media(min-width: ${BREAKPOINT_TABLET}px) {
+    .modal-content {
+      width: 30%;
+    }
+    
+    .modal-footer {
+      width: 80%;
+    }
+  }
+
+  .modal-text {
+    text-align: center;
   }
 
   hk-button {
-      margin: 15px 0;
+      margin: 15px 20px;
   }
 </style>
 
@@ -69,7 +85,7 @@ template.innerHTML = `
         <h2>Delete?</h2>
     </div>
     <div class="modal-body">
-      <p>
+      <p class="modal-text">
         <slot></slot>
       </p>
     </div>
