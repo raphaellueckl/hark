@@ -30,9 +30,9 @@ template.innerHTML = `
 </style>
 <div>
   <hk-portfolio-balance></hk-portfolio-balance>
-  <hk-histogram-chart ${ATTRIBUTE_TOTAL_RETURN}></hk-histogram-chart>
-  <hk-chart ${ATTRIBUTE_ASSETS}></hk-chart>
   <hk-chart ${ATTRIBUTE_ASSETS_SPREAD}></hk-chart>
+  <hk-chart ${ATTRIBUTE_ASSETS}></hk-chart>
+  <hk-histogram-chart ${ATTRIBUTE_TOTAL_RETURN}></hk-histogram-chart>
 </div>`;
 
 class Chart extends HTMLElement {
