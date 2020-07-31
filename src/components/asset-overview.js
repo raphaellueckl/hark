@@ -28,6 +28,10 @@ template.innerHTML = `
       justify-content: space-between;
     }
 
+    .outdated {
+      background-color: blue;
+    }
+
     label {
       display: flex;
       justify-content: space-between;
@@ -56,6 +60,9 @@ class DashboardList extends HTMLElement {
     const ul = this.shadowRoot.querySelector("ul");
 
     priceFetcher.enrichAssetsWithPrice().then((assets) => {
+      assets.sort((a, b) =>
+        a.value > b.value ? -1 : b.value > a.value ? 1 : 0
+      );
       const listHtml = assets.map((asset) => {
         const li = document.createElement("li");
         li.innerHTML = `
@@ -71,6 +78,7 @@ class DashboardList extends HTMLElement {
           )}</span>
           <span>Symbol:</span><span class="value">${asset.symbol}</span>
           <span>Category:</span><span class="value">${asset.category}</span>`;
+        // if (asset.outdated) li.classList.add("outdated");
 
         // Those events will highlight the asset in the chart
         li.addEventListener("mouseover", () => {
