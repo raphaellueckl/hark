@@ -39,6 +39,10 @@ template.innerHTML = `
     .hidden {
       display: none;
     }
+
+    .full-label {
+      width: 100%;
+    }
   </style>
   <div class="widget-container">
     <h2></h2>
@@ -195,9 +199,17 @@ class PieChart extends HTMLElement {
 
       const legendList = this.shadowRoot.querySelector(".legend");
       const legendItem = document.createElement("li");
-      legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
-        0
-      )}% ${chartData[i].name}</span>`;
+      if (this.title === "Assets") {
+        legendItem.classList.add("full-label");
+        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
+          0
+        )}% ${chartData[i].name} | ${chartData[i].value.toFixed(2)} CHF</span>`;
+      } else {
+        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
+          0
+        )}% ${chartData[i].name}</span>`;
+      }
+
       legendList.appendChild(legendItem);
 
       legendItem.addEventListener("mouseover", () => {
