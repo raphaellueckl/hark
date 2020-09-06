@@ -30,7 +30,8 @@ template.innerHTML = `
     }
 
     .legend-item {
-      display: block;
+      display: flex;
+      justify-content: space-between;
       padding: 4px 5px;
       margin: 2px;
       border-radius: 5px;
@@ -201,9 +202,10 @@ class PieChart extends HTMLElement {
       const legendItem = document.createElement("li");
       if (this.title === "Assets") {
         legendItem.classList.add("full-label");
-        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
-          0
-        )}% ${chartData[i].name} | ${chartData[i].value.toFixed(2)} CHF</span>`;
+        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">
+        <span>${entry.percentage.toFixed(0)}% ${
+          chartData[i].name
+        }</span><span>${chartData[i].value.toFixed(2)} CHF</span>`;
       } else {
         legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
           0
