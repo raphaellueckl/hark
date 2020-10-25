@@ -48,15 +48,15 @@ template.innerHTML = `
   <div class="widget-container">
     <h2></h2>
     <hk-spinner></hk-spinner>
-    <svg height="250" width="250" class="hidden"></svg>
+    <svg height="176" width="176" class="hidden"></svg>
     <div class="badge-container">
       <ul class="legend hidden"></ul>
     </div>
   </div>`;
 
 const ALL_HEX_VALUES = "0123456789ABCDEF";
-const DEFAULT_STROKE_WIDTH = "50";
-const STEPS_UNTIL_FULL_CIRCLE = 503;
+const DEFAULT_STROKE_WIDTH = 30;
+const STEPS_UNTIL_FULL_CIRCLE = 377;
 
 function _getRandomHexColor() {
   const color = [...Array(6)]
@@ -116,13 +116,13 @@ class PieChart extends HTMLElement {
   }
 
   _highlightEntry = (entry) => {
-    entry.style.strokeWidth = "65";
+    entry.style.strokeWidth = String(DEFAULT_STROKE_WIDTH + 10);
     this.assetName.textContent = entry.assetName;
     this.percentage.textContent = `${entry.percentage.toFixed(1)} %`;
   };
 
   _unhighlightEntry = (entry) => {
-    entry.style.strokeWidth = DEFAULT_STROKE_WIDTH;
+    entry.style.strokeWidth = String(DEFAULT_STROKE_WIDTH);
     this.assetName.textContent = undefined;
     this.percentage.textContent = undefined;
   };
@@ -156,11 +156,11 @@ class PieChart extends HTMLElement {
         "circle"
       );
       entry.setAttribute("class", "value");
-      entry.setAttribute("cx", "125");
-      entry.setAttribute("cy", "125");
-      entry.setAttribute("r", "80");
+      entry.setAttribute("cx", "88");
+      entry.setAttribute("cy", "88");
+      entry.setAttribute("r", "60");
       entry.setAttribute("stroke", randomColor);
-      entry.setAttribute("stroke-width", DEFAULT_STROKE_WIDTH);
+      entry.setAttribute("stroke-width", String(DEFAULT_STROKE_WIDTH));
       entry.setAttribute("fill", "none");
       entry.setAttribute("stroke-dasharray", STEPS_UNTIL_FULL_CIRCLE);
       entry.setAttribute(
