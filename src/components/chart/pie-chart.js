@@ -18,7 +18,7 @@ template.innerHTML = `
 
     .badge-container {
       width: 230px;
-      height: 92px;
+      height: 159px;
       margin-bottom: 10px;
       overflow: auto;
     }
