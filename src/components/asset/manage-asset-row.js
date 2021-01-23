@@ -7,6 +7,7 @@ import {
 } from "../../css-globals.js";
 import {
   EVENT_CHANGE_ASSET_AMOUNT,
+  EVENT_CHANGE_FIXED_VALUE,
   EVENT_REMOVE_ASSET_BY_INDEX,
   createColumn,
 } from "../../globals.js";
@@ -95,6 +96,7 @@ class Asset extends HTMLElement {
       ul.appendChild(createColumn("Asset", asset.asset, true));
       ul.appendChild(createColumn("Category", asset.category, true));
       ul.appendChild(createColumn("Amount", asset.amount, false));
+      ul.appendChild(createColumn("Custom Value", asset.fixedValue, false));
 
       const amountInput = this.shadowRoot.querySelector("#amount_input");
       amountInput.addEventListener("hk-change", ({ detail: newAmount }) => {
@@ -106,6 +108,20 @@ class Asset extends HTMLElement {
           asset.amount = +newAmount;
           store.dispatchEvent(
             new CustomEvent(EVENT_CHANGE_ASSET_AMOUNT, { detail: asset })
+          );
+        }
+      });
+
+      const fixedValue = this.shadowRoot.querySelector("#custom_value_input");
+      fixedValue.addEventListener("hk-change", ({ detail: newFixedValue }) => {
+        if (isNaN(+newFixedValue)) {
+          fixedValue.setAttribute("error-msg", "Invalid Number");
+          fixedValue.setAttribute("invalid", "");
+        } else {
+          fixedValue.removeAttribute("invalid");
+          asset.fixedValue = +newFixedValue;
+          store.dispatchEvent(
+            new CustomEvent(EVENT_CHANGE_FIXED_VALUE, { detail: asset })
           );
         }
       });

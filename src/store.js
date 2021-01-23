@@ -7,6 +7,7 @@ import {
   EVENT_REMOVE_ASSET_BY_INDEX,
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
   EVENT_CHANGE_ASSET_AMOUNT,
+  EVENT_CHANGE_FIXED_VALUE,
 } from "./globals.js";
 
 // EventTarget, so that listeners can be registered on it
@@ -78,7 +79,25 @@ store.addEventListener(
 store.addEventListener(
   EVENT_CHANGE_ASSET_AMOUNT,
   ({ detail: assetWithUpdatedAmount }) => {
-    const success = databaseConnector.updateAssetAmount(assetWithUpdatedAmount);
+    const success = databaseConnector.updateAssetProperties(
+      assetWithUpdatedAmount
+    );
+    if (success) {
+      store.dispatchEvent(
+        new CustomEvent(EVENT_ASSETS_UPDATED, {
+          detail: databaseConnector.getAssets(),
+        })
+      );
+    }
+  }
+);
+
+store.addEventListener(
+  EVENT_CHANGE_FIXED_VALUE,
+  ({ detail: assetWithUpdatedFixedValue }) => {
+    const success = databaseConnector.updateAssetProperties(
+      assetWithUpdatedFixedValue
+    );
     if (success) {
       store.dispatchEvent(
         new CustomEvent(EVENT_ASSETS_UPDATED, {

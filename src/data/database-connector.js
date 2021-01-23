@@ -71,7 +71,7 @@ class DatabaseConnector {
     storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
   }
 
-  updateAssetAmount(asset) {
+  updateAssetProperties(asset) {
     const assetsBeforeUpdate = this.getAssets();
     const indexOfOutdatedAsset = assetsBeforeUpdate.findIndex(
       (a) =>

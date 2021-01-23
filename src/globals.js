@@ -8,6 +8,7 @@ export const EVENT_REMOVE_ASSET_BY_INDEX = "removeAssetByIndex";
 export const EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX =
   "removeFiatTransactionByIndex";
 export const EVENT_CHANGE_ASSET_AMOUNT = "changeAssetAmount";
+export const EVENT_CHANGE_FIXED_VALUE = "changeFixedValue";
 
 export const TYPE_DEPOSIT = "Deposit";
 export const TYPE_WITHDRAW = "Withdraw";
@@ -27,7 +28,9 @@ export const numberToLocal = (numberOrString) =>
 
 export const createColumn = (label, value, isDisabled) => {
   const column = document.createElement("li");
-  column.innerHTML = `<hk-input id="${label.toLowerCase()}_input" value="${value}" ${
+  column.innerHTML = `<hk-input id="${label
+    .replaceAll(" ", "_")
+    .toLowerCase()}_input" value="${value ? value : ""}" ${
     isDisabled ? "disabled" : ""
   }><label>${label}</label></hk-input>`;
   return column;
