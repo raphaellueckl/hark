@@ -68,13 +68,19 @@ template.innerHTML = `
       <option value="${CATEGORY_CRYPTO}">Crypto</option>
       <option value="${CATEGORY_RESOURCE}">Resource</option>
       <option value="${CATEGORY_CURRENCY}">Currency</option>
-</select>
+    </select>
   </li>
   <li>
     <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" invalid />
   </li>
   <li>
     <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" invalid />
+  </li>
+  <li>
+    <label class="input-label" for="should-custom-value">Fixed Value:</label><input type="checkbox" id="should-custom-value"/>
+  </li>
+  <li id="custom-value-section" style="display:none">
+    <label class="input-label" for="custom-value">Value:</label><hk-input id="custom-value" placeholder="E.g. 4500" />
   </li>
   <li class="add-button-container">
     <hk-button disabled>Add</hk-button>
@@ -93,6 +99,13 @@ class AddAsset extends HTMLElement {
     this.symbolInput = this.shadowRoot.querySelector("#symbol");
     this.categoryInput = this.shadowRoot.querySelector("#category");
     this.amountInput = this.shadowRoot.querySelector("#amount");
+    this.shouldCustomValueInput = this.shadowRoot.querySelector(
+      "#should-custom-value"
+    );
+    this.customValueInput = this.shadowRoot.querySelector("#custom-value");
+    this.customValueSection = this.shadowRoot.querySelector(
+      "#custom-value-section"
+    );
 
     this.addButton = this.shadowRoot.querySelector("hk-button");
 
@@ -117,10 +130,28 @@ class AddAsset extends HTMLElement {
     });
 
     this.amountInput.addEventListener("blur", (ev) => {
-      this._setAmountInputValidationState();
+      this._setNumberInputValidationState(this.amountInput);
     });
     this.amountInput.addEventListener("input", (ev) => {
-      this._setAmountInputValidationState();
+      this._setNumberInputValidationState(this.amountInput);
+    });
+
+    this.customValueInput.addEventListener("blur", (ev) => {
+      this._setNumberInputValidationState(this.customValueInput);
+    });
+    this.customValueInput.addEventListener("input", (ev) => {
+      this._setNumberInputValidationState(this.customValueInput);
+      this._setSymbolInputValidationState(true);
+    });
+
+    this.shouldCustomValueInput.addEventListener("change", (ev) => {
+      if (this.shouldCustomValueInput.checked) {
+        this.customValueSection.style.display = "flex";
+      } else {
+        this.customValueSection.style.display = "none";
+        this.customValueInput.removeAttribute("invalid");
+      }
+      this.customValueInput.value = "";
     });
 
     this.addButton.addEventListener("click", () => {
@@ -129,6 +160,7 @@ class AddAsset extends HTMLElement {
         asset: this.assetInput.value,
         category: this.categoryInput.value,
         amount: this.amountInput.value,
+        fixedValue: this.customValueInput.value,
       };
 
       store.dispatchEvent(
@@ -138,18 +170,22 @@ class AddAsset extends HTMLElement {
     });
   }
 
-  _setAmountInputValidationState() {
-    if (this.amountInput.value === "") {
-      this._invalidate(this.amountInput, VALIDATION_REQUIRED);
-    } else if (isNaN(this.amountInput.value)) {
-      this._invalidate(this.amountInput, VALIDATION_INVALID_NUMBER);
+  _setNumberInputValidationState(input) {
+    if (input.value === "") {
+      this._invalidate(input, VALIDATION_REQUIRED);
+    } else if (isNaN(input.value)) {
+      this._invalidate(input, VALIDATION_INVALID_NUMBER);
     } else {
-      this._validate(this.amountInput);
+      this._validate(input);
     }
   }
 
   async _setSymbolInputValidationState(validateSymbol) {
-    if (validateSymbol) {
+    if (this.symbolInput.value === "") {
+      this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
+    }
+    // If customValue has been set, it does not matter if a price could be found.
+    else if (validateSymbol && !this.customValueInput.value) {
       const symbolExists = await priceFetcher.testAssetByCategory(
         this.symbolInput.value,
         this.categoryInput.value
@@ -158,10 +194,6 @@ class AddAsset extends HTMLElement {
         this._invalidate(this.symbolInput, "Invalid Symbol!");
         return;
       }
-    }
-
-    if (this.symbolInput.value === "") {
-      this._invalidate(this.symbolInput, VALIDATION_REQUIRED);
     } else {
       this._validate(this.symbolInput);
     }
@@ -195,6 +227,7 @@ class AddAsset extends HTMLElement {
     this.symbolInput.value = "";
     this.categoryInput.value = CATEGORY_STOCK;
     this.amountInput.value = "";
+    this.customValueInput.value = "";
   }
 }
 
