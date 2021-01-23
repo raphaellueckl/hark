@@ -68,7 +68,7 @@ class DashboardList extends HTMLElement {
         li.innerHTML = `
           <span>Asset:</span><span class="value">${asset.asset}</span>
           <span>Value:</span><span class="value">${numberToLocal(
-            Number(asset.value).toFixed(2)
+            Number(asset.fixedValue ? asset.fixedValue : asset.value).toFixed(2)
           )} CHF</span>
           <span>Price:</span><span class="value">${numberToLocal(
             Number(asset.price).toFixed(2)
@@ -78,7 +78,6 @@ class DashboardList extends HTMLElement {
           )}</span>
           <span>Symbol:</span><span class="value">${asset.symbol}</span>
           <span>Category:</span><span class="value">${asset.category}</span>`;
-        // if (asset.outdated) li.classList.add("outdated");
 
         // Those events will highlight the asset in the chart
         li.addEventListener("mouseover", () => {

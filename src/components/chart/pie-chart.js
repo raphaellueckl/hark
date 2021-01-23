@@ -205,7 +205,11 @@ class PieChart extends HTMLElement {
         legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">
         <span>${entry.percentage.toFixed(0)}% ${
           chartData[i].name
-        }</span><span>${chartData[i].value.toFixed(2)} CHF</span>`;
+        }</span><span>${
+          chartData[i].fixedValue
+            ? chartData[i].fixedValue.toFixed(2)
+            : chartData[i].value.toFixed(2)
+        } CHF</span>`;
       } else {
         legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
           0
