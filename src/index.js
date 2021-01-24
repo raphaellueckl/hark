@@ -9,6 +9,7 @@ const template = document.createElement("template");
 template.innerHTML = `
 <style>
     :host {
+      max-width: 1400px;
       width: 100%;
       height: 100%;
 
