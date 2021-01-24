@@ -44,7 +44,7 @@ template.innerHTML = `
     justify-content: flex-end;
   }
 
-  .type-container {
+  .input-container {
     display: flex;
     flex-direction: column;
     width: 150px;
@@ -68,8 +68,8 @@ template.innerHTML = `
     <hk-input id="symbol" placeholder="E.g. USD" />
   </li>
   <li>
-    <label>Type:</label>
-    <div class="type-container">
+    <label class="input-label">Type:</label>
+    <div class="input-container">
       <div>
       <input name="type" id="deposit" type="radio" value="${TYPE_DEPOSIT}">
         <label class="input-label" for="deposit">Deposit</label>
@@ -78,6 +78,12 @@ template.innerHTML = `
       <input name="type" id="withdrawal" type="radio" value="${TYPE_WITHDRAW}">
         <label class="input-label" for="withdrawal">Withdrawal</label>
       <div>
+    </div>
+  </li>
+  <li>
+    <label class="input-label" for="repeat">Repeat Monthly:</label>
+    <div class="input-container">
+      <input name="repeat" id="repeat" type="checkbox" value="${TYPE_WITHDRAW}">
     </div>
   </li>
   <li class="add-button-container">
