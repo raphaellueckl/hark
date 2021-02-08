@@ -43,10 +43,10 @@ class AssetList extends HTMLElement {
     );
   }
 
-  _updateList(assets) {
+  _updateList(fiatTransactionList) {
     const ul = this.shadowRoot.querySelector("ul");
     ul.textContent = "";
-    const listHtml = assets.map((transaction, index) => {
+    const listHtml = fiatTransactionList.map((transaction, index) => {
       const li = document.createElement("li");
       li.innerHTML = `<hk-fiat-transaction index="${index}" transaction='${JSON.stringify(
         transaction

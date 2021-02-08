@@ -8,6 +8,7 @@ import {
 import {
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
   createColumn,
+  createCheckboxCell,
 } from "../../globals.js";
 import "../modal.js";
 
@@ -19,6 +20,13 @@ template.innerHTML = `
   li {
     display: flex;
     padding: 5px;
+  }
+
+  .fiat-transactions__row__column-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .remove-button-container{
@@ -84,16 +92,23 @@ class FiatTransaction extends HTMLElement {
     if (name === "index") {
       this.indexOfAsset = +newValue;
     } else if (name === "transaction") {
-      const asset = JSON.parse(newValue);
+      const transaction = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
 
-      ul.appendChild(createColumn("Date", asset.date, true));
-      ul.appendChild(createColumn("Symbol", asset.symbol, true));
-      ul.appendChild(createColumn("Amount", asset.amount, true));
-      ul.appendChild(createColumn("Exchange", asset.exchange, true));
-      ul.appendChild(createColumn("Type", asset.type, true));
-
+      ul.appendChild(createColumn("Date", transaction.date, true));
+      ul.appendChild(createColumn("Symbol", transaction.symbol, true));
+      ul.appendChild(createColumn("Amount", transaction.amount, true));
+      ul.appendChild(createColumn("Exchange", transaction.exchange, true));
+      ul.appendChild(createColumn("Type", transaction.type, true));
+      ul.appendChild(
+        createCheckboxCell(
+          "Recurring",
+          transaction.repeat,
+          true,
+          "fiat-transactions__row__column-item"
+        )
+      );
       const buttonContainer = document.createElement("li");
       buttonContainer.classList.add("remove-button-container");
       const button = document.createElement("hk-button");

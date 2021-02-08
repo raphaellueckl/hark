@@ -36,6 +36,23 @@ export const createColumn = (label, value, isDisabled) => {
   return column;
 };
 
+export const createCheckboxCell = (
+  label,
+  value,
+  isDisabled,
+  customClass = ""
+) => {
+  if (value) debugger;
+  const column = document.createElement("li");
+  const idAndName = `${label.replaceAll(" ", "_").toLowerCase()}_input`;
+  column.innerHTML = `<label for="${idAndName}">${label}</label>
+  <input type="checkbox" name="${idAndName}" id="${idAndName}" ${
+    value ? "checked" : ""
+  } ${isDisabled ? "disabled" : ""}/>`;
+  column.classList.add(customClass);
+  return column;
+};
+
 export const isValidIsoDateString = (dateString) => {
   return (
     typeof dateString &&
