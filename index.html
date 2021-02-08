@@ -1,4 +1,54 @@
-<!-- This file is a fake and just redirects to ./src/index.html -->
-<head>
-  <meta http-equiv="refresh" content="0; URL='/hark/src'" />
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hark - Asset Manager</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <link rel="manifest" href=/assets/site.webmanifest" /> <link rel="icon"
+    type="image/svg+xml" href=/assets/favicon.svg" /> <link
+    rel="apple-touch-icon" sizes="180x180" href=/assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32"
+    href=/assets/favicon-32x32.png" /> <link rel="icon" type="image/png"
+    sizes="16x16" href=/assets/favicon-16x16.png" /> <link rel="manifest"
+    href=/assets/site.webmanifest" /> <link rel="mask-icon"
+    href=/assets/safari-pinned-tab.svg" color="#5bbad5" /> <link rel="shortcut
+    icon" href=/assets/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#2b5797" />
+    <meta name="msapplication-config" content=/assets/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        box-sizing: border-box;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <script src="https://unpkg.com/@ungap/event-target@0.1.0/min.js"></script>
+  <body>
+    <hk-app
+      >If you see this message, your browser does not support webcomponents.
+      This app runs best on Chromium Browsers (Chrome) and is also optimized for
+      Safari. Please use those browsers to run it.</hk-app
+    >
+    <script type="module" src="/index.js"></script>
+  </body>
+</html>
