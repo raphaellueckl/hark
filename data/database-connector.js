@@ -185,10 +185,19 @@ class DatabaseConnector {
       const fiatTransactionsMockData = [
         {
           date: "2010-12-24",
-          exchange: "kraken",
+          exchange: "Kraken",
           symbol: "CHF",
           amount: "340",
           type: TYPE_DEPOSIT,
+          repeat: true,
+        },
+        {
+          date: "2010-12-24",
+          exchange: "Kraken",
+          symbol: "CHF",
+          amount: "112",
+          type: TYPE_DEPOSIT,
+          repeat: true,
         },
         {
           date: "2015-05-13",
