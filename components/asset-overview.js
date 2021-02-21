@@ -2,6 +2,7 @@ import { priceFetcher } from "../data/price-fetcher.js";
 import { resetUL, ITEM_BACKGROUND } from "../css-globals.js";
 import { store } from "../store.js";
 import { numberToLocal } from "../globals.js";
+import { databaseConnector } from "../data/database-connector.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -58,6 +59,34 @@ class DashboardList extends HTMLElement {
 
   connectedCallback() {
     const ul = this.shadowRoot.querySelector("ul");
+    const month = new Date().getMonth();
+    let repeatingFiatTransactionsUpdate =
+      // .filter((r) => r !== undefined);
+      databaseConnector
+        .getFiatTransactions()
+        .filter((t) => t.repeat)
+        .sort((a, b) => a.date < b.date)
+        .groupBy((t) => {
+          return [t.amount, t.exchange, t.symbol, t.type];
+        })
+        .map((ts) => ts[0])
+        .forEach((t) => {
+          const currentDateAMonthAgo = new Date();
+          currentDateAMonthAgo.setMonth(month - 1 > 0 ? 11 : month - 1); //year switch?
+          if (t.date <= currentDateAMonthAgo.toISOString().split("T")[0]) {
+            const transactionClone = { ...t };
+            const trasactionDatePlusOneMonth = new Date(t.date);
+            trasactionDatePlusOneMonth.setMonth(
+              trasactionDatePlusOneMonth.getMonth() === 11 //consider that year needs o be switched
+                ? 0
+                : trasactionDatePlusOneMonth.getMonth() + 1
+            );
+            transactionClone.date = new Date(trasactionDatePlusOneMonth)
+              .toISOString()
+              .split("T")[0];
+            databaseConnector.addFiatTransaction(transactionClone);
+          }
+        });
 
     priceFetcher.enrichAssetsWithPrice().then((assets) => {
       assets.sort((a, b) =>

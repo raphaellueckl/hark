@@ -42,7 +42,6 @@ export const createCheckboxCell = (
   isDisabled,
   customClass = ""
 ) => {
-  if (value) debugger;
   const column = document.createElement("li");
   const idAndName = `${label.replaceAll(" ", "_").toLowerCase()}_input`;
   column.innerHTML = `<label for="${idAndName}">${label}</label>
