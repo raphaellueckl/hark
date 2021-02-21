@@ -76,11 +76,15 @@ class DashboardList extends HTMLElement {
           if (t.date <= currentDateAMonthAgo.toISOString().split("T")[0]) {
             const transactionClone = { ...t };
             const trasactionDatePlusOneMonth = new Date(t.date);
+            const switchAYear = trasactionDatePlusOneMonth.getMonth() === 11;
             trasactionDatePlusOneMonth.setMonth(
-              trasactionDatePlusOneMonth.getMonth() === 11 //consider that year needs o be switched
-                ? 0
-                : trasactionDatePlusOneMonth.getMonth() + 1
+              switchAYear ? 0 : trasactionDatePlusOneMonth.getMonth() + 1
             );
+            if (switchAYear) {
+              trasactionDatePlusOneMonth.setFullYear(
+                trasactionDatePlusOneMonth.getFullYear() + 1
+              );
+            }
             transactionClone.date = new Date(trasactionDatePlusOneMonth)
               .toISOString()
               .split("T")[0];
