@@ -53,6 +53,7 @@ class PriceFetcher {
           break;
         }
         case CATEGORY_CURRENCY: {
+          debugger;
           enrichedAssetPromises.push(this.currencyFetcher.addPrice(_asset));
           break;
         }
@@ -63,7 +64,7 @@ class PriceFetcher {
     });
 
     const enrichedAssets = await Promise.all(enrichedAssetPromises);
-
+    debugger;
     store.dispatchEvent(
       new CustomEvent(EVENT_ASSETS_UPDATED, { detail: enrichedAssets })
     );
@@ -134,7 +135,7 @@ class CryptoFetcher {
 class StockFetcher {
   constructor() {
     this.BASE_URL =
-      "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&interval=1min&outputsize=compact&apikey=BTOSEGGXBDS03E8F&symbol=";
+      "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=msft&apikey=BTOSEGGXBDS03E8F&symbol=";
   }
 
   addPrice(asset) {
@@ -150,7 +151,7 @@ class StockFetcher {
       .then((res) => res.json())
       .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = Object.values(Object.values(data)[1])[0]["4. close"];
+        asset.price = Number(data["Global Quote"]["05. price"]);
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];

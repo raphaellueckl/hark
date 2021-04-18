@@ -38,6 +38,19 @@ class DatabaseConnector {
 
   addFiatTransaction(transaction) {
     const transactions = this.getFiatTransactions();
+    if (
+      transactions.filter(
+        (t) =>
+          t.date === transaction.date &&
+          t.symbol === transaction.symbol &&
+          t.amount === transaction.amount &&
+          t.exchange === transaction.exchange &&
+          t.type === transaction.type &&
+          t.repeat === transaction.repeat
+      ).length !== 0
+    ) {
+      return;
+    }
     transactions.push(transaction);
     this._sortFiatTransactionsByDateDescending(transactions);
     storage.setItem(
@@ -59,6 +72,7 @@ class DatabaseConnector {
 
   addAsset(asset) {
     const assets = this.getAssets();
+    debugger;
     assets.push(asset);
 
     storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
@@ -153,13 +167,13 @@ class DatabaseConnector {
           symbol: "bitcoin",
           asset: "bitcoin",
           category: CATEGORY_CRYPTO,
-          amount: 0.2,
+          amount: 0.05,
         },
         {
           symbol: "ethereum",
           asset: "ethereum",
           category: CATEGORY_CRYPTO,
-          amount: 3,
+          amount: 1.2,
         },
         {
           symbol: "MSFT",
@@ -177,7 +191,7 @@ class DatabaseConnector {
           symbol: "EUR",
           asset: "Euro",
           category: CATEGORY_CURRENCY,
-          amount: 2000,
+          amount: 200,
         },
       ];
       storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assetsMockData));

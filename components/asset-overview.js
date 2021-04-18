@@ -66,13 +66,13 @@ class DashboardList extends HTMLElement {
         .getFiatTransactions()
         .filter((t) => t.repeat)
         .sort((a, b) => a.date < b.date)
-        .groupBy((t) => {
-          return [t.amount, t.exchange, t.symbol, t.type];
-        })
-        .map((ts) => ts[0])
+        // .groupBy((t) => {
+        //   return [t.amount, t.exchange, t.symbol, t.type];
+        // })
+        // .map((ts) => ts[0])
         .forEach((t) => {
           const currentDateAMonthAgo = new Date();
-          currentDateAMonthAgo.setMonth(month - 1 > 0 ? 11 : month - 1); //year switch?
+          currentDateAMonthAgo.setMonth(month - 1 > 0 ? 11 : month - 1);
           if (t.date <= currentDateAMonthAgo.toISOString().split("T")[0]) {
             const transactionClone = { ...t };
             const trasactionDatePlusOneMonth = new Date(t.date);
