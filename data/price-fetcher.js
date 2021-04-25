@@ -9,6 +9,8 @@ import {
   KEY_LAST_FETCH_IN_MILLIS,
 } from "../globals.js";
 
+const PROXY = "http://localhost:8080/";
+
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
 const RAPID_API_HEADERS = {
@@ -93,11 +95,6 @@ class PriceFetcher {
 }
 
 class CryptoFetcher {
-  constructor() {
-    this.BASE_URL =
-      "https://yahoo-finance-low-latency.p.rapidapi.com/v8/finance/chart/";
-  }
-
   addPrice(asset) {
     const ASSET_KEY = "CRYPTO_" + asset.symbol;
     const TIMESTAMP = ASSET_KEY + KEY_LAST_FETCH_IN_MILLIS;
@@ -107,7 +104,7 @@ class CryptoFetcher {
     ) {
       return Promise.resolve(store[ASSET_KEY]);
     }
-    return fetch(this.BASE_URL + `${asset.symbol}-usd`, RAPID_API_HEADERS)
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD`)
       .then((res) => res.json())
       .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
@@ -160,7 +157,7 @@ class StockFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(this.BASE_URL + asset.symbol, RAPID_API_HEADERS)
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}`)
       .then((res) => res.json())
       .then((data) => {
         debugger;
@@ -200,14 +197,13 @@ class ResourceFetcher {
   addPrice(asset) {
     const VALUE_KEY = "RESOURCE_" + asset.symbol;
     const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
-
     if (
       store[TIMESTAMP] &&
       new Date().getTime() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(this.BASE_URL + `${asset.symbol}=F`, RAPID_API_HEADERS)
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`)
       .then((res) => {
         return res.json();
       })
@@ -252,14 +248,13 @@ class CurrencyFetcher {
   addPrice(asset) {
     const VALUE_KEY = "CURRENCY_" + asset.symbol;
     const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
-
     if (
       store[TIMESTAMP] &&
       new Date().getTime() - store[TIMESTAMP] < FIVE_MINUTES_IN_MILLIS
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(this.BASE_URL + `${asset.symbol}=X`, RAPID_API_HEADERS)
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X`)
       .then((res) => {
         return res.json();
       })
@@ -268,7 +263,6 @@ class CurrencyFetcher {
         store[TIMESTAMP] = new Date().getTime();
         asset.price = data.chart.result[0].meta.regularMarketPrice;
         // asset.price = data.rates[asset.symbol.toUpperCase()];
-
         asset.value = Number(asset.amount / asset.price);
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
