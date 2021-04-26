@@ -18,6 +18,10 @@ const RAPID_API_HEADERS = {
   "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
 };
 
+const FETCH_OPTIONS = {
+  mode: "no-cors",
+};
+
 class PriceFetcher {
   constructor() {
     this.cryptoFetcher = new CryptoFetcher();
@@ -31,11 +35,10 @@ class PriceFetcher {
       !store[TIMESTAMP] ||
       new Date().getTime() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
     ) {
-      fetch("https://api.exchangeratesapi.io/latest?base=CHF")
+      fetch(`${PROXY}https://finance.yahoo.com/quote/CHF=X`, FETCH_OPTIONS)
         .then((res) => res.json())
-        .then((dollarToChfConversionRate) => {
-          store.USD_TO_CHF_MULTIPLICATOR =
-            2 - dollarToChfConversionRate.rates.USD;
+        .then(({ price }) => {
+          store.USD_TO_CHF_MULTIPLICATOR = price;
           store[TIMESTAMP] = new Date().getTime();
         });
     }
@@ -104,20 +107,17 @@ class CryptoFetcher {
     ) {
       return Promise.resolve(store[ASSET_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD`)
+    return fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD`,
+      FETCH_OPTIONS
+    )
       .then((res) => res.json())
-      .then((data) => {
+      .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
-        debugger;
-        asset.price = data.chart.result[0].meta.regularMarketPrice;
+        asset.price = price;
         asset.value = asset.amount * asset.price;
         store[ASSET_KEY] = asset;
         return store[ASSET_KEY];
-
-        // asset.price = Object.values(data)[0].chf;
-        // asset.value = asset.amount * asset.price;
-        // store[ASSET_KEY] = asset;
-        // return store[ASSET_KEY];
       })
       .catch((e) => {
         console.error(`Could not fetch crypto: ${asset.symbol}`, e);
@@ -127,12 +127,12 @@ class CryptoFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      this.BASE_URL + `${symbol}-usd`,
-      RAPID_API_HEADERS
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD`,
+      FETCH_OPTIONS
     );
     const jsonResponse = await request.json();
     try {
-      if (jsonResponse.chart.result[0].meta.regularMarketPrice) {
+      if (jsonResponse.price) {
         return true;
       }
     } catch (err) {
@@ -143,11 +143,6 @@ class CryptoFetcher {
 }
 
 class StockFetcher {
-  constructor() {
-    this.BASE_URL =
-      "https://yahoo-finance-low-latency.p.rapidapi.com/v8/finance/chart/";
-  }
-
   addPrice(asset) {
     const VALUE_KEY = "STOCK_" + asset.symbol;
     const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
@@ -157,13 +152,14 @@ class StockFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}`)
+    return fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}`,
+      FETCH_OPTIONS
+    )
       .then((res) => res.json())
-      .then((data) => {
-        debugger;
+      .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = data.chart.result[0].meta.regularMarketPrice;
-        // asset.price = Object.values(Object.values(data)[1])[0]["4. close"];
+        asset.price = price;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
@@ -175,10 +171,13 @@ class StockFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(this.BASE_URL + symbol, RAPID_API_HEADERS);
+    const request = await fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}`,
+      FETCH_OPTIONS
+    );
     const jsonResponse = await request.json();
     try {
-      if (jsonResponse.chart.result[0].meta.regularMarketPrice) {
+      if (jsonResponse.price) {
         return true;
       }
     } catch (err) {
@@ -189,11 +188,6 @@ class StockFetcher {
 }
 
 class ResourceFetcher {
-  constructor() {
-    this.BASE_URL =
-      "https://yahoo-finance-low-latency.p.rapidapi.com/v8/finance/chart/";
-  }
-
   addPrice(asset) {
     const VALUE_KEY = "RESOURCE_" + asset.symbol;
     const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
@@ -203,16 +197,16 @@ class ResourceFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`)
+    return fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`,
+      FETCH_OPTIONS
+    )
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
-        debugger;
+      .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
-        data.chart.result[0].meta.regularMarketPrice;
-        // asset.price = data[asset.symbol.toUpperCase()].CHF;
-        asset.price = data[asset.symbol.toUpperCase()].CHF;
+        asset.price = price;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
@@ -225,12 +219,12 @@ class ResourceFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      this.BASE_URL + `${asset.symbol}=F`,
-      RAPID_API_HEADERS
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`,
+      FETCH_OPTIONS
     );
     const jsonResponse = await request.json();
     try {
-      if (jsonResponse.chart.result[0].meta.regularMarketPrice) {
+      if (jsonResponse.price) {
         return true;
       }
     } catch (err) {
@@ -241,10 +235,6 @@ class ResourceFetcher {
 }
 
 class CurrencyFetcher {
-  constructor() {
-    this.BASE_URL = "https://api.exchangeratesapi.io/latest?base=CHF";
-  }
-
   addPrice(asset) {
     const VALUE_KEY = "CURRENCY_" + asset.symbol;
     const TIMESTAMP = VALUE_KEY + KEY_LAST_FETCH_IN_MILLIS;
@@ -254,16 +244,17 @@ class CurrencyFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X`)
+    return fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X`,
+      FETCH_OPTIONS
+    )
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
-        debugger;
+      .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = data.chart.result[0].meta.regularMarketPrice;
-        // asset.price = data.rates[asset.symbol.toUpperCase()];
-        asset.value = Number(asset.amount / asset.price);
+        asset.price = price;
+        asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
@@ -274,10 +265,13 @@ class CurrencyFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(this.BASE_URL, RAPID_API_HEADERS);
+    const request = await fetch(
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}=X`,
+      FETCH_OPTIONS
+    );
     const jsonResponse = await request.json();
     try {
-      if (jsonResponse.chart.result[0].meta.regularMarketPrice) {
+      if (jsonResponse.price) {
         return true;
       }
     } catch (err) {
