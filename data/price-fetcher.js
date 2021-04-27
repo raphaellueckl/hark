@@ -114,11 +114,11 @@ class CryptoFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD`
-    );
-    const jsonResponse = await request.json();
     try {
+      const request = await fetch(
+        `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD`
+      );
+      const jsonResponse = await request.json();
       if (jsonResponse.price) {
         return true;
       }
@@ -155,11 +155,11 @@ class StockFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}`
-    );
-    const jsonResponse = await request.json();
     try {
+      const request = await fetch(
+        `${PROXY}https://finance.yahoo.com/quote/${symbol}`
+      );
+      const jsonResponse = await request.json();
       if (jsonResponse.price) {
         return true;
       }
@@ -198,11 +198,11 @@ class ResourceFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`
-    );
-    const jsonResponse = await request.json();
     try {
+      const request = await fetch(
+        `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`
+      );
+      const jsonResponse = await request.json();
       if (jsonResponse.price) {
         return true;
       }
@@ -241,11 +241,11 @@ class CurrencyFetcher {
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}=X`
-    );
-    const jsonResponse = await request.json();
     try {
+      const request = await fetch(
+        `${PROXY}https://finance.yahoo.com/quote/${symbol}=X`
+      );
+      const jsonResponse = await request.json();
       if (jsonResponse.price) {
         return true;
       }
