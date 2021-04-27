@@ -18,10 +18,6 @@ const RAPID_API_HEADERS = {
   "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
 };
 
-const FETCH_OPTIONS = {
-  mode: "no-cors",
-};
-
 class PriceFetcher {
   constructor() {
     this.cryptoFetcher = new CryptoFetcher();
@@ -35,7 +31,7 @@ class PriceFetcher {
       !store[TIMESTAMP] ||
       new Date().getTime() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
     ) {
-      fetch(`${PROXY}https://finance.yahoo.com/quote/CHF=X`, FETCH_OPTIONS)
+      fetch(`${PROXY}https://finance.yahoo.com/quote/CHF=X`)
         .then((res) => res.json())
         .then(({ price }) => {
           store.USD_TO_CHF_MULTIPLICATOR = price;
@@ -107,10 +103,7 @@ class CryptoFetcher {
     ) {
       return Promise.resolve(store[ASSET_KEY]);
     }
-    return fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD`,
-      FETCH_OPTIONS
-    )
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD`)
       .then((res) => res.json())
       .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
@@ -127,8 +120,7 @@ class CryptoFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD`,
-      FETCH_OPTIONS
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD`
     );
     const jsonResponse = await request.json();
     try {
@@ -152,10 +144,7 @@ class StockFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}`,
-      FETCH_OPTIONS
-    )
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}`)
       .then((res) => res.json())
       .then(({ price }) => {
         store[TIMESTAMP] = new Date().getTime();
@@ -172,8 +161,7 @@ class StockFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}`,
-      FETCH_OPTIONS
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}`
     );
     const jsonResponse = await request.json();
     try {
@@ -197,10 +185,7 @@ class ResourceFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`,
-      FETCH_OPTIONS
-    )
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`)
       .then((res) => {
         return res.json();
       })
@@ -219,8 +204,7 @@ class ResourceFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`,
-      FETCH_OPTIONS
+      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F`
     );
     const jsonResponse = await request.json();
     try {
@@ -244,10 +228,7 @@ class CurrencyFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X`,
-      FETCH_OPTIONS
-    )
+    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X`)
       .then((res) => {
         return res.json();
       })
@@ -266,8 +247,7 @@ class CurrencyFetcher {
 
   async doesSymbolExist(symbol) {
     const request = await fetch(
-      `${PROXY}https://finance.yahoo.com/quote/${symbol}=X`,
-      FETCH_OPTIONS
+      `${PROXY}https://finance.yahoo.com/quote/${symbol}=X`
     );
     const jsonResponse = await request.json();
     try {
