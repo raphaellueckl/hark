@@ -9,7 +9,7 @@ import {
   KEY_LAST_FETCH_IN_MILLIS,
 } from "../globals.js";
 
-const PROXY = "http://localhost:8080/";
+const PROXY = "http://217.22.129.80:8080/";
 
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
