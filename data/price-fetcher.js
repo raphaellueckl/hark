@@ -13,11 +13,6 @@ const PROXY = "http://localhost:8080/";
 
 const FIVE_MINUTES_IN_MILLIS = 1000 * 60 * 5;
 
-const RAPID_API_HEADERS = {
-  "x-rapidapi-key": "9443d3239cmsh5793b8156e3a879p1ea1ffjsnb3226d275259",
-  "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
-};
-
 class PriceFetcher {
   constructor() {
     this.cryptoFetcher = new CryptoFetcher();
