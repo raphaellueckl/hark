@@ -200,7 +200,7 @@ class ResourceFetcher {
   async doesSymbolExist(symbol) {
     try {
       const request = await fetch(
-        `${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F/`
+        `${PROXY}https://finance.yahoo.com/quote/${symbol}=F/`
       );
       const jsonResponse = await request.json();
       if (jsonResponse.price) {
