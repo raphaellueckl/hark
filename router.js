@@ -58,7 +58,6 @@ class Router {
   };
 
   previous = () => {
-    debugger;
     const current = this.currentRoute();
     let currentIndex = -1;
     this.routes.forEach((e, i) => {
