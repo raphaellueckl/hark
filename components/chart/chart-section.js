@@ -133,7 +133,7 @@ class Chart extends HTMLElement {
 
   _updateTotalReturnChartByAssets = ({ detail: assetList }) => {
     this.combinedAssetsTotalValue = assetList
-      .map((a) => +a.value)
+      .map((a) => (+a.fixedValue ? +a.fixedValue : +a.value))
       .reduce((a, b) => a + b, 0);
 
     if (isNaN(this.combinedWithdrawalsValue)) return;
