@@ -62,12 +62,38 @@ class App extends HTMLElement {
     }
   }
 
+  handleSwipeGestures = (router) => {
+    console.log(router);
+    const tolerance = 50;
+    let touchstartX = 0;
+    let touchendX = 0;
+
+    const slider = document.querySelector("body");
+
+    function handleGesture() {
+      if (touchendX < touchstartX - tolerance) router.previous();
+      if (touchendX > touchstartX + tolerance) router.next();
+    }
+
+    slider.addEventListener("touchstart", (e) => {
+      touchstartX = e.changedTouches[0].screenX;
+    });
+
+    slider.addEventListener("touchend", (e) => {
+      touchendX = e.changedTouches[0].screenX;
+      handleGesture();
+    });
+  };
+
   connectedCallback() {
     const router = new Router();
 
-    // router.defineError(() => {
-    //   document.querySelector("#root").innerHTML = "404 - This page does not exist!";
-    // });
+    router.defineError(() => {
+      document
+        .querySelector("hk-app")
+        .shadowRoot.querySelector("#root").innerHTML =
+        "404 - This page does not exist!";
+    });
 
     router
       .add("/", () => {
@@ -82,6 +108,8 @@ class App extends HTMLElement {
       .add("/settings", () => {
         this.shadowRoot.querySelector("#root").innerHTML = settingsPage;
       });
+
+    this.handleSwipeGestures(router);
   }
 }
 

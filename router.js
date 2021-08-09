@@ -11,13 +11,9 @@ class Router {
     };
     // If the user routes to a specific URL from the beginning, it should load the appropriate page.
     setTimeout(() => {
-      const fragment =
-        window.location.href.indexOf("#") === -1
-          ? "/"
-          : window.location.href.substring(
-              window.location.href.indexOf("#") + 1
-            );
-      this.navigate(fragment);
+      const current = this.currentRoute();
+
+      this.navigate(current);
     });
   }
 
@@ -40,6 +36,36 @@ class Router {
       }
     }
     return this;
+  };
+
+  currentRoute = () => {
+    return window.location.href.indexOf("#") === -1
+      ? "/"
+      : window.location.href.substring(window.location.href.indexOf("#") + 1);
+  };
+
+  next = () => {
+    const current = this.currentRoute();
+    let currentIndex = -1;
+    this.routes.forEach((e, i) => {
+      if (e.path === current) currentIndex = i;
+    });
+    const prevRoute =
+      this.routes[
+        currentIndex === 0 ? this.routes.length - 1 : currentIndex - 1
+      ];
+    this.navigate(prevRoute.path);
+  };
+
+  previous = () => {
+    debugger;
+    const current = this.currentRoute();
+    let currentIndex = -1;
+    this.routes.forEach((e, i) => {
+      if (e.path === current) currentIndex = i;
+    });
+    const nextRoute = this.routes[(currentIndex + 1) % this.routes.length];
+    this.navigate(nextRoute.path);
   };
 
   navigate = (routingUrl = "") => {
