@@ -17,6 +17,9 @@ import { databaseConnector } from "../../data/database-connector.js";
 const ATTRIBUTE_TOTAL_RETURN = 'title="Overall Return"';
 const ATTRIBUTE_ASSETS = 'title="Assets"';
 const ATTRIBUTE_ASSETS_SPREAD = 'title="Asset Spread"';
+const ATTRIBUTE_CRYPTO_SPREAD_TITLE = 'title="Crypto Spread"';
+const ATTRIBUTE_STOCK_SPREAD_TITLE = 'title="Stock Spread"';
+const ATTRIBUTE_RESOURCE_SPREAD_TITLE = 'title="Resource Spread"';
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -33,6 +36,9 @@ template.innerHTML = `
   <hk-chart ${ATTRIBUTE_ASSETS_SPREAD}></hk-chart>
   <hk-chart ${ATTRIBUTE_ASSETS}></hk-chart>
   <hk-histogram-chart ${ATTRIBUTE_TOTAL_RETURN}></hk-histogram-chart>
+  <hk-chart ${ATTRIBUTE_CRYPTO_SPREAD_TITLE}></hk-chart>
+  <hk-chart ${ATTRIBUTE_STOCK_SPREAD_TITLE}></hk-chart>
+  <hk-chart ${ATTRIBUTE_RESOURCE_SPREAD_TITLE}></hk-chart>
 </div>`;
 
 class Chart extends HTMLElement {
@@ -46,6 +52,7 @@ class Chart extends HTMLElement {
   connectedCallback() {
     store.addEventListener(EVENT_ASSETS_UPDATED, this._updateAssetChart);
     store.addEventListener(EVENT_ASSETS_UPDATED, this._updateSpreadChart);
+    store.addEventListener(EVENT_ASSETS_UPDATED, this._updateCryptoSpreadChart);
     store.addEventListener(
       EVENT_UPDATED_FIAT_TRANSACTIONS,
       this._updateTotalReturnChartByTransactions
@@ -226,6 +233,25 @@ class Chart extends HTMLElement {
           ],
         })
       );
+  };
+
+  _updateCryptoSpreadChart = ({ detail: assetList }) => {
+    const sumOfValues = assetList
+      .filter((a) => "Crypto" === a.category)
+      .map((v) => (v.fixedValue ? +v.fixedValue : +v.value))
+      .reduce((a, b) => a + b, 0);
+    let chartData = assetList
+      .filter((a) => "Crypto" === a.category)
+      .map((asset) => ({
+        name: asset.asset,
+        value: asset.fixedValue ? asset.fixedValue : asset.value,
+        weight: Number(asset.fixedValue ? asset.fixedValue : asset.value),
+        key: asset.category + asset.symbol,
+      }));
+    chartData.sort((a, b) => b.value - a.value);
+    this.shadowRoot
+      .querySelector(`hk-chart[${ATTRIBUTE_CRYPTO_SPREAD_TITLE}]`)
+      .setAttribute("data", JSON.stringify({ sumOfValues, data: chartData }));
   };
 
   _updatePortfolioBalance = ({ detail: assetList }) => {
