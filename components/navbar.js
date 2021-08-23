@@ -46,17 +46,32 @@ template.innerHTML = `
     justify-content: space-between;
   }
 
+  .is-active svg {
+    border-bottom: 3px solid rgb(214, 18, 22);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+
+
   .navigation-links {
     display: flex;
   }
 
   .navbar-item-title {
+    padding-bottom: 5px;
     display: none;
   }
 
+  svg {
+    padding-bottom: 5px;
+  }
+  
   @media (min-width: ${BREAKPOINT_MOBILE}px) {
     .navbar-item-title {
-      display: inline;
+      display: flex;
+      height: 24px;
+      align-items: center;
     }
   }
 </style>
@@ -86,6 +101,21 @@ class Navbar extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
+  }
+
+  connectedCallback() {
+    this.navElements = [...this.shadowRoot.querySelectorAll("a")];
+    const activeElement = this.navElements
+      .reverse()
+      .find((navLink) => window.location.href.includes(navLink.href));
+    activeElement?.classList?.add("is-active");
+
+    this.navElements.forEach((navElem) => {
+      navElem.addEventListener("click", (e) => {
+        this.navElements.forEach((e) => e.classList?.remove("is-active"));
+        navElem.classList.add("is-active");
+      });
+    });
   }
 }
 
