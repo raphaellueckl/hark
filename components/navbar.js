@@ -26,7 +26,7 @@ template.innerHTML = `
   a {
     display: flex;
     border-right: black solid 1px;
-    padding: 5px 10px;
+    padding: 2px 10px;
   }
 
   a > div {
@@ -62,7 +62,6 @@ template.innerHTML = `
   }
 
   .navbar-item-title {
-    padding-bottom: 5px;
     display: none;
   }
 
