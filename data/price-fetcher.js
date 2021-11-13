@@ -7,6 +7,7 @@ import {
   CATEGORY_STOCK,
   CATEGORY_CURRENCY,
   KEY_LAST_FETCH_IN_MILLIS,
+  EVENT_ERROR,
 } from "../globals.js";
 
 const PROXY = "https://ripped.link/";
@@ -31,6 +32,14 @@ class PriceFetcher {
         .then(({ price }) => {
           store.USD_TO_CHF_MULTIPLICATOR = price;
           store[TIMESTAMP] = new Date().getTime();
+        })
+        .catch((err) => {
+          console.error("LIVE USD/CHF unavailable!", err);
+          store.dispatchEvent(
+            new CustomEvent(EVENT_ERROR, {
+              detail: "LIVE USD/CHF unavailable!",
+            })
+          );
         });
     }
   }
@@ -112,16 +121,21 @@ class CryptoFetcher {
         store[ASSET_KEY] = asset;
         return store[ASSET_KEY];
       })
-      .catch((e) => {
-        console.error(`Could not fetch crypto: ${asset.symbol}`, e);
+      .catch((err) => {
+        console.error(`Could not fetch crypto: ${asset.symbol}`, err);
+        store.dispatchEvent(
+          new CustomEvent(EVENT_ERROR, {
+            detail: `Could not fetch crypto: ${asset.symbol}`,
+          })
+        );
         return store[ASSET_KEY];
       });
   }
 
   async doesSymbolExist(symbol) {
-    const request = await fetch(this.BASE_URL + symbol);
-    const jsonResponse = await request.json();
     try {
+      const request = await fetch(this.BASE_URL + symbol);
+      const jsonResponse = await request.json();
       if (Object.values(jsonResponse)[0].chf) {
         return true;
       }
@@ -151,8 +165,13 @@ class StockFetcher {
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch((e) => {
-        console.error(`Could not fetch stock: ${asset.symbol}`, e);
+      .catch((err) => {
+        console.error(`Could not fetch stock: ${asset.symbol}`, err);
+        store.dispatchEvent(
+          new CustomEvent(EVENT_ERROR, {
+            detail: `Could not fetch stock: ${asset.symbol}`,
+          })
+        );
         return store[VALUE_KEY];
       });
   }
@@ -194,8 +213,13 @@ class ResourceFetcher {
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch((e) => {
-        console.error(`Could not fetch resource: ${asset.symbol}`, e);
+      .catch((err) => {
+        console.error(`Could not fetch resource: ${asset.symbol}`, err);
+        store.dispatchEvent(
+          new CustomEvent(EVENT_ERROR, {
+            detail: `Could not fetch resource: ${asset.symbol}`,
+          })
+        );
         return store[VALUE_KEY];
       });
   }
@@ -237,8 +261,13 @@ class CurrencyFetcher {
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
       })
-      .catch((e) => {
-        console.error(`Could not fetch currency: ${asset.symbol}`, e);
+      .catch((err) => {
+        console.error(`Could not fetch currency: ${asset.symbol}`, err);
+        store.dispatchEvent(
+          new CustomEvent(EVENT_ERROR, {
+            detail: `Could not fetch currency: ${asset.symbol}`,
+          })
+        );
         return store[VALUE_KEY];
       });
   }
