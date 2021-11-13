@@ -150,26 +150,26 @@ class DatabaseConnector {
     if (!this.getAssets().length && !this.getFiatTransactions().length) {
       const assetsMockData = [
         {
-          symbol: "BTC",
-          asset: "bitcoin",
+          symbol: "bitcoin",
+          asset: "Bitcoin",
           category: CATEGORY_CRYPTO,
           amount: 0.2,
         },
         {
-          symbol: "ETH",
-          asset: "ethereum",
+          symbol: "ethereum",
+          asset: "Ethereum",
           category: CATEGORY_CRYPTO,
           amount: 3,
         },
         {
           symbol: "MSFT",
-          asset: "microsoft",
+          asset: "Microsoft",
           category: CATEGORY_STOCK,
           amount: 1,
         },
         {
           symbol: "GC",
-          asset: "gold",
+          asset: "Gold",
           category: CATEGORY_RESOURCE,
           amount: 10,
         },

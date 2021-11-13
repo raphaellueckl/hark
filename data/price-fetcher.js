@@ -89,6 +89,11 @@ class PriceFetcher {
 }
 
 class CryptoFetcher {
+  constructor() {
+    this.BASE_URL =
+      "https://api.coingecko.com/api/v3/simple/price?vs_currencies=chf&ids=";
+  }
+
   addPrice(asset) {
     const ASSET_KEY = "CRYPTO_" + asset.symbol;
     const TIMESTAMP = ASSET_KEY + KEY_LAST_FETCH_IN_MILLIS;
@@ -98,11 +103,11 @@ class CryptoFetcher {
     ) {
       return Promise.resolve(store[ASSET_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}-USD/`)
+    return fetch(this.BASE_URL + asset.symbol)
       .then((res) => res.json())
-      .then(({ price }) => {
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = price;
+        asset.price = Object.values(data)[0].chf;
         asset.value = asset.amount * asset.price;
         store[ASSET_KEY] = asset;
         return store[ASSET_KEY];
@@ -114,12 +119,10 @@ class CryptoFetcher {
   }
 
   async doesSymbolExist(symbol) {
+    const request = await fetch(this.BASE_URL + symbol);
+    const jsonResponse = await request.json();
     try {
-      const request = await fetch(
-        `${PROXY}https://finance.yahoo.com/quote/${symbol}-USD/`
-      );
-      const jsonResponse = await request.json();
-      if (jsonResponse.price) {
+      if (Object.values(jsonResponse)[0].chf) {
         return true;
       }
     } catch (err) {
