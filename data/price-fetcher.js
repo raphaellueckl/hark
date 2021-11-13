@@ -34,10 +34,9 @@ class PriceFetcher {
           store[TIMESTAMP] = new Date().getTime();
         })
         .catch((err) => {
-          console.error("LIVE USD/CHF unavailable!", err);
           store.dispatchEvent(
             new CustomEvent(EVENT_ERROR, {
-              detail: "LIVE USD/CHF unavailable!",
+              detail: { msg: "LIVE USD/CHF unavailable!", err },
             })
           );
         });
@@ -122,10 +121,9 @@ class CryptoFetcher {
         return store[ASSET_KEY];
       })
       .catch((err) => {
-        console.error(`Could not fetch crypto: ${asset.symbol}`, err);
         store.dispatchEvent(
           new CustomEvent(EVENT_ERROR, {
-            detail: `Could not fetch crypto: ${asset.symbol}`,
+            detail: { msg: `Could not fetch crypto: ${asset.symbol}`, err },
           })
         );
         return store[ASSET_KEY];
@@ -166,10 +164,9 @@ class StockFetcher {
         return store[VALUE_KEY];
       })
       .catch((err) => {
-        console.error(`Could not fetch stock: ${asset.symbol}`, err);
         store.dispatchEvent(
           new CustomEvent(EVENT_ERROR, {
-            detail: `Could not fetch stock: ${asset.symbol}`,
+            detail: { msg: `Could not fetch stock: ${asset.symbol}`, err },
           })
         );
         return store[VALUE_KEY];
@@ -214,10 +211,9 @@ class ResourceFetcher {
         return store[VALUE_KEY];
       })
       .catch((err) => {
-        console.error(`Could not fetch resource: ${asset.symbol}`, err);
         store.dispatchEvent(
           new CustomEvent(EVENT_ERROR, {
-            detail: `Could not fetch resource: ${asset.symbol}`,
+            detail: { msg: `Could not fetch resource: ${asset.symbol}`, err },
           })
         );
         return store[VALUE_KEY];
@@ -262,10 +258,9 @@ class CurrencyFetcher {
         return store[VALUE_KEY];
       })
       .catch((err) => {
-        console.error(`Could not fetch currency: ${asset.symbol}`, err);
         store.dispatchEvent(
           new CustomEvent(EVENT_ERROR, {
-            detail: `Could not fetch currency: ${asset.symbol}`,
+            detail: { msg: `Could not fetch currency: ${asset.symbol}`, err },
           })
         );
         return store[VALUE_KEY];

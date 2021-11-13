@@ -8,6 +8,7 @@ import {
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
   EVENT_CHANGE_ASSET_AMOUNT,
   EVENT_CHANGE_FIXED_VALUE,
+  EVENT_ERROR,
 } from "./globals.js";
 
 // EventTarget, so that listeners can be registered on it
@@ -33,6 +34,10 @@ const _pipeline = {
 };
 
 const store = new Proxy(_store, _pipeline);
+
+store.addEventListener(EVENT_ERROR, ({ detail: { msg, err } }) => {
+  console.error(`## ${msg}`, err);
+});
 
 store.addEventListener(EVENT_ADD_ASSET, ({ detail: asset }) => {
   databaseConnector.addAsset(asset);
