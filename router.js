@@ -1,3 +1,6 @@
+import { EVENT_NAVIGATION } from "./globals.js";
+import { store } from "./store.js";
+
 class Router {
   constructor() {
     this._error = undefined;
@@ -72,6 +75,7 @@ class Router {
     const routes = this.routes.filter((r) => r.path === routingUrl);
     if (routes && routes[0]) routes[0].cb();
     else this._error();
+    store.dispatchEvent(new CustomEvent(EVENT_NAVIGATION));
   };
 }
 

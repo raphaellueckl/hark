@@ -3,6 +3,8 @@ import {
   BREAKPOINT_TABLET,
   BREAKPOINT_MOBILE,
 } from "../css-globals.js";
+import { EVENT_NAVIGATION } from "../globals.js";
+import { store } from "../store.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -114,18 +116,8 @@ class Navbar extends HTMLElement {
   }
 
   connectedCallback() {
-    this.navElements = [...this.shadowRoot.querySelectorAll("a")];
-    const activeElement = this.navElements
-      .reverse()
-      .find((navLink) => window.location.href.includes(navLink.href));
-    activeElement?.classList?.add("is-active");
-
-    this.navElements.forEach((navElem) => {
-      navElem.addEventListener("click", (e) => {
-        this.navElements.forEach((e) => e.classList?.remove("is-active"));
-        navElem.classList.add("is-active");
-      });
-    });
+    store.setNavElements([...this.shadowRoot.querySelectorAll("a")].reverse());
+    store.dispatchEvent(new CustomEvent(EVENT_NAVIGATION));
   }
 }
 

@@ -9,6 +9,7 @@ import {
   EVENT_CHANGE_ASSET_AMOUNT,
   EVENT_CHANGE_FIXED_VALUE,
   EVENT_ERROR,
+  EVENT_NAVIGATION,
 } from "./globals.js";
 
 // EventTarget, so that listeners can be registered on it
@@ -34,6 +35,26 @@ const _pipeline = {
 };
 
 const store = new Proxy(_store, _pipeline);
+
+let navElements = undefined;
+
+store.setNavElements = (navEls) => {
+  navElements = navEls;
+};
+
+store.addEventListener(EVENT_NAVIGATION, () => {
+  if (navElements) {
+    const activeElement = navElements.find((navLink) =>
+      window.location.href.includes(navLink.href)
+    );
+    navElements.forEach((e) => e.classList?.remove("is-active"));
+    activeElement?.classList?.add("is-active");
+  } else {
+    new CustomEvent(EVENT_ERROR, {
+      detail: { msg: "No navigation elments registered!", err },
+    });
+  }
+});
 
 store.addEventListener(EVENT_ERROR, ({ detail: { msg, err } }) => {
   console.error(`## ${msg}`, err);
