@@ -28,3 +28,8 @@ export const widgetContainerStyles = `.widget-container {
     border-radius: 15px;
     min-height: 250px;
 }`;
+
+export const title = `
+.title {
+    margin-top: 0px;
+}`;

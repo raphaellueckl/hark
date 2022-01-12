@@ -4,6 +4,7 @@ import { dashboardPage } from "./pages/dashboard.js";
 import { fiatTransactionsPage } from "./pages/fiat-transactions.js";
 import { settingsPage } from "./pages/settings.js";
 import "./components/navbar.js";
+import "./components/notification.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -34,6 +35,7 @@ template.innerHTML = `
     }
 </style>
 <hk-navbar></hk-navbar>
+<hk-notification></hk-notification>
 <div id="root"></div>
 <footer>
     © Made by codepleb | Help / Feedback: @codepleb (telegram), @codepleb4 (twitter)

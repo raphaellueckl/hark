@@ -46,7 +46,7 @@ template.innerHTML = `
   }
 
   .menu-container {
-    margin: 10px;
+    margin: 10px 10px 5px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
