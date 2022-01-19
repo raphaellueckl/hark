@@ -168,13 +168,13 @@ class DatabaseConnector {
           amount: 1,
         },
         {
-          symbol: "GC",
+          symbol: "XAU",
           asset: "Gold",
           category: CATEGORY_RESOURCE,
           amount: 10,
         },
         {
-          symbol: "EUR",
+          symbol: "eur",
           asset: "Euro",
           category: CATEGORY_CURRENCY,
           amount: 2000,

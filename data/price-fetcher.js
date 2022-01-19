@@ -27,10 +27,12 @@ class PriceFetcher {
       !store[TIMESTAMP] ||
       new Date().getTime() - store[TIMESTAMP] > FIVE_MINUTES_IN_MILLIS
     ) {
-      fetch(`${PROXY}https://finance.yahoo.com/quote/CHF=X/`)
+      fetch(
+        "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=cryptofranc"
+      )
         .then((res) => res.json())
-        .then(({ price }) => {
-          store.USD_TO_CHF_MULTIPLICATOR = price;
+        .then((data) => {
+          store.USD_TO_CHF_MULTIPLICATOR = 1 / data.cryptofranc.usd;
           store[TIMESTAMP] = new Date().getTime();
         })
         .catch((err) => {
@@ -199,13 +201,11 @@ class ResourceFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=F/`)
-      .then((res) => {
-        return res.json();
-      })
-      .then(({ price }) => {
+    return fetch("https://api.bitpanda.com/v1/ticker")
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = price;
+        asset.price = data[asset.symbol.toUpperCase()].CHF;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
@@ -222,11 +222,9 @@ class ResourceFetcher {
 
   async doesSymbolExist(symbol) {
     try {
-      const request = await fetch(
-        `${PROXY}https://finance.yahoo.com/quote/${symbol}=F/`
-      );
+      const request = await fetch("https://api.bitpanda.com/v1/ticker");
       const jsonResponse = await request.json();
-      if (jsonResponse.price) {
+      if (jsonResponse[symbol.toUpperCase()].CHF) {
         return true;
       }
     } catch (err) {
@@ -246,13 +244,12 @@ class CurrencyFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}=X/`)
-      .then((res) => {
-        return res.json();
-      })
-      .then(({ price }) => {
+    return fetch("https://api.coingecko.com/api/v3/exchange_rates")
+      .then((res) => res.json())
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = price;
+        asset.price =
+          data.rates.chf.value / data.rates[asset.symbol.toLowerCase()].value;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
@@ -270,10 +267,10 @@ class CurrencyFetcher {
   async doesSymbolExist(symbol) {
     try {
       const request = await fetch(
-        `${PROXY}https://finance.yahoo.com/quote/${symbol}=X/`
+        "https://api.coingecko.com/api/v3/exchange_rates"
       );
       const jsonResponse = await request.json();
-      if (jsonResponse.price) {
+      if (jsonResponse.rates?.[symbol.toLowerCase()]) {
         return true;
       }
     } catch (err) {
