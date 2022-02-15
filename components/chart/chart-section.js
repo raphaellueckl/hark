@@ -67,8 +67,6 @@ class Chart extends HTMLElement {
       "mouseleaveasset",
       this._changeChartAssetHighlighting
     );
-
-    store.addEventListener(EVENT_ASSETS_UPDATED, this._updatePortfolioBalance);
   }
 
   _changeChartAssetHighlighting = ({ detail: compoundKey }) => {
@@ -226,16 +224,6 @@ class Chart extends HTMLElement {
           ],
         })
       );
-  };
-
-  _updatePortfolioBalance = ({ detail: assetList }) => {
-    this.combinedAssetsTotalValue = assetList
-      .map((a) => (a.fixedValue ? +a.fixedValue : +a.value))
-      .reduce((a, b) => a + b, 0);
-
-    this.shadowRoot
-      .querySelector("hk-portfolio-balance")
-      .setAttribute("balance", this.combinedAssetsTotalValue);
   };
 }
 

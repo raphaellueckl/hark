@@ -8,6 +8,7 @@ import {
   CATEGORY_CURRENCY,
   KEY_LAST_FETCH_IN_MILLIS,
   EVENT_ERROR,
+  EVENT_BITCOIN_PRICE_UPDATED,
 } from "../globals.js";
 
 const PROXY = "https://ripped.link/";
@@ -74,6 +75,24 @@ class PriceFetcher {
     });
 
     const enrichedAssets = await Promise.all(enrichedAssetPromises);
+
+    const bitcoin = enrichedAssets.filter((a) => "bitcoin" === a.symbol);
+    let bitcoinPrice = 0;
+
+    if (bitcoin.length > 0) {
+      bitcoinPrice = bitcoin[0].price;
+    } else {
+      bitcoinPrice = (
+        await this.cryptoFetcher.addPrice({
+          symbol: "bitcoin",
+          amount: 0,
+        })
+      ).price;
+    }
+
+    store.dispatchEvent(
+      new CustomEvent(EVENT_BITCOIN_PRICE_UPDATED, { detail: bitcoinPrice })
+    );
 
     store.dispatchEvent(
       new CustomEvent(EVENT_ASSETS_UPDATED, { detail: enrichedAssets })

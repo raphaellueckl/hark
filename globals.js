@@ -2,6 +2,7 @@ import "./components/input.js";
 
 export const EVENT_ADD_FIAT_TRANSACTION = "addFiatTransaction";
 export const EVENT_ASSETS_UPDATED = "updatedAssets";
+export const EVENT_BITCOIN_PRICE_UPDATED = "updatedBitcoinPrice";
 export const EVENT_ADD_ASSET = "addAsset";
 export const EVENT_UPDATED_FIAT_TRANSACTIONS = "fiatTransactionsUpdated";
 export const EVENT_REMOVE_ASSET_BY_INDEX = "removeAssetByIndex";
