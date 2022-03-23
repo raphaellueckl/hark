@@ -175,11 +175,11 @@ class StockFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch(`${PROXY}https://finance.yahoo.com/quote/${asset.symbol}/`)
+    return fetch("https://api.bitpanda.com/v2/ticker")
       .then((res) => res.json())
-      .then(({ price }) => {
+      .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
-        asset.price = price;
+        asset.price = data[asset.symbol.toUpperCase()].CHF;
         asset.value = asset.amount * asset.price;
         store[VALUE_KEY] = asset;
         return store[VALUE_KEY];
@@ -196,11 +196,9 @@ class StockFetcher {
 
   async doesSymbolExist(symbol) {
     try {
-      const request = await fetch(
-        `${PROXY}https://finance.yahoo.com/quote/${symbol}/`
-      );
+      const request = await fetch("https://api.bitpanda.com/v2/ticker");
       const jsonResponse = await request.json();
-      if (jsonResponse.price) {
+      if (jsonResponse[symbol.toUpperCase()].CHF) {
         return true;
       }
     } catch (err) {
@@ -220,7 +218,7 @@ class ResourceFetcher {
     ) {
       return Promise.resolve(store[VALUE_KEY]);
     }
-    return fetch("https://api.bitpanda.com/v1/ticker")
+    return fetch("https://api.bitpanda.com/v2/ticker")
       .then((res) => res.json())
       .then((data) => {
         store[TIMESTAMP] = new Date().getTime();
@@ -241,7 +239,7 @@ class ResourceFetcher {
 
   async doesSymbolExist(symbol) {
     try {
-      const request = await fetch("https://api.bitpanda.com/v1/ticker");
+      const request = await fetch("https://api.bitpanda.com/v2/ticker");
       const jsonResponse = await request.json();
       if (jsonResponse[symbol.toUpperCase()].CHF) {
         return true;
