@@ -21,7 +21,7 @@ template.innerHTML = `
   }
 </style>
 
-  <p id="text"></p>
+<p id="text"></p>
 `;
 
 class Notification extends HTMLElement {
@@ -37,9 +37,9 @@ class Notification extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "text") {
-      if (this.shadowRoot.querySelector("#text").hasChildNodes()) {
+      if (!this.shadowRoot.querySelector("#text").hasChildNodes()) {
         const text = document.createElement("span");
-        text.textContent = `Error: ${newValue}`;
+        text.textContent = newValue;
         this.shadowRoot.querySelector("#text").appendChild(text);
 
         setTimeout(() => {
@@ -47,18 +47,6 @@ class Notification extends HTMLElement {
         }, 5000);
       }
     }
-  }
-
-  connectedCallback() {
-    // let text;
-    // setTimeout(() => {
-    //   text = document.createElement("span");
-    //   text.textContent = `Error: hello sir`;
-    //   this.shadowRoot.querySelector("#text").appendChild(text);
-    // }, 1000);
-    // setTimeout(() => {
-    //   this.shadowRoot.querySelector("#text").removeChild(text);
-    // }, 30000);
   }
 }
 

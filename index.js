@@ -3,6 +3,7 @@ import { manageAssetsPage } from "./pages/manage.js";
 import { dashboardPage } from "./pages/dashboard.js";
 import { fiatTransactionsPage } from "./pages/fiat-transactions.js";
 import { settingsPage } from "./pages/settings.js";
+import { store } from "./store.js";
 import "./components/navbar.js";
 import "./components/notification.js";
 
@@ -35,7 +36,7 @@ template.innerHTML = `
     }
 </style>
 <hk-navbar></hk-navbar>
-<hk-notification></hk-notification>
+<hk-notification id="notifications"></hk-notification>
 <div id="root"></div>
 <footer>
     © Made by codepleb | Help / Feedback: @codepleb (telegram), @codepleb4 (twitter)
@@ -110,6 +111,10 @@ class App extends HTMLElement {
       .add("/settings", () => {
         this.shadowRoot.querySelector("#root").innerHTML = settingsPage;
       });
+
+    store.setNotificationElement(
+      this.shadowRoot.querySelector("#notifications")
+    );
 
     this.handleSwipeGestures(router);
   }

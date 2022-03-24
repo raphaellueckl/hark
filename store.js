@@ -37,9 +37,14 @@ const _pipeline = {
 const store = new Proxy(_store, _pipeline);
 
 let navElements = undefined;
+let notificationElement = undefined;
 
 store.setNavElements = (navEls) => {
   navElements = navEls;
+};
+
+store.setNotificationElement = (notificationElem) => {
+  notificationElement = notificationElem;
 };
 
 store.addEventListener(EVENT_NAVIGATION, () => {
@@ -58,6 +63,9 @@ store.addEventListener(EVENT_NAVIGATION, () => {
 
 store.addEventListener(EVENT_ERROR, ({ detail: { msg, err } }) => {
   console.error(`## ${msg}`, err);
+  if (notificationElement) {
+    notificationElement.setAttribute("text", msg);
+  }
 });
 
 store.addEventListener(EVENT_ADD_ASSET, ({ detail: asset }) => {
