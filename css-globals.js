@@ -15,7 +15,9 @@ export const BREAKPOINT_MOBILE = 576;
 export const BREAKPOINT_TABLET = 768;
 export const BREAKPOINT_DESKTOP = 1024;
 
-export const ITEM_BACKGROUND = "#f7f7f7";
+export const ITEM_BACKGROUND = "#f7f7f7;";
+export const GOOD_COLOR = "#74d481";
+export const GOOD_STRONG_COLOR = "#549c5e";
 
 export const widgetContainerStyles = `.widget-container {
     display: flex;
