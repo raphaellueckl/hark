@@ -1,3 +1,5 @@
+import { BAD_COLOR, GOOD_COLOR } from "../css-globals.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
@@ -30,7 +32,7 @@ class Button extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["disabled"];
+    return ["disabled", "flair"];
   }
 
   addEventListener(event, func) {
@@ -49,6 +51,14 @@ class Button extends HTMLElement {
       } else {
         this.disabled = false;
         this.button.removeAttribute(name);
+      }
+    } else if (name === "flair") {
+      if (newValue === "nice") {
+        this.button.style.backgroundColor = GOOD_COLOR;
+      } else if (newValue === "danger") {
+        this.button.style.backgroundColor = BAD_COLOR;
+      } else {
+        this.button.style.backgroundColor = "rgba(33, 33, 33, 0.2)";
       }
     }
   }
