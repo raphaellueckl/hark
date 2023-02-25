@@ -25,11 +25,16 @@ template.innerHTML = `
       color: #de071c;
       margin-top: 2px;
     }
+
+    #warn {
+      color: #eb7a34
+    }
 </style>
 <div>
     <slot></slot>
     <input />
     <span id="validation"></span>
+    <span id="warn"></span>
 </div>
 `;
 
@@ -43,7 +48,14 @@ class Input extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["placeholder", "value", "error-msg", "invalid", "disabled"];
+    return [
+      "placeholder",
+      "value",
+      "error-msg",
+      "warn-msg",
+      "invalid",
+      "disabled",
+    ];
   }
 
   get value() {
@@ -69,6 +81,12 @@ class Input extends HTMLElement {
       this.input.value = newValue;
     } else if (name === "error-msg") {
       this.shadowRoot.querySelector("#validation").textContent = newValue;
+    } else if (name === "warn-msg") {
+      this.shadowRoot.querySelector("#warn").textContent = newValue;
+      this.shadowRoot.querySelector("#warn").style.maxHeight = "20px";
+      setTimeout(() => {
+        this.shadowRoot.querySelector("#warn").style.maxHeight = 0;
+      }, 5000);
     } else if (name === "invalid") {
       if (newValue === "") {
         this.shadowRoot.querySelector("#validation").style.maxHeight = "20px";

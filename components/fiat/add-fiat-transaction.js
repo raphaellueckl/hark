@@ -13,6 +13,8 @@ import { databaseConnector } from "../../data/database-connector.js";
 import "../input.js";
 import "../button.js";
 
+const TWO_DAYS = 2 * 24 * 60 * 60 * 1000;
+
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
@@ -204,8 +206,20 @@ class AddFiatTransaction extends HTMLElement {
     } else if (!isValidIsoDateString(this.dateInput.value)) {
       this._invalidate(this.dateInput, "Invalid date format");
     } else {
+      const enteredDate = new Date(this.dateInput.value);
+      console.log("now: ", Date.now());
+      console.log("entered: ", enteredDate.getTime());
+      console.log("minus: ", Date.now() - enteredDate.getTime());
+      if (Math.abs(Date.now() - enteredDate.getTime()) > TWO_DAYS) {
+        console.log("cpde");
+        this._warn(this.dateInput, "Warn: Date off?");
+      }
       this._validate(this.dateInput);
     }
+  }
+
+  _warn(input, msg) {
+    input.setAttribute("warn-msg", msg);
   }
 
   _invalidate(input, msg) {
