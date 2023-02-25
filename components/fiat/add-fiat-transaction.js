@@ -226,6 +226,7 @@ class AddFiatTransaction extends HTMLElement {
     input.setAttribute("error-msg", msg);
     input.setAttribute("invalid", "");
     this.addButton.setAttribute("disabled", "");
+    this.addButton.setAttribute("flair", "danger");
   }
 
   _validate(input) {
@@ -234,10 +235,12 @@ class AddFiatTransaction extends HTMLElement {
       if (input.getAttribute("invalid") !== null) return;
     }
     this.addButton.removeAttribute("disabled");
+    this.addButton.setAttribute("flair", "nice");
   }
 
   _clearInputs() {
     this.addButton.setAttribute("disabled", "");
+    this.addButton.setAttribute("flair", "");
     this.dateInput.value = "";
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
