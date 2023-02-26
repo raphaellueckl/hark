@@ -14,13 +14,42 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = "precache-v1";
+const PRECACHE = "precache-v2";
 const RUNTIME = "runtime";
 
 const PRECACHE_URLS = [
   "index.html",
   "./", // Alias for index.html
   "service-worker.js",
+  "globals.js",
+  "css-globals.js",
+  "store.js",
+  "index.js",
+  "components/notification.js",
+  "components/asset/manage-asset-row.js",
+  "components/asset/add-asset.js",
+  "components/asset/manage-assets.js",
+  "components/navbar.js",
+  "components/chart/portfolio-balance.js",
+  "components/chart/histogram-chart.js",
+  "components/chart/chart-section.js",
+  "components/chart/pie-chart.js",
+  "components/spinner.js",
+  "components/button.js",
+  "components/fiat/add-fiat-transaction.js",
+  "components/fiat/fiat-transaction-list.js",
+  "components/fiat/fiat-transaction-row.js",
+  "components/modal.js",
+  "components/asset-overview.js",
+  "components/input.js",
+  "components/backup-restore.js",
+  "router.js",
+  "data/database-connector.js",
+  "data/price-fetcher.js",
+  "pages/fiat-transactions.js",
+  "pages/manage.js",
+  "pages/dashboard.js",
+  "pages/settings.js",
 ];
 
 // The install handler takes care of precaching the resources we always need.
