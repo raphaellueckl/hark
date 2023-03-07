@@ -35,8 +35,24 @@ template.innerHTML = `
 
   .navbar-item {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
+  }
+
+  .navbar-item::before {
+    content: '';
+    z-index: -1;
+    translate: 0 -46px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    background: ${GOOD_COLOR};
+    padding: 5px 0;
+    border-radius: 15px;
+    border-bottom: 3px solid ${GOOD_STRONG_COLOR};
+    border-bottom-right-radius: 0;
   }
 
   a:last-child {
@@ -48,18 +64,14 @@ template.innerHTML = `
   }
 
   .menu-container {
-    margin: 10px 10px 5px 10px;
+    padding: 10px 10px 5px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .is-active > .navbar-item {
-    background: ${GOOD_COLOR};
-    padding: 5px 0;
-    border-radius: 15px;
-    border-bottom: 3px solid ${GOOD_STRONG_COLOR};
-    border-bottom-right-radius: 0;
+  .is-active > .navbar-item::before {
+    translate: 0 0;
   }
 
   .navigation-links {
