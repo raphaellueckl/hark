@@ -53,6 +53,15 @@ template.innerHTML = `
     border-radius: 15px;
     border-bottom: 3px solid ${GOOD_STRONG_COLOR};
     border-bottom-right-radius: 0;
+
+    transition-property: translate();
+    transition-duration: .1s;
+    transition-delay: 0;
+  }
+  
+  .is-active > .navbar-item::before {
+    translate: 0 0;
+    transition-delay: .1s;
   }
 
   a:last-child {
@@ -68,10 +77,6 @@ template.innerHTML = `
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .is-active > .navbar-item::before {
-    translate: 0 0;
   }
 
   .navigation-links {
