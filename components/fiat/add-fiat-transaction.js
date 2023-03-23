@@ -124,6 +124,8 @@ class AddFiatTransaction extends HTMLElement {
       this.exchangeInput,
     ];
 
+    this.dateInput.value = new Date().toISOString().split("T")[0];
+
     this.dateInput.addEventListener("input", () => {
       this._setDateInputValidationState();
     });
