@@ -107,12 +107,12 @@ class Chart extends HTMLElement {
       .map((tr) => +tr.amount)
       .reduce((a, b) => a + b, 0);
 
-    const withdrawalDepositDelta =
+    this.inputOutputDelta =
       this.combinedWithdrawalsValue - this.combinedDepositsValue;
 
     if (isNaN(this.combinedAssetsTotalValue)) return;
 
-    const totalValue = withdrawalDepositDelta + this.combinedAssetsTotalValue;
+    const totalValue = this.inputOutputDelta + this.combinedAssetsTotalValue;
     this.shadowRoot
       .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
       .setAttribute(
@@ -121,9 +121,9 @@ class Chart extends HTMLElement {
           !this.combinedWithdrawalsValue && !this.combinedDepositsValue
             ? null
             : {
-                positive: totalValue,
-                negative:
-                  withdrawalDepositDelta < 0 ? withdrawalDepositDelta : 0,
+                greenBar: totalValue,
+                redBar: this.inputOutputDelta < 0 ? this.inputOutputDelta : 0,
+                inputOutputDelta: this.inputOutputDelta,
               }
         )
       );
@@ -146,8 +146,9 @@ class Chart extends HTMLElement {
           !this.combinedWithdrawalsValue && !this.combinedDepositsValue
             ? null
             : {
-                positive: totalValue,
-                negative: this.combinedDepositsValue,
+                greenBar: totalValue,
+                redBar: this.combinedDepositsValue,
+                inputOutputDelta: this.inputOutputDelta,
               }
         )
       );
