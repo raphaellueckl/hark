@@ -13,6 +13,19 @@ template.innerHTML = `
 <style>
   ${widgetContainerStyles}
 
+  .total-return {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+    margin-bottom: -18px;
+  }
+
+  .total-return > span {
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 250px;
+  }
+
   .after-loaded {
     display: none;
   }
@@ -63,6 +76,10 @@ template.innerHTML = `
 <div class="widget-container">
   <h2></h2>
   <hk-spinner></hk-spinner>
+  <div class="total-return hidden">
+    <span id="total-return-multiplicator"></span>
+    <span id="total-return-percentage"></span>
+  </div>
   <svg height="335" width="250" class="hidden">
     <text id="difference" x="125" y="50"></text>
     <g class="data-line">
@@ -90,6 +107,12 @@ class HistogramChart extends HTMLElement {
     this.positiveTextEl = this.shadowRoot.querySelector("#positive");
     this.negativeTextEl = this.shadowRoot.querySelector("#negative");
     this.bottomLineEl = this.shadowRoot.querySelector("#bottom-line");
+    this.totalReturnMultiplicator = this.shadowRoot.querySelector(
+      "#total-return-multiplicator"
+    );
+    this.totalReturnPercentage = this.shadowRoot.querySelector(
+      "#total-return-percentage"
+    );
   }
 
   static get observedAttributes() {
@@ -105,11 +128,14 @@ class HistogramChart extends HTMLElement {
        */
       this.shadowRoot.querySelector("hk-spinner").classList.add("hidden");
       this.shadowRoot.querySelector("svg").classList.remove("hidden");
+      this.shadowRoot.querySelector(".total-return").classList.remove("hidden");
       let chartData = undefined;
       try {
-        chartData = JSON.parse(newValue);
-        if (chartData !== null) {
-          this._chartUpdater(chartData.positive, chartData.negative);
+        const { greenBar, redBar, inputOutputDelta } =
+          JSON.parse(newValue) || {};
+        if (greenBar && redBar && inputOutputDelta) {
+          this._chartUpdater(greenBar, redBar);
+          this._updateTotalReturn(greenBar, inputOutputDelta);
         } else {
           this.shadowRoot
             .querySelector(".widget-container")
@@ -121,23 +147,24 @@ class HistogramChart extends HTMLElement {
     }
   }
 
-  _chartUpdater(positive, negative) {
-    const highestDataNumber = positive > negative ? positive : negative;
+  _chartUpdater(greenBarValue, redBarValue) {
+    const highestDataNumber =
+      greenBarValue > redBarValue ? greenBarValue : redBarValue;
     const multiplicator = BAR_MAX_HEIGHT / highestDataNumber;
-    const positiveHeight = positive * multiplicator;
-    const negativeHeight = negative * multiplicator;
+    const positiveHeight = greenBarValue * multiplicator;
+    const negativeHeight = redBarValue * multiplicator;
 
     const positiveYEnd = BAR_START - positiveHeight;
     const negativeYEnd = BAR_START - negativeHeight;
     this.positiveBarEl.setAttribute("y1", positiveYEnd);
     this.negativeBarEl.setAttribute("y1", negativeYEnd);
-    this.positiveTextEl.textContent = numberToLocal(positive.toFixed(2));
-    this.negativeTextEl.textContent = numberToLocal(negative.toFixed(2));
+    this.positiveTextEl.textContent = numberToLocal(greenBarValue.toFixed(2));
+    this.negativeTextEl.textContent = numberToLocal(redBarValue.toFixed(2));
     this.shadowRoot.querySelector("#difference").textContent = `${
-      positive - negative > 0 ? "+" : "-"
-    } ${numberToLocal(Math.abs(positive - negative).toFixed(2))} CHF`;
+      greenBarValue - redBarValue > 0 ? "+" : "-"
+    } ${numberToLocal(Math.abs(greenBarValue - redBarValue).toFixed(2))} CHF`;
 
-    if (negative <= 0) {
+    if (redBarValue <= 0) {
       this.positiveBarEl.setAttribute("x1", CENTER_X);
       this.positiveBarEl.setAttribute("x2", CENTER_X);
       this.positiveTextEl.setAttribute("x", CENTER_X);
@@ -145,6 +172,21 @@ class HistogramChart extends HTMLElement {
       this.negativeBarEl.style.display = "none";
       this.bottomLineEl.setAttribute("x1", "60");
       this.bottomLineEl.setAttribute("x2", "190");
+    }
+  }
+
+  _updateTotalReturn(greenBarValue, inputOutputDelta) {
+    let multiplicator = 0;
+    let percentage = 0;
+    multiplicator = greenBarValue / Math.abs(inputOutputDelta);
+    if (inputOutputDelta > 0) {
+      this.totalReturnMultiplicator.textContent = `∞x`;
+      this.totalReturnPercentage.textContent = `∞%`;
+    } else {
+      percentage = (multiplicator * 100).toFixed(0);
+      multiplicator = multiplicator.toFixed(1);
+      this.totalReturnMultiplicator.textContent = `${multiplicator}x`;
+      this.totalReturnPercentage.textContent = `${percentage}%`;
     }
   }
 }
