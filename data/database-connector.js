@@ -59,7 +59,8 @@ class DatabaseConnector {
 
   addAsset(asset) {
     const assets = this.getAssets();
-    assets.unshift(asset);
+    assets.push(asset);
+    assets.sort((a, b) => (a.asset > b.asset ? 1 : a.asset < b.asset ? -1 : 0));
 
     storage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
     this._triggerPriceUpdate();
