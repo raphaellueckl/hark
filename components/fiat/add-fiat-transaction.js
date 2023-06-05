@@ -209,11 +209,7 @@ class AddFiatTransaction extends HTMLElement {
       this._invalidate(this.dateInput, "Invalid date format");
     } else {
       const enteredDate = new Date(this.dateInput.value);
-      console.log("now: ", Date.now());
-      console.log("entered: ", enteredDate.getTime());
-      console.log("minus: ", Date.now() - enteredDate.getTime());
       if (Math.abs(Date.now() - enteredDate.getTime()) > TWO_DAYS) {
-        console.log("cpde");
         this._warn(this.dateInput, "Warn: Date off?");
       }
       this._validate(this.dateInput);
@@ -243,7 +239,7 @@ class AddFiatTransaction extends HTMLElement {
   _clearInputs() {
     this.addButton.setAttribute("disabled", "");
     this.addButton.setAttribute("flair", "");
-    this.dateInput.value = "";
+    this.dateInput.value = new Date().toISOString().split("T")[0];
     this.symbolInput.value = databaseConnector.getMostUsedCurrency();
     this.amountInput.value = "";
     this.exchangeInput.value = "";
