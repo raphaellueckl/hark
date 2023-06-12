@@ -98,7 +98,9 @@ class FiatTransaction extends HTMLElement {
 
       ul.appendChild(createColumn("Date", transaction.date, true));
       ul.appendChild(createColumn("Symbol", transaction.symbol, true));
-      ul.appendChild(createColumn("Amount", transaction.amount, true));
+      ul.appendChild(
+        createColumn("Amount", transaction.amount, true, "number")
+      );
       ul.appendChild(createColumn("Exchange", transaction.exchange, true));
       ul.appendChild(createColumn("Type", transaction.type, true));
       ul.appendChild(

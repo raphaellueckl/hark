@@ -74,13 +74,13 @@ template.innerHTML = `
     <label class="input-label" for="symbol">Symbol:</label><hk-input id="symbol" placeholder="E.g. GOOGL" invalid />
   </li>
   <li>
-    <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" invalid />
+    <label class="input-label" for="amount">Amount:</label><hk-input id="amount" placeholder="E.g. 5.5" type="number" invalid />
   </li>
   <li>
     <label class="input-label" for="should-custom-value">Fixed Value:</label><input type="checkbox" id="should-custom-value"/>
   </li>
   <li id="custom-value-section" style="display:none">
-    <label class="input-label" for="custom-value">Value:</label><hk-input id="custom-value" placeholder="E.g. 4500" />
+    <label class="input-label" for="custom-value">Value:</label><hk-input id="custom-value" placeholder="E.g. 4500" type="number" />
   </li>
   <li class="add-button-container">
     <hk-button disabled>Add</hk-button>

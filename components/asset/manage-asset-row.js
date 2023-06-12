@@ -95,8 +95,10 @@ class Asset extends HTMLElement {
       ul.appendChild(createColumn("Symbol", asset.symbol, true));
       ul.appendChild(createColumn("Asset", asset.asset, true));
       ul.appendChild(createColumn("Category", asset.category, true));
-      ul.appendChild(createColumn("Amount", asset.amount, false));
-      ul.appendChild(createColumn("Custom Value", asset.fixedValue, false));
+      ul.appendChild(createColumn("Amount", asset.amount, false, "number"));
+      ul.appendChild(
+        createColumn("Custom Value", asset.fixedValue, false, "number")
+      );
 
       const amountInput = this.shadowRoot.querySelector("#amount_input");
       amountInput.addEventListener("hk-change", ({ detail: newAmount }) => {

@@ -55,7 +55,7 @@ template.innerHTML = `
 <ul class="menu-container">
   <li>
     <label class="input-label" for="amount">Amount:</label>
-    <hk-input id="amount" placeholder="E.g. 10.5" invalid />
+    <hk-input id="amount" placeholder="E.g. 10.5" type="number" invalid />
   </li>
   <li>
     <label class="input-label" for="date">Date:</label>

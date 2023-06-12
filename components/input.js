@@ -55,6 +55,7 @@ class Input extends HTMLElement {
       "warn-msg",
       "invalid",
       "disabled",
+      "type",
     ];
   }
 
@@ -95,6 +96,8 @@ class Input extends HTMLElement {
       }
     } else if (name === "disabled") {
       this.input.disabled = newValue === "" ? true : false;
+    } else if (name === "type") {
+      this.input.type = newValue === "" ? "text" : newValue;
     }
   }
 
