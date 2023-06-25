@@ -55,13 +55,13 @@ template.innerHTML = `
     border-bottom-right-radius: 0;
 
     transition-property: translate();
-    transition-duration: .1s;
+    transition-duration: .2s;
     transition-delay: 0;
   }
   
   .is-active > .navbar-item::before {
     translate: 0 0;
-    transition-delay: .1s;
+    transition-delay: .2s;
   }
 
   a:last-child {
