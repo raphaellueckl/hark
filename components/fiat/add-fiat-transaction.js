@@ -59,7 +59,7 @@ template.innerHTML = `
   </li>
   <li>
     <label class="input-label" for="date">Date:</label>
-    <hk-input id="date" placeholder="yyyy-mm-dd" invalid />
+    <hk-input id="date" placeholder="yyyy-mm-dd" />
   </li>
   <li>
     <label class="input-label" for="exchange">Exchange:</label>
