@@ -29,13 +29,15 @@ export const KEY_LAST_FETCH_IN_MILLIS = "_LAST_FETCH_IN_MILLIS";
 export const numberToLocal = (numberOrString) =>
   Number(Number(numberOrString).toFixed(2)).toLocaleString("en-CH");
 
-export const createColumn = (label, value, isDisabled, type = "") => {
+export const createColumn = (label, value, isDisabled, type = "text") => {
   const column = document.createElement("li");
   column.innerHTML = `<hk-input id="${label
     .replaceAll(" ", "_")
     .toLowerCase()}_input" value="${value ? value : ""}" ${
     isDisabled ? "disabled" : ""
-  } type="${type}"><label>${label}</label></hk-input>`;
+  } type="${type}" inputmode="${
+    type === "number" ? "decimal" : "text"
+  }"><label>${label}</label></hk-input>`;
   return column;
 };
 

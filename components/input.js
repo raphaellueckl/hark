@@ -98,7 +98,7 @@ class Input extends HTMLElement {
       this.input.disabled = newValue === "" ? true : false;
     } else if (name === "type") {
       this.input.type = newValue === "" ? "text" : newValue;
-      if (name === "number") {
+      if (newValue === "number") {
         this.input.inputMode = "decimal";
       }
     }
