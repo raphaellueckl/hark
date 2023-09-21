@@ -92,8 +92,8 @@ class Asset extends HTMLElement {
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerText = "";
 
-      ul.appendChild(createColumn("Symbol", asset.symbol, true));
       ul.appendChild(createColumn("Asset", asset.asset, true));
+      ul.appendChild(createColumn("Symbol", asset.symbol, true));
       ul.appendChild(createColumn("Category", asset.category, true));
       ul.appendChild(createColumn("Amount", asset.amount, false, "number"));
       ul.appendChild(
