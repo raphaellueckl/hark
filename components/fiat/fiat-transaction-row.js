@@ -8,7 +8,6 @@ import {
 import {
   EVENT_REMOVE_FIAT_TRANSACTION_BY_INDEX,
   createColumn,
-  createCheckboxCell,
 } from "../../globals.js";
 import "../modal.js";
 
@@ -103,14 +102,6 @@ class FiatTransaction extends HTMLElement {
       );
       ul.appendChild(createColumn("Exchange", transaction.exchange, true));
       ul.appendChild(createColumn("Type", transaction.type, true));
-      ul.appendChild(
-        createCheckboxCell(
-          "Recurring",
-          transaction.repeat,
-          true,
-          "fiat-transactions__row__column-item"
-        )
-      );
       const buttonContainer = document.createElement("li");
       buttonContainer.classList.add("remove-button-container");
       const removeButton = document.createElement("hk-button");

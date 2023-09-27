@@ -82,12 +82,6 @@ template.innerHTML = `
       <div>
     </div>
   </li>
-  <li>
-    <label class="input-label" for="repeat">Repeat Monthly:</label>
-    <div class="input-container">
-      <input name="repeat" id="repeat" type="checkbox">
-    </div>
-  </li>
   <li class="add-button-container">
     <hk-button disabled>Add</hk-button>
   </li>
@@ -107,7 +101,6 @@ class AddFiatTransaction extends HTMLElement {
     this.exchangeInput = this.shadowRoot.querySelector("#exchange");
     this.depositInput = this.shadowRoot.querySelector("#deposit");
     this.depositInput.checked = true;
-    this.repeatInput = this.shadowRoot.querySelector("#repeat");
 
     const mostUsedCurrency = databaseConnector.getMostUsedCurrency();
     this.symbolInput.value = mostUsedCurrency;
@@ -165,7 +158,6 @@ class AddFiatTransaction extends HTMLElement {
         amount: this.amountInput.value,
         exchange: this.exchangeInput.value,
         type,
-        repeat: this.repeatInput.checked,
       };
       store.dispatchEvent(
         new CustomEvent(EVENT_ADD_FIAT_TRANSACTION, {
@@ -244,7 +236,6 @@ class AddFiatTransaction extends HTMLElement {
     this.amountInput.value = "";
     this.exchangeInput.value = "";
     this.depositInput.checked = true;
-    this.repeatInput.checked = false;
   }
 }
 
