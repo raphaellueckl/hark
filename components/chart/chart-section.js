@@ -112,21 +112,8 @@ class Chart extends HTMLElement {
 
     if (isNaN(this.combinedAssetsTotalValue)) return;
 
-    const totalValue = this.inputOutputDelta + this.combinedAssetsTotalValue;
-    this.shadowRoot
-      .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
-      .setAttribute(
-        "data",
-        JSON.stringify(
-          !this.combinedWithdrawalsValue && !this.combinedDepositsValue
-            ? null
-            : {
-                greenBar: totalValue,
-                redBar: this.inputOutputDelta < 0 ? this.inputOutputDelta : 0,
-                inputOutputDelta: this.inputOutputDelta,
-              }
-        )
-      );
+    // Not sure if this area is even reachable at a certain point in the lifecycle
+    this.updateHistogramData();
   };
 
   _updateTotalReturnChartByAssets = ({ detail: assetList }) => {
@@ -136,22 +123,7 @@ class Chart extends HTMLElement {
 
     if (isNaN(this.combinedWithdrawalsValue)) return;
 
-    const totalValue =
-      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
-    this.shadowRoot
-      .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
-      .setAttribute(
-        "data",
-        JSON.stringify(
-          !this.combinedWithdrawalsValue && !this.combinedDepositsValue
-            ? null
-            : {
-                greenBar: totalValue,
-                redBar: this.combinedDepositsValue,
-                inputOutputDelta: this.inputOutputDelta,
-              }
-        )
-      );
+    this.updateHistogramData();
   };
 
   _updateSpreadChart = ({ detail: assetList }) => {
@@ -226,6 +198,28 @@ class Chart extends HTMLElement {
         })
       );
   };
+
+  updateHistogramData() {
+    const totalValue =
+      this.combinedWithdrawalsValue + this.combinedAssetsTotalValue;
+    this.shadowRoot
+      .querySelector(`hk-histogram-chart[${ATTRIBUTE_TOTAL_RETURN}]`)
+      .setAttribute(
+        "data",
+        JSON.stringify(
+          !this.combinedWithdrawalsValue && !this.combinedDepositsValue
+            ? null
+            : {
+                totalValue,
+                redBar: this.combinedDepositsValue,
+                inputOutputDelta: this.inputOutputDelta,
+                deposited: this.combinedDepositsValue,
+                withdrawn: this.combinedWithdrawalsValue,
+                combinedAssetsValue: this.combinedAssetsTotalValue,
+              }
+        )
+      );
+  }
 }
 
 customElements.define("hk-asset-spread-chart", Chart);

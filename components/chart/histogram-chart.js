@@ -30,20 +30,24 @@ template.innerHTML = `
     display: none;
   }
 
-  .positive {
+  .withdrawn {
+    stroke:#1FA3F0;
+  }
+
+  .total-assets-value {
     stroke:#09d64a;
   }
-  
+
   .data-line {
     stroke-width:45;
     transition: stroke-width 0.2s, font-size 0.2s;
   }
-  
+
   .data-line:hover {
     stroke-width:60;
     font-size: 20px;
   }
-  
+
   .negative {
     stroke:rgb(255,0,0);
   }
@@ -83,7 +87,8 @@ template.innerHTML = `
   <svg height="335" width="250" class="hidden">
     <text id="difference" x="125" y="50"></text>
     <g class="data-line">
-      <line class="positive" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
+      <line class="withdrawn" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
+      <line class="total-assets-value" x1="80" y1="${BAR_END}" x2="80" y2="${BAR_START}" />
       <text id="positive" x="80" y="${BAR_START + 20}"></text>
     </g>
     <g class="data-line">
@@ -102,7 +107,10 @@ class HistogramChart extends HTMLElement {
     shadow.appendChild(template.content.cloneNode(true));
 
     this.titleEl = this.shadowRoot.querySelector("h2");
-    this.positiveBarEl = this.shadowRoot.querySelector(".positive");
+    this.totalAssetsValueBarEl = this.shadowRoot.querySelector(
+      ".total-assets-value"
+    );
+    this.withdrawnBarEl = this.shadowRoot.querySelector(".withdrawn");
     this.negativeBarEl = this.shadowRoot.querySelector(".negative");
     this.positiveTextEl = this.shadowRoot.querySelector("#positive");
     this.negativeTextEl = this.shadowRoot.querySelector("#negative");
@@ -130,12 +138,25 @@ class HistogramChart extends HTMLElement {
       this.shadowRoot.querySelector("svg").classList.remove("hidden");
       this.shadowRoot.querySelector(".total-return").classList.remove("hidden");
       let chartData = undefined;
+
       try {
-        const { greenBar, redBar, inputOutputDelta } =
-          JSON.parse(newValue) || {};
-        if (greenBar && redBar && inputOutputDelta) {
-          this._chartUpdater(greenBar, redBar);
-          this._updateTotalReturn(greenBar, inputOutputDelta);
+        const {
+          totalValue,
+          redBar,
+          inputOutputDelta,
+          deposited,
+          withdrawn,
+          combinedAssetsValue,
+        } = JSON.parse(newValue) || {};
+        if (totalValue && redBar && inputOutputDelta) {
+          this._chartUpdater(
+            totalValue,
+            redBar,
+            deposited,
+            withdrawn,
+            combinedAssetsValue
+          );
+          this._updateTotalReturn(totalValue, inputOutputDelta);
         } else {
           this.shadowRoot
             .querySelector(".widget-container")
@@ -147,26 +168,38 @@ class HistogramChart extends HTMLElement {
     }
   }
 
-  _chartUpdater(greenBarValue, redBarValue) {
+  _chartUpdater(
+    totalValue,
+    redBarValue,
+    deposited,
+    withdrawn,
+    combinedAssetsValue
+  ) {
     const highestDataNumber =
-      greenBarValue > redBarValue ? greenBarValue : redBarValue;
+      totalValue > redBarValue ? totalValue : redBarValue;
     const multiplicator = BAR_MAX_HEIGHT / highestDataNumber;
-    const positiveHeight = greenBarValue * multiplicator;
+    const withdrawnHeight = withdrawn * multiplicator;
+    const totalAssetsValueHeight = combinedAssetsValue * multiplicator;
     const negativeHeight = redBarValue * multiplicator;
 
-    const positiveYEnd = BAR_START - positiveHeight;
+    const withdrawnYEnd = BAR_START - withdrawnHeight;
+    const totalAssetsValueYEnd = withdrawnYEnd - totalAssetsValueHeight;
     const negativeYEnd = BAR_START - negativeHeight;
-    this.positiveBarEl.setAttribute("y1", positiveYEnd);
+    this.withdrawnBarEl.setAttribute("y1", withdrawnYEnd);
+    this.totalAssetsValueBarEl.setAttribute("y2", withdrawnYEnd);
+    this.totalAssetsValueBarEl.setAttribute("y1", totalAssetsValueYEnd);
     this.negativeBarEl.setAttribute("y1", negativeYEnd);
-    this.positiveTextEl.textContent = numberToLocal(greenBarValue.toFixed(2));
+    this.positiveTextEl.textContent = numberToLocal(totalValue.toFixed(2));
     this.negativeTextEl.textContent = numberToLocal(redBarValue.toFixed(2));
     this.shadowRoot.querySelector("#difference").textContent = `${
-      greenBarValue - redBarValue > 0 ? "+" : "-"
-    } ${numberToLocal(Math.abs(greenBarValue - redBarValue).toFixed(2))} CHF`;
+      totalValue - redBarValue > 0 ? "+" : "-"
+    } ${numberToLocal(Math.abs(totalValue - redBarValue).toFixed(2))} CHF`;
 
     if (redBarValue <= 0) {
-      this.positiveBarEl.setAttribute("x1", CENTER_X);
-      this.positiveBarEl.setAttribute("x2", CENTER_X);
+      this.withdrawnBarEl.setAttribute("x1", CENTER_X);
+      this.withdrawnBarEl.setAttribute("x2", CENTER_X);
+      this.totalAssetsValueBarEl.setAttribute("x1", CENTER_X);
+      this.totalAssetsValueBarEl.setAttribute("x2", CENTER_X);
       this.positiveTextEl.setAttribute("x", CENTER_X);
       this.negativeTextEl.style.display = "none";
       this.negativeBarEl.style.display = "none";
@@ -175,10 +208,10 @@ class HistogramChart extends HTMLElement {
     }
   }
 
-  _updateTotalReturn(greenBarValue, inputOutputDelta) {
+  _updateTotalReturn(totalValue, inputOutputDelta) {
     let multiplicator = 0;
     let percentage = 0;
-    multiplicator = greenBarValue / Math.abs(inputOutputDelta);
+    multiplicator = totalValue / Math.abs(inputOutputDelta);
     if (inputOutputDelta > 0) {
       this.totalReturnMultiplicator.textContent = `∞x`;
       this.totalReturnPercentage.textContent = `∞%`;
