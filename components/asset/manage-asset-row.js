@@ -97,6 +97,15 @@ class Asset extends HTMLElement {
     return ["asset", "index", "large"];
   }
 
+  connectedCallback() {
+    this.shadowRoot.querySelector("ul").classList.remove("large");
+    const liElements = [...this.shadowRoot.querySelectorAll("li")];
+    liElements.forEach((li) => {
+      if (li.textContent !== "Asset" && li.textContent !== "Amount")
+        li.classList.add("hidden");
+    });
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "index") {
       this.indexOfAsset = +newValue;

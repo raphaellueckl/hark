@@ -20,7 +20,7 @@ template.innerHTML = `
     align-items: center;
   }
 
-  .minimized-input {
+  .enlarged-input {
     margin-bottom: 12px;
   }
 
@@ -33,9 +33,9 @@ template.innerHTML = `
   }
 </style>
 <div class="manage-assets">
-  <label class="minimized-input">
-    Minimized:
-    <input type="checkbox" id="minimize-input" checked/>
+  <label class="enlarged-input">
+    Detailed View:
+    <input type="checkbox" id="enlarged-input" />
   </label>
   
   <ul>
@@ -52,9 +52,8 @@ class AssetList extends HTMLElement {
   }
 
   connectedCallback() {
-    const minimizeButton = this.shadowRoot.querySelector("#minimize-input");
-    minimizeButton.addEventListener("change", (ev) => this._handleMinimize(ev));
-    this._handleMinimize({ target: { checked: true } });
+    const minimizeButton = this.shadowRoot.querySelector("#enlarged-input");
+    minimizeButton.addEventListener("change", (ev) => this._handleEnlarge(ev));
 
     const assets = databaseConnector.getAssets() || [];
 
@@ -65,17 +64,17 @@ class AssetList extends HTMLElement {
     });
   }
 
-  _handleMinimize(ev) {
-    const checked = ev.target.checked;
+  _handleEnlarge(ev) {
+    const enlarge = ev.target.checked;
     setTimeout(() => {
       const allRows = [
         ...this.shadowRoot.querySelectorAll("hk-manage-asset-row"),
       ];
 
-      if (checked) {
-        allRows.forEach((mar) => mar.removeAttribute("large"));
-      } else {
+      if (enlarge) {
         allRows.forEach((mar) => mar.setAttribute("large", ""));
+      } else {
+        allRows.forEach((mar) => mar.removeAttribute("large"));
       }
     });
   }
@@ -87,7 +86,7 @@ class AssetList extends HTMLElement {
       const li = document.createElement("li");
       li.innerHTML = `<hk-manage-asset-row index="${index}" asset='${JSON.stringify(
         asset
-      )}' large></hk-manage-asset-row>`;
+      )}'></hk-manage-asset-row>`;
       return li;
     });
     listHtml.forEach((asset) => ul.appendChild(asset));
