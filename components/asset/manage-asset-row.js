@@ -19,6 +19,10 @@ const template = document.createElement("template");
 template.innerHTML = `
 <style>
   ${resetUL}
+
+  .hidden {
+    display: none;
+  }
     
   li {
     display: flex;
@@ -46,6 +50,15 @@ template.innerHTML = `
   hk-button {
     height: 50px;
     width: 50px;
+  }
+
+  ul:not(.large) {
+    overflow: hidden;
+    height: 26px;
+  }
+
+  ul:not(.large) > li {
+    transform: translateY(-26px);
   }
 
   @media (min-width: ${BREAKPOINT_DESKTOP}px) {
@@ -81,12 +94,27 @@ class Asset extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["asset", "index"];
+    return ["asset", "index", "large"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "index") {
       this.indexOfAsset = +newValue;
+    } else if (name === "large") {
+      if (newValue === "") {
+        this.shadowRoot.querySelector("ul").classList.add("large");
+        const liElements = [...this.shadowRoot.querySelectorAll("li")];
+        liElements.forEach((li) => {
+          li.classList.remove("hidden");
+        });
+      } else {
+        this.shadowRoot.querySelector("ul").classList.remove("large");
+        const liElements = [...this.shadowRoot.querySelectorAll("li")];
+        liElements.forEach((li) => {
+          if (li.textContent !== "Asset" && li.textContent !== "Amount")
+            li.classList.add("hidden");
+        });
+      }
     } else if (name === "asset") {
       const asset = JSON.parse(newValue);
       const ul = this.shadowRoot.querySelector("ul");
