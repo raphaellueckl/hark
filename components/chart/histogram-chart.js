@@ -16,7 +16,7 @@ template.innerHTML = `
   .total-return {
     display: flex;
     justify-content: space-between;
-    width: 40%;
+    width: 60%;
     margin-bottom: -18px;
   }
 

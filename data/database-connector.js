@@ -206,10 +206,24 @@ class DatabaseConnector {
           type: TYPE_DEPOSIT,
         },
         {
+          date: "2015-05-13",
+          exchange: "Swissquote",
+          symbol: "USD",
+          amount: "9000",
+          type: TYPE_DEPOSIT,
+        },
+        {
           date: "2020-03-31",
           exchange: "Swissquote",
           symbol: "USD",
           amount: "100",
+          type: TYPE_WITHDRAW,
+        },
+        {
+          date: "2020-05-31",
+          exchange: "Kraken",
+          symbol: "USD",
+          amount: "9000",
           type: TYPE_WITHDRAW,
         },
       ];
