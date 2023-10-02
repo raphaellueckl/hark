@@ -55,6 +55,7 @@ template.innerHTML = `
   ul:not(.large) {
     overflow: hidden;
     height: 26px;
+    flex-direction: row;
   }
 
   ul:not(.large) > li {
