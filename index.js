@@ -66,7 +66,6 @@ class App extends HTMLElement {
   }
 
   handleSwipeGestures = (router) => {
-    console.log(router);
     const tolerance = 50;
     let touchstartX = 0;
     let touchendX = 0;

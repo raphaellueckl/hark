@@ -200,21 +200,15 @@ class PieChart extends HTMLElement {
 
       const legendList = this.shadowRoot.querySelector(".legend");
       const legendItem = document.createElement("li");
-      if (this.title === "Assets") {
-        legendItem.classList.add("full-label");
-        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">
+      legendItem.classList.add("full-label");
+      legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">
         <span>${entry.percentage.toFixed(0)}% ${
-          chartData[i].name
-        }</span><span>${
-          chartData[i].fixedValue
-            ? chartData[i].fixedValue.toFixed(2)
-            : chartData[i].value.toFixed(2)
-        } CHF</span>`;
-      } else {
-        legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">${entry.percentage.toFixed(
-          0
-        )}% ${chartData[i].name}</span>`;
-      }
+        chartData[i].name
+      }</span><span>${
+        chartData[i].fixedValue
+          ? chartData[i].fixedValue.toFixed(0)
+          : chartData[i].value.toFixed(0)
+      } CHF</span>`;
 
       legendList.appendChild(legendItem);
 
