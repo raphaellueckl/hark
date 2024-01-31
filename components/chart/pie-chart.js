@@ -202,7 +202,7 @@ class PieChart extends HTMLElement {
       const legendItem = document.createElement("li");
       legendItem.classList.add("full-label");
       legendItem.innerHTML = `<span class="legend-item" style="background-color:${randomColor};">
-        <span>${entry.percentage.toFixed(0)}% ${
+        <span>${this.title === "Assets" ? entry.percentage.toFixed(2) : entry.percentage.toFixed(0)}% ${
         chartData[i].name
       }</span><span>${
         chartData[i].fixedValue
