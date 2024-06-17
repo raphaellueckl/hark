@@ -87,6 +87,8 @@ template.innerHTML = `
   <!-- generated -->
 </ul>`;
 
+let large = false;
+
 class Asset extends HTMLElement {
   constructor() {
     super();
@@ -99,12 +101,14 @@ class Asset extends HTMLElement {
   }
 
   connectedCallback() {
-    this.shadowRoot.querySelector("ul").classList.remove("large");
-    const liElements = [...this.shadowRoot.querySelectorAll("li")];
-    liElements.forEach((li) => {
-      if (li.textContent !== "Asset" && li.textContent !== "Amount")
-        li.classList.add("hidden");
-    });
+    if (!large) {
+      this.shadowRoot.querySelector("ul").classList.remove("large");
+      const liElements = [...this.shadowRoot.querySelectorAll("li")];
+      liElements.forEach((li) => {
+        if (li.textContent !== "Asset" && li.textContent !== "Amount")
+          li.classList.add("hidden");
+      });
+    }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -117,6 +121,7 @@ class Asset extends HTMLElement {
         liElements.forEach((li) => {
           li.classList.remove("hidden");
         });
+        large = true;
       } else {
         this.shadowRoot.querySelector("ul").classList.remove("large");
         const liElements = [...this.shadowRoot.querySelectorAll("li")];
@@ -124,6 +129,7 @@ class Asset extends HTMLElement {
           if (li.textContent !== "Asset" && li.textContent !== "Amount")
             li.classList.add("hidden");
         });
+        large = false;
       }
     } else if (name === "asset") {
       const asset = JSON.parse(newValue);

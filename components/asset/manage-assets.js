@@ -43,6 +43,8 @@ template.innerHTML = `
   </ul>
 </div>`;
 
+let enlarge = false;
+
 class AssetList extends HTMLElement {
   constructor() {
     super();
@@ -54,6 +56,9 @@ class AssetList extends HTMLElement {
   connectedCallback() {
     const minimizeButton = this.shadowRoot.querySelector("#enlarged-input");
     minimizeButton.addEventListener("change", (ev) => this._handleEnlarge(ev));
+    if (enlarge) {
+      minimizeButton.setAttribute("checked", "");
+    }
 
     const assets = databaseConnector.getAssets() || [];
 
@@ -65,7 +70,7 @@ class AssetList extends HTMLElement {
   }
 
   _handleEnlarge(ev) {
-    const enlarge = ev.target.checked;
+    enlarge = ev.target.checked;
     setTimeout(() => {
       const allRows = [
         ...this.shadowRoot.querySelectorAll("hk-manage-asset-row"),
@@ -86,7 +91,7 @@ class AssetList extends HTMLElement {
       const li = document.createElement("li");
       li.innerHTML = `<hk-manage-asset-row index="${index}" asset='${JSON.stringify(
         asset
-      )}'></hk-manage-asset-row>`;
+      )}' ${enlarge ? "large" : "barsche"}></hk-manage-asset-row>`;
       return li;
     });
     listHtml.forEach((asset) => ul.appendChild(asset));
